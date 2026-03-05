@@ -3,9 +3,7 @@ import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Bot } from "lucide-react";
 
 const OFFICES = [
-  { city: "Mumbai (HQ)", address: "Level 12, One BKC, Bandra Kurla Complex, Mumbai - 400051", phone: "+91 98765 43210", email: "mumbai@mobilise.in" },
-  { city: "Delhi NCR", address: "DLF Cyber City, Tower A, Sector 25, Gurugram - 122002", phone: "+91 98765 43211", email: "delhi@mobilise.in" },
-  { city: "Bengaluru", address: "RMZ Eco World, Outer Ring Road, Devarabisanahalli - 560037", phone: "+91 98765 43212", email: "bangalore@mobilise.in" },
+  { city: "Faridabad (HQ)", address: "Plot No. 62/B, HSIIDC, Sector 31, Faridabad, Haryana - 121006", phone: "+91-9599194330", email: "sales@mobilise.co.in" },
 ];
 
 const INQUIRY_TYPES = [
@@ -72,8 +70,8 @@ export function Contact() {
               </div>
               <h3 className="text-white font-black text-xl mb-2">Book a Free Demo</h3>
               <p className="text-white/80 text-sm mb-4">See KEENON robots at your facility — zero commitment, zero cost.</p>
-              <a href="tel:+919876543210" className="flex items-center gap-2 text-white font-bold">
-                <Phone className="w-4 h-4" /> +91 98765 43210
+              <a href="tel:+919599194330" className="flex items-center gap-2 text-white font-bold">
+                <Phone className="w-4 h-4" /> +91-9599194330
               </a>
             </motion.div>
 
@@ -81,8 +79,8 @@ export function Contact() {
             <div className="space-y-4">
               {[
                 { icon: Clock, label: "Response Time", value: "Within 2 business hours" },
-                { icon: MapPin, label: "Offices", value: "Mumbai • Delhi • Bengaluru" },
-                { icon: Mail, label: "Email", value: "info@mobilise.in" },
+                { icon: MapPin, label: "Offices", value: "Faridabad, Haryana" },
+                { icon: Mail, label: "Email", value: "sales@mobilise.co.in" },
               ].map(({ icon: Icon, label, value }, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center shrink-0">

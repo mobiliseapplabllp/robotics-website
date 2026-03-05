@@ -25,6 +25,46 @@ export interface Product {
 
 export const PRODUCTS: Product[] = [
   {
+    id: "t3",
+    name: "T3",
+    tagline: "Safe. Hygienic. Efficiency Maximized.",
+    category: "delivery",
+    categoryLabel: "Delivery Robot",
+    description: "The KEENON DINERBOT T3 brings hygienic, spill-proof dish serving with step-activated automatic doors and a spacious 180L cabin volume for optimized efficiency.",
+    longDescription: "The KEENON T3 is engineered to unlock streamlined delivery efficiency while maintaining maximum hygiene. Featuring unique step-activated and password-secured automatic doors, the T3 ensures safe, spill-proof dish serving perfectly suited for high-standard catering and healthcare environments. Its massive 180L cabin volume paired with adjustable layers (23cm, 38cm, 69cm) accommodates items of varied heights, making it incredibly flexible. Powered by Keenon's patented algorithms, precise navigation, and 3D perception, the T3 instantly responds to its environment and efficiently executes multi-robot dispatch routing.",
+    heroColor: "from-sky-900 to-slate-900",
+    accentColor: "sky",
+    specs: [
+      { label: "Cabin Volume", value: "180L" },
+      { label: "Adjustable Layers", value: "23cm, 38cm, 69cm" },
+      { label: "Door Type", value: "Step-activated automatic doors" },
+      { label: "Navigation", value: "Precise Positioning & vSLAM" },
+      { label: "Avoidance", value: "3D Perception" }
+    ],
+    features: [
+      "Step-activated and password-secured automatic doors",
+      "Spacious 180L cabin volume",
+      "Adjustable delivery layers for varied heights",
+      "Precise spatial data collection navigation",
+      "Synergistic 3D perception with instant response",
+      "Patented algorithms for route optimization",
+      "Multi-robot dispatching support"
+    ],
+    useCases: [
+      "Restaurant food delivery",
+      "Healthcare sterile delivery",
+      "Hotel secure room service"
+    ],
+    industries: ["Hospitality", "Healthcare", "F&B"],
+    videoId: "y4R8lJ3R2Gg",
+    image: "https://static.keenon.com/uploads/2025/01/07/0a4ae5b928164780870b214d28ce872e.jpg?x-oss-process=image/format,webp",
+    images: [
+      "https://static.keenon.com/uploads/2025/01/07/0a4ae5b928164780870b214d28ce872e.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/01/07/2f6e0938cdf14d17ae050fdee9d9b42c.webp",
+    ],
+    thumbnailBg: "from-sky-600 to-sky-900",
+  },
+  {
     id: "t8",
     name: "T8",
     tagline: "The Smart Food Delivery Robot",
@@ -51,15 +91,13 @@ export const PRODUCTS: Product[] = [
       { label: "Elevator Integration", value: "Yes (IoT compatible)" },
     ],
     features: [
-      "Triple-tray autonomous delivery",
-      "360° obstacle detection & avoidance",
-      "Automatic recharging when battery low",
+      "Navigate spaces as narrow as 55 cm",
+      "Smart self-pickup guidance with tray sensors",
+      "300° open tray access",
+      "3 stereo vision sensors for high/low obstacle detection (<5cm)",
       "Multi-language voice interaction including Hindi",
-      "IoT integration with hotel PMS systems",
-      "Elevator & door control integration",
-      "Real-time delivery tracking dashboard",
-      "Gesture & touch interaction",
-      "UV-C disinfection mode available",
+      "10.1\" touch screen guidance",
+      "Automatic recharging when battery low",
       "Cloud-based fleet management",
     ],
     useCases: [
@@ -73,9 +111,7 @@ export const PRODUCTS: Product[] = [
     videoId: "7PaZSanCbHI",
     image: "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — Triple-tray autonomous delivery
       "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — 360° obstacle detection & avoidance
       "https://static.keenon.com/uploads/2025/01/07/3f1030d1ed7f419e8d1fe25536af2051.webp",
     ],
     thumbnailBg: "from-blue-600 to-blue-900",
@@ -93,30 +129,28 @@ export const PRODUCTS: Product[] = [
     heroColor: "from-cyan-900 to-slate-900",
     accentColor: "cyan",
     specs: [
-      { label: "Tray Capacity", value: "3 Trays × 10 kg each" },
+      { label: "Tray Capacity", value: "3 Trays × 10 kg (40kg total)" },
+      { label: "Adjustable Layers", value: "19.5cm, 16.9cm, 25.3cm, 22.8cm" },
       { label: "Max Speed", value: "1.2 m/s" },
-      { label: "Battery Life", value: "12+ hours" },
+      { label: "Battery Life", value: "Up to 18 hours" },
       { label: "Charging Time", value: "3 hours" },
       { label: "Navigation", value: "LIDAR 3D + SLAM" },
       { label: "Obstacle Avoidance", value: "3D depth camera + LIDAR" },
-      { label: "Display", value: "10.1\" Animated Face Display" },
-      { label: "Voice Interaction", value: "AI-powered NLP (Hindi/English)" },
+      { label: "Display", value: "Large Touch Screen" },
+      { label: "Suspension", value: "Vehicle-grade independent suspension" },
       { label: "Weight", value: "42 kg" },
-      { label: "Dimensions", value: "540×470×1290 mm" },
       { label: "Connectivity", value: "Wi-Fi 6 / 4G LTE optional" },
       { label: "Elevator Integration", value: "Yes" },
     ],
     features: [
-      "Expressive animated face display for guest delight",
-      "Enhanced 3D obstacle avoidance with depth cameras",
-      "Tray open/close detection with alerts",
+      "Adjustable space heights (19.5cm, 16.9cm, 25.3cm, 22.8cm)",
+      "40kg total load capacity (10kg per layer)",
+      "18-hour extended battery life with autonomous charging",
+      "Big touch screen at perfect interaction height",
+      "Chassis designs with trio patents",
+      "Vehicle-grade independent suspension with shock absorption",
+      "Patented algorithms and multi-robot dispatching",
       "Brand customization options",
-      "Proactive greeting interactions",
-      "Multi-floor autonomous navigation",
-      "Over-the-air (OTA) software updates",
-      "Anti-collision bumper array",
-      "Optional meal cover trays",
-      "Advanced fleet coordination for multi-robot operations",
     ],
     useCases: [
       "5-star hotel room service",
@@ -127,18 +161,61 @@ export const PRODUCTS: Product[] = [
     ],
     industries: ["Luxury Hospitality", "Healthcare", "F&B", "Senior Care"],
     videoId: "n_MpADYaGN0",
-    image: "https://static.keenon.com/uploads/2025/01/07/5b5be29c47bb403fa173285a3deba3d7.jpg?x-oss-process=image/format,webp",
+    image: "https://static.keenon.com/uploads/2025/01/07/b46b83afb7cc4912a9e4bcad83ae4c6d.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — Expressive animated face display for guest delight
-      "https://static.keenon.com/uploads/2025/01/07/5b5be29c47bb403fa173285a3deba3d7.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — Enhanced 3D obstacle avoidance with depth cameras
-      "https://static.keenon.com/uploads/2025/01/07/2e1806fa93a4413da0364159c2a7f611.webp",
-      // Feature 3 — Tray open/close detection with alerts
       "https://static.keenon.com/uploads/2025/01/07/b46b83afb7cc4912a9e4bcad83ae4c6d.jpg?x-oss-process=image/format,webp",
-      // Feature 4 — Brand customization options
       "https://static.keenon.com/uploads/2025/01/07/2dc8bf76f6c24bd8abf5db546d36571e.webp",
     ],
     thumbnailBg: "from-cyan-600 to-cyan-900",
+  },
+  {
+    id: "t9-pro",
+    name: "T9 Pro",
+    tagline: "Ultra-Premium Intelligent Delivery Robot",
+    category: "delivery",
+    categoryLabel: "Delivery Robot",
+    description:
+      "KEENON T9 Pro takes the intelligent delivery experience even further with enhanced interactive features and premium aesthetics.",
+    longDescription:
+      "The KEENON T9 Pro is the ultra-premium variant of our next-gen delivery series. It maintains all the revolutionary features of the T9 — independent suspension, 18-hour battery life, and 3D perception — while adding more refined interactive capabilities and a specialized finish that suits the world's most luxurious establishments. From Mumbai's elite hotels to Bengaluru's high-tech corridors, the T9 Pro is the choice for businesses that refuse to compromise on either performance or presence.",
+    heroColor: "from-cyan-950 to-slate-900",
+    accentColor: "cyan",
+    specs: [
+      { label: "Tray Capacity", value: "3 Trays × 10 kg (40kg total)" },
+      { label: "Adjustable Layers", value: "19.5cm, 16.9cm, 25.3cm, 22.8cm" },
+      { label: "Max Speed", value: "1.2 m/s" },
+      { label: "Battery Life", value: "Up to 18 hours" },
+      { label: "Charging Time", value: "3 hours" },
+      { label: "Navigation", value: "LIDAR 3D + SLAM" },
+      { label: "Obstacle Avoidance", value: "3D depth camera + LIDAR" },
+      { label: "Display", value: "Large HD Touch Screen" },
+      { label: "Suspension", value: "Vehicle-grade independent suspension" },
+      { label: "Weight", value: "43 kg" },
+      { label: "Connectivity", value: "Wi-Fi 6 / 4G LTE" },
+      { label: "Elevator Integration", value: "Yes" },
+    ],
+    features: [
+      "Enhanced ultra-premium interactive display",
+      "Adjustable space heights (19.5cm, 16.9cm, 25.3cm, 22.8cm)",
+      "40kg total load capacity (10kg per layer)",
+      "18-hour extended battery life with autonomous charging",
+      "Vehicle-grade independent suspension with shock absorption",
+      "Patented algorithms and multi-robot dispatching",
+    ],
+    useCases: [
+      "Ultra-luxury hotel room service",
+      "Michelin-star restaurants",
+      "Premium healthcare suites",
+      "High-end corporate lounges",
+    ],
+    industries: ["Luxury Hospitality", "Healthcare", "F&B", "Corporate"],
+    videoId: "n_MpADYaGN0",
+    image: "https://static.keenon.com/uploads/2025/01/07/5b5be29c47bb403fa173285a3deba3d7.jpg?x-oss-process=image/format,webp",
+    images: [
+      "https://static.keenon.com/uploads/2025/01/07/5b5be29c47bb403fa173285a3deba3d7.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/01/07/2e1806fa93a4413da0364159c2a7f611.webp",
+    ],
+    thumbnailBg: "from-cyan-700 to-cyan-900",
   },
   {
     id: "t10",
@@ -167,14 +244,13 @@ export const PRODUCTS: Product[] = [
       { label: "IP Rating", value: "IP44 splash-proof" },
     ],
     features: [
-      "15.6\" HD display with custom branding",
-      "Fusion SLAM for precision navigation",
+      "Adaptive head movements responding to touch and delivery",
+      "Effortless pickup with touch control and AI tray detection",
+      "360° recognition: 4 stereo vision sensors + VSLAM + 1 RGB camera",
+      "Open-access tray with tray lights, on-screen guidance, and voice prompts",
+      "Versatile styles: Head accessories, expressions, voices, skins",
       "10 Indian regional language support",
       "PMS & POS system integration",
-      "BMS (Building Management System) integration",
-      "Custom livery and color options",
-      "RFID room key interaction",
-      "Priority queue management",
       "Guest satisfaction analytics dashboard",
       "Dedicated India support & maintenance",
     ],
@@ -189,11 +265,8 @@ export const PRODUCTS: Product[] = [
     videoId: "0nPaHJVqO8k",
     image: "https://static.keenon.com/uploads/2025/03/17/e7528c3637714e85b36d5fa830ee0939.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — 15.6" HD display with custom branding
       "https://static.keenon.com/uploads/2025/03/17/e7528c3637714e85b36d5fa830ee0939.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — Fusion SLAM for precision navigation
       "https://static.keenon.com/uploads/2025/01/07/29ecca741b734c61b7a345e384ad6f2a.jpg?x-oss-process=image/format,webp",
-      // Feature 3 — 10 Indian regional language support
       "https://static.keenon.com/uploads/2025/01/07/4dd7ee05dfa64deebe34cf14b5f2f755.jpg?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-violet-600 to-violet-900",
@@ -247,17 +320,11 @@ export const PRODUCTS: Product[] = [
     videoId: "XVh7BkgMhuk",
     image: "https://static.keenon.com/uploads/2025/08/27/d0e3350948ba4a86a0f604b7a4a23ba6.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — 4 lockable independent compartments
       "https://static.keenon.com/uploads/2025/08/27/d0e3350948ba4a86a0f604b7a4a23ba6.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — 40 kg total payload capacity
-      "https://static.keenon.com/uploads/2025/08/27/bff71a3e19bc43f6ba5f7ee9055555f1.jpg?x-oss-process=image/format,webp",
-      // Feature 3 — Contactless secure delivery
+      "https://static.keenon.com/uploads/2025/08/27/bff71a3e19bc43f6ba5f7ee905555f1.jpg?x-oss-process=image/format,webp",
       "https://static.keenon.com/uploads/2025/08/27/e5d5ba0f417346fbb0cbbdb038746f8a.jpg?x-oss-process=image/format,webp",
-      // Feature 4 — Individual tray electronic locking
       "https://static.keenon.com/uploads/2025/08/27/15eba5c9e4b54040a2048fd7dea74722.jpg?x-oss-process=image/format,webp",
-      // Feature 5 — High-torque motors for heavy loads
       "https://static.keenon.com/uploads/2025/08/27/f485683db03e444a8ccf48e2e158e77b.jpg?x-oss-process=image/format,webp",
-      // Feature 6 — Auto-return to charging dock
       "https://static.keenon.com/uploads/2025/09/01/aef7c671bab445fdbd46cea9cd50a781.png?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-amber-600 to-amber-900",
@@ -289,16 +356,14 @@ export const PRODUCTS: Product[] = [
       { label: "Display", value: "7\" touchscreen control panel" },
     ],
     features: [
-      "Combined scrub, mop, and dry in one pass",
+      "IoT elevator rider for seamless multi-floor item delivery",
+      "Automatic doors and ventilation for contactless, hygienic service",
+      "Adjustable up to four independent compartments",
+      "Serves up to 4 locations in 1 dispatch",
       "Intelligent coverage path planning",
       "Obstacle detection and avoidance",
-      "Auto water management system",
       "Customizable cleaning schedules",
       "Real-time cleaning progress monitoring",
-      "Low-noise operation for occupied spaces",
-      "Detergent dosing control",
-      "Multi-zone cleaning management",
-      "Remote monitoring via mobile app",
     ],
     useCases: [
       "Hotel lobby & corridors",
@@ -311,9 +376,7 @@ export const PRODUCTS: Product[] = [
     videoId: "IhBv7JIJQ5M",
     image: "https://static.keenon.com/uploads/2025/01/07/66c020578366481596e71cfedc10aa25.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — Combined scrub, mop, and dry in one pass
       "https://static.keenon.com/uploads/2025/01/07/66c020578366481596e71cfedc10aa25.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — Intelligent coverage path planning
       "https://static.keenon.com/uploads/2025/01/07/a8179615751d47d587d41b6301deb648.webp",
     ],
     thumbnailBg: "from-teal-600 to-teal-900",
@@ -352,9 +415,6 @@ export const PRODUCTS: Product[] = [
       "Scheduled cleaning via app",
       "Auto return to charging station",
       "Multi-surface cleaning (tile, marble, vinyl)",
-      "UV-C sanitization option",
-      "Cloud-based fleet management",
-      "Customizable cleaning intensity zones",
     ],
     useCases: [
       "Restaurant dining area",
@@ -367,31 +427,62 @@ export const PRODUCTS: Product[] = [
     videoId: "EW4Td73DFEI",
     image: "https://static.keenon.com/uploads/2025/05/30/3c032df429624ffa92ac6637b5dabe04.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — Ultra-slim profile for tight spaces
       "https://static.keenon.com/uploads/2025/05/30/3c032df429624ffa92ac6637b5dabe04.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — HEPA H13 filtration for air quality
       "https://static.keenon.com/uploads/2025/05/30/92729e51aaa74750b1d077c75c631a2b.jpg?x-oss-process=image/format,webp",
-      // Feature 3 — Whisper-quiet <60 dB operation
       "https://static.keenon.com/uploads/2025/05/30/cecf06ebc4bb492688f605e2412e4052.jpg?x-oss-process=image/format,webp",
-      // Feature 4 — Dual autonomous & manual modes
       "https://static.keenon.com/uploads/2025/05/30/be9a556dec134c0ca696adad0952edd3.jpg?x-oss-process=image/format,webp",
-      // Feature 5 — Scheduled cleaning via app
       "https://static.keenon.com/uploads/2025/05/30/6c9b261c52044095a31aa1f23f545b4a.jpg?x-oss-process=image/format,webp",
-      // Feature 6 — Auto return to charging station
       "https://static.keenon.com/uploads/2025/05/30/8de4f733546a4716a6aff684744638e3.jpg?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-green-600 to-green-900",
   },
   {
+    id: "c30",
+    name: "C30",
+    tagline: "3-in-1 Dry Cleaning",
+    category: "cleaning",
+    categoryLabel: "Cleaning Robot",
+    description: "The KEENON KLEENBOT C30 delivers 3-in-1 dry cleaning with sweeping, vacuuming, and dust mopping across a 610mm wide path.",
+    longDescription: "The KEENON C30 is a versatile floor cleaner providing comprehensive dry cleaning capabilities. Combining sweeping, vacuuming, and dust mopping, it achieves a thorough clean across a 610mm path. A single complete automatic charging cycle powers the C30 to clean up to 2500㎡, making it highly suitable for extended cleaning sessions in large commercial facilities. Users can easily switch between manual map building and automated cleaning using the innovative extendable handle. The KEENON App allows facility managers to remotely assign and track cleaning tasks for optimal visibility and control.",
+    heroColor: "from-lime-900 to-slate-900",
+    accentColor: "lime",
+    specs: [
+      { label: "Cleaning Area", value: "2500㎡ per charge" },
+      { label: "Cleaning Width", value: "610mm" },
+      { label: "Modes", value: "Manual and Automated" },
+      { label: "Control", value: "Extendable handle & App tracking" },
+    ],
+    features: [
+      "3-in-1 sweeping, vacuuming, and dust mopping",
+      "610mm wide cleaning coverage",
+      "Cleans up to 2500㎡ on a 100% charge",
+      "Innovative extendable handle for manual operation",
+      "Remote assign and track tasks via KEENON App",
+    ],
+    useCases: [
+      "Large commercial floor sweeping",
+      "Carpet and hard floor vacuuming",
+      "Office complex dust mopping",
+    ],
+    industries: ["Commercial Real Estate", "Retail", "Corporate"],
+    videoId: "Bv9XN3S_DkI",
+    image: "https://static.keenon.com/uploads/2025/01/07/5bc901fd4a6a4f8d925eee15d5282b28.jpg?x-oss-process=image/format,webp",
+    images: [
+      "https://static.keenon.com/uploads/2025/01/07/5bc901fd4a6a4f8d925eee15d5282b28.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/01/07/de67edd2fbee407aaadd617ded3e9fdf.jpg?x-oss-process=image/format,webp",
+    ],
+    thumbnailBg: "from-lime-600 to-lime-900",
+  },
+  {
     id: "c40",
     name: "C40",
-    tagline: "Industrial-Grade Smart Cleaning Robot",
+    tagline: "Professional 4-in-1 Robot Floor Cleaner",
     category: "cleaning",
     categoryLabel: "Cleaning Robot",
     description:
-      "The KEENON C40 is a heavy-duty industrial cleaning robot built for large-scale environments like airports, shopping malls, and logistics centers, delivering powerful cleaning performance 24/7.",
+      "The KEENON C40 is a professional 4-in-1 robot floor cleaner built for medium to large-scale environments like airports and shopping malls.",
     longDescription:
-      "When the cleaning challenge is massive, the KEENON C40 rises to the occasion. This industrial-grade cleaning robot features the largest water tanks, widest cleaning path, and most powerful motors in the KEENON cleaning lineup. Designed for India's mega infrastructure — international airports, sprawling shopping malls, convention centers, and large manufacturing facilities — the C40 maintains pristine floors at scale. Its intelligent multi-floor mapping capability allows it to manage cleaning across different levels using elevator integration. With 8-hour continuous operation, the C40 handles an entire shift without human intervention. Its advanced AI map-building creates optimal cleaning routes that maximize coverage while minimizing energy consumption.",
+      "When the cleaning challenge is massive, the KEENON C40 rises to the occasion. This industrial-grade 4-in-1 cleaning robot features large water tanks, a wide cleaning path, and powerful motors. Designed for India's mega infrastructure — international airports, sprawling shopping malls, convention centers, and large manufacturing facilities — the C40 maintains pristine floors at scale. Its intelligent multi-floor mapping capability allows it to manage cleaning across different levels using elevator integration. With 8-hour continuous operation, the C40 handles an entire shift without human intervention. Its advanced AI map-building creates optimal cleaning routes that maximize coverage while minimizing energy consumption.",
     heroColor: "from-orange-900 to-slate-900",
     accentColor: "orange",
     specs: [
@@ -409,16 +500,16 @@ export const PRODUCTS: Product[] = [
       { label: "Connectivity", value: "Wi-Fi / 4G / Ethernet" },
     ],
     features: [
-      "4,000 m²/h industrial cleaning capacity",
-      "120 L large-capacity water tanks",
-      "8-hour continuous autonomous operation",
-      "Multi-floor intelligent mapping",
-      "Industrial-grade brush motors",
-      "High-pressure water jet option",
-      "24/7 remote monitoring & alerts",
-      "Integration with facility management systems",
-      "Predictive maintenance diagnostics",
-      "Auto water station docking",
+      "Up to 4,000 m²/h powerful cleaning efficiency",
+      "Massive 120L water tank for continuous operation without frequent refills",
+      "8-hour ultra-long battery life avoiding range anxiety",
+      "Superior 3D perception with 360° blind-spot free coverage",
+      "Multi-floor autonomous operation with integrated elevator taking",
+      "Industrial-grade dual brush motors (2x 400W)",
+      "High-pressure portable cleaning wand for corners",
+      "Remote management via KEENON App for dispatch and tracking",
+      "Comprehensive multi-sensor safety (LiDAR, ToF, stereo cameras)",
+      "Fully autonomous workstation docking for water/power exchange",
     ],
     useCases: [
       "International airports",
@@ -431,30 +522,63 @@ export const PRODUCTS: Product[] = [
     videoId: "mZv4UEyFGQg",
     image: "https://static.keenon.com/uploads/2025/10/23/6d9c3aecae374928bd63182f0bfa0cc6.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — 4,000 m²/h industrial cleaning capacity
       "https://static.keenon.com/uploads/2025/10/23/6d9c3aecae374928bd63182f0bfa0cc6.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — 120 L large-capacity water tanks
       "https://static.keenon.com/uploads/2025/10/23/9ec78776e1b449d3830725428ff82995.jpg?x-oss-process=image/format,webp",
-      // Feature 3 — 8-hour continuous autonomous operation
       "https://static.keenon.com/uploads/2025/10/23/6bdd3272e28843b99c5045737fd91c8c.jpg?x-oss-process=image/format,webp",
-      // Feature 4 — Multi-floor intelligent mapping
       "https://static.keenon.com/uploads/2025/10/23/f22eda50233f408db703157999d0efb5.jpg?x-oss-process=image/format,webp",
-      // Feature 5 — Industrial-grade brush motors
       "https://static.keenon.com/uploads/2025/10/23/cb71962afa6d46839249407aa6187136.jpg?x-oss-process=image/format,webp",
-      // Feature 6 — High-pressure water jet option
       "https://static.keenon.com/uploads/2025/10/23/dc7e88d4f8ed4a35a1c47ce7066ce2db.jpg?x-oss-process=image/format,webp",
-      // Feature 7 — 24/7 remote monitoring & alerts
       "https://static.keenon.com/uploads/2025/10/23/519c148a10db489fbd6f8aecaa82bdea.jpg?x-oss-process=image/format,webp",
-      // Feature 8 — Integration with facility management systems
       "https://static.keenon.com/uploads/2025/10/23/5a3d119620fd4f2a9a5bfad4bac52390.jpg?x-oss-process=image/format,webp",
-      // Feature 9 — Predictive maintenance diagnostics
       "https://static.keenon.com/uploads/2025/10/23/91a57ab35b0449dba02713ec06ac98aa.jpg?x-oss-process=image/format,webp",
-      // Feature 10 — Auto water station docking
       "https://static.keenon.com/uploads/2025/12/05/682f0af604684cdda41c8d32ca146e02.jpg?x-oss-process=image/format,webp",
-      // Bonus gallery — additional view
-      "https://static.keenon.com/uploads/2025/10/23/8caa33e9ace1498389cbf4db0ad0c763.jpg?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-orange-600 to-orange-900",
+  },
+  {
+    id: "c55",
+    name: "C55",
+    tagline: "Sweep & Scrub in One for Medium to Large Spaces",
+    category: "cleaning",
+    categoryLabel: "Cleaning Robot",
+    description: "The KEENON KLEENBOT C55 features an industry-first triple-roller design, sweeping and scrubbing in a single pass.",
+    longDescription: "The KEENON C55 redefines industrial cleaning with its innovative triple-roller design sweeping and scrubbing in one pass, outperforming traditional dual-roller scrubbers. It doubles water capacity, allowing a single fill to clean an area equivalent to three football fields. Its hot-swappable dual-battery system allows for 5-second swaps and zero downtime. Operating smoothly over 5cm obstacles, the C55 features a patented 3-second flip water tank for completely visible, easy maintenance. Equipped with four stereo cameras and top-mounted LiDAR, its 360° panoramic perception navigates complex crowds safely.",
+    heroColor: "from-emerald-900 to-slate-900",
+    accentColor: "emerald",
+    specs: [
+      { label: "Obstacle Clearance", value: "up to 5 cm" },
+      { label: "Perception", value: "360° Panoramic (LiDAR + 4 Stereo Cameras)" },
+      { label: "Tank Design", value: "3-Second Flip" },
+      { label: "Battery", value: "Dual-Battery (5-Second Swap)" },
+      { label: "Water Control", value: "Autonomous Supply & Drainage" },
+    ],
+    features: [
+      "Triple-roller design for sweeping and scrubbing in one pass",
+      "Double water capacity (refill once a day)",
+      "Dual-battery system with 5-second hot swap",
+      "Smoothly overcomes obstacles up to 5cm high",
+      "Patented 3-second flip water tank for easy maintenance",
+      "Manual and Automatic operation modes",
+      "360° panoramic perception (4 stereo cameras + LiDAR)",
+      "Autonomous water supply and drainage workstation",
+      "24/7 digital management via Intelligent Platform & IoT",
+    ],
+    useCases: [
+      "Underground parking garages",
+      "Large shopping malls",
+      "Transit hubs",
+    ],
+    industries: ["Infrastructure", "Retail", "Manufacturing"],
+    videoId: "mZv4UEyFGQg",
+    image: "https://static.keenon.com/uploads/2025/11/06/a3d819df7793438f972564c14317a30a.jpg?x-oss-process=image/format,webp",
+    images: [
+      "https://static.keenon.com/uploads/2025/11/06/a3d819df7793438f972564c14317a30a.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/11/06/f48c34667e804421b3adad48fd4a5554.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/11/06/81b0e062e21641709871839ebd0e51f5.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/11/06/c59144d457384c979a929e1ebd75ed66.jpg?x-oss-process=image/format,webp",
+      "https://static.keenon.com/uploads/2025/11/06/422a0edc9e1045c5912471a09c70e343.jpg?x-oss-process=image/format,webp",
+    ],
+    thumbnailBg: "from-emerald-600 to-emerald-900",
   },
   {
     id: "s100",
@@ -483,16 +607,16 @@ export const PRODUCTS: Product[] = [
       { label: "Weight", value: "60 kg" },
     ],
     features: [
+      "100kg+ heavy load capacity",
+      "Plug-and-play with pre-installed OS and App",
+      "24/7 nonstop delivery (15s battery swap)",
+      "360° obstacle avoidance and anti-collision strip",
       "21.5\" HD interactive face display",
       "Conversational AI in 10 Indian languages",
       "Face recognition for VIP identification",
       "Autonomous guest escorting",
       "Visitor management system integration",
       "Access control & badge printing",
-      "Real-time information kiosk mode",
-      "Product & service promotional display",
-      "Queue management assistance",
-      "Analytics & visitor insights dashboard",
     ],
     useCases: [
       "Hotel lobby reception",
@@ -505,17 +629,11 @@ export const PRODUCTS: Product[] = [
     videoId: "nWFOEiiLzTc",
     image: "https://static.keenon.com/uploads/2025/01/07/da5945d838104e25a86b225b448ac7f9.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — 21.5" HD interactive face display
       "https://static.keenon.com/uploads/2025/01/07/da5945d838104e25a86b225b448ac7f9.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — Conversational AI in 10 Indian languages
       "https://static.keenon.com/uploads/2025/02/10/23658280543b4d7d9302e689b6981ce5.png?x-oss-process=image/format,webp",
-      // Feature 3 — Face recognition for VIP identification
       "https://static.keenon.com/uploads/2025/02/10/13ec3c5471fc426da62aa2b187f9d8b0.png?x-oss-process=image/format,webp",
-      // Feature 4 — Autonomous guest escorting
       "https://static.keenon.com/uploads/2025/02/10/f05a9c18115b40b7abe2efa0ed2500b0.png?x-oss-process=image/format,webp",
-      // Feature 5 — Visitor management system integration
       "https://static.keenon.com/uploads/2025/02/10/63fb6bd56821412bb8f63899c8ce492f.png?x-oss-process=image/format,webp",
-      // Feature 6 — Access control & badge printing
       "https://static.keenon.com/uploads/2025/01/07/cd3e59fada7941daa220cd9e773ac962.jpg?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-pink-600 to-pink-900",
@@ -547,16 +665,16 @@ export const PRODUCTS: Product[] = [
       { label: "IP Rating", value: "IP54" },
     ],
     features: [
+      "300kg lift capacity with an industry-low 23cm chassis",
+      "Multiple intelligent delivery modes (loop, direct, multi-point, transport)",
+      "Dynamic auto-planning with LiDAR SLAM + stereo vision",
+      "Offline control for uninterrupted operation without network dependency",
+      "Continuous 24/7 operation with 3.5h fast charge & battery swap",
+      "360° safety shield with triple emergency stops",
+      "Flexible deployment in just 1 day without magnetic tape/QR codes",
       "27\" 4K ultra-HD main display",
       "Multi-function: reception + delivery + guidance",
       "360° surround sound interaction",
-      "Stereo vision depth sensing",
-      "Smart crowd management navigation",
-      "API-first integration architecture",
-      "Digital twin simulation support",
-      "Indoor GPS positioning option",
-      "Emergency broadcast capability",
-      "Designed for India's Smart City mission",
     ],
     useCases: [
       "International airport concourse",
@@ -569,11 +687,8 @@ export const PRODUCTS: Product[] = [
     videoId: "GST1_KOT54Q",
     image: "https://static.keenon.com/uploads/2025/10/10/6c16f280020b4a258e0a1235ee5da218.jpg?x-oss-process=image/format,webp",
     images: [
-      // Feature 1 — 27" 4K ultra-HD main display
       "https://static.keenon.com/uploads/2025/10/10/6c16f280020b4a258e0a1235ee5da218.jpg?x-oss-process=image/format,webp",
-      // Feature 2 — Multi-function: reception + delivery + guidance
       "https://static.keenon.com/uploads/2025/10/10/646128197b974c6badd6e5fbae0aa822.jpg?x-oss-process=image/format,webp",
-      // Feature 3 — 360° surround sound interaction
       "https://static.keenon.com/uploads/2025/10/10/afee143ed7e340768a026d42c25a81b2.jpg?x-oss-process=image/format,webp",
     ],
     thumbnailBg: "from-indigo-600 to-indigo-900",
@@ -593,7 +708,7 @@ export const SOLUTIONS = [
     title: "Hospitality & Hotels",
     icon: "hotel",
     description: "Transform guest experience with autonomous food delivery, lobby assistance, and 24/7 service robots in 5-star hotels and resorts across India.",
-    robots: ["T8", "T9", "T10", "T11", "S100"],
+    robots: ["T3", "T8", "T9", "T10", "T11", "S100", "W3"],
     stats: "40% reduction in service time | 95% guest satisfaction",
     image: "https://images.unsplash.com/photo-1534679541758-8dc76ff8081d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
     cases: ["Room service delivery", "Lobby guidance", "Amenity distribution", "Reception assistance"],
@@ -603,7 +718,7 @@ export const SOLUTIONS = [
     title: "Healthcare & Hospitals",
     icon: "hospital",
     description: "Minimize human contact, reduce cross-contamination risk, and streamline operations in hospitals, clinics, and care facilities with KEENON robots.",
-    robots: ["T11", "S100", "C20", "W3"],
+    robots: ["T3", "T11", "S100", "C20", "W3"],
     stats: "60% reduction in logistics staff | Zero contamination incidents",
     image: "https://images.unsplash.com/photo-1767966769495-dbb5e14cab5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
     cases: ["Medication delivery", "Meal distribution", "Specimen transport", "Ward floor cleaning"],
@@ -613,7 +728,7 @@ export const SOLUTIONS = [
     title: "Restaurants & F&B",
     icon: "utensils",
     description: "Solve labor challenges, delight customers, and increase table turnover with KEENON's smart food delivery robots — India's new restaurant revolution.",
-    robots: ["T8", "T9", "T10"],
+    robots: ["T3", "T8", "T9", "T10"],
     stats: "3x more tables served | 30% increase in revenue",
     image: "https://images.unsplash.com/photo-1767966926615-748201123f94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
     cases: ["Food delivery to tables", "Dirty dish collection", "Menu recommendations", "Kids entertainment"],
@@ -623,7 +738,7 @@ export const SOLUTIONS = [
     title: "Retail & Shopping",
     icon: "shopping",
     description: "Guide shoppers, manage queues, answer product queries, and maintain pristine store floors with an integrated KEENON robot solution for retail.",
-    robots: ["S100", "S300", "C20", "C40"],
+    robots: ["S100", "S300", "C20", "C30", "C40", "C55"],
     stats: "25% increase in footfall conversion | 50% reduction in cleaning cost",
     image: "https://images.unsplash.com/photo-1764795849833-6e9d6e399a77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
     cases: ["Product location guidance", "Promotions display", "Queue management", "Store floor cleaning"],
@@ -643,7 +758,7 @@ export const SOLUTIONS = [
     title: "Corporate & Tech Parks",
     icon: "building",
     description: "Automate reception, food delivery, visitor management, and facility maintenance in India's booming IT parks, SEZs, and corporate campuses.",
-    robots: ["S100", "T8", "T11", "C20"],
+    robots: ["S100", "T3", "T8", "T11", "C20", "C30", "C55"],
     stats: "500+ corporate campuses worldwide | India rollout in progress",
     image: "https://images.unsplash.com/photo-1708924908152-aa8df3576b86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800",
     cases: ["Visitor reception", "Cafeteria delivery", "Document distribution", "Office floor cleaning"],

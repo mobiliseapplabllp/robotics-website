@@ -1,9 +1,9 @@
 import { useParams, Link, useNavigate } from "react-router";
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft, ArrowRight, CheckCircle, Play, ChevronRight, Download, Phone, X, ZoomIn, ChevronLeft } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { ArrowLeft, ArrowRight, CheckCircle, Play, ChevronRight, Download, Phone, X, ZoomIn, ChevronLeft, Bot } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const ACCENT_COLOR: Record<string, { text: string; border: string; bg: string; gradient: string; shadow: string }> = {
   blue: { text: "text-blue-400", border: "border-blue-400/30", bg: "bg-blue-500/10", gradient: "from-blue-600 to-blue-800", shadow: "shadow-blue-500/20" },
@@ -22,10 +22,63 @@ const FEATURE_IMAGE_MAP: Record<string, number[]> = {
   c40: [0, 1, 2, 3, 4, 5, 6, 7, 8],
 };
 
+function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+
+  // Premium transitions: scale up and fade out as the next section slides over
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
+
+  return (
+    <div ref={ref} className="relative h-screen w-full">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
+        {/* Cinematic Image Layer */}
+        <motion.div
+          style={{ scale, opacity }}
+          className="absolute inset-0 w-full h-full"
+        >
+          <button
+            onClick={() => openLightbox(index)}
+            className="w-full h-full cursor-zoom-in relative block focus:outline-none"
+          >
+            <ImageWithFallback
+              src={img}
+              alt={featureText}
+              className="w-full h-full object-cover"
+            />
+            {/* Cinematic Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
+            </div>
+          </button>
+        </motion.div>
+
+        {/* Feature Text Caption */}
+        {featureText && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 text-center w-full px-6 z-10 pointer-events-none"
+          >
+            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-1">Feature {index + 1}</p>
+            <h3 className="text-white text-2xl md:text-4xl font-black tracking-tight drop-shadow-2xl">{featureText}</h3>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"overview" | "specs" | "video" | "gallery">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "specs">("overview");
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -61,12 +114,13 @@ export function ProductDetail() {
   const tabs = [
     { key: "overview", label: "Overview & Features" },
     { key: "specs", label: "Specifications" },
-    ...(hasGallery ? [{ key: "gallery", label: `Gallery (${allImages.length})` }] : []),
-    { key: "video", label: "Video & Media" },
   ] as { key: typeof activeTab; label: string }[];
 
+  const { scrollY } = useScroll();
+  const heroBgY = useTransform(scrollY, [0, 1000], [0, 250]);
+
   return (
-    <div className="min-h-screen bg-[#050a14] pt-20">
+    <div className="min-h-screen bg-[#050a14]">
 
       {/* ── Lightbox ── */}
       <AnimatePresence>
@@ -104,7 +158,7 @@ export function ProductDetail() {
               exit={{ opacity: 0, scale: 0.96 }}
               src={allImages[lightboxIndex]}
               alt={`KEENON ${product.name} — view ${lightboxIndex + 1}`}
-              className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+              className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl relative z-10"
               onClick={(e) => e.stopPropagation()}
             />
             {/* Next */}
@@ -115,7 +169,7 @@ export function ProductDetail() {
               <ChevronRight className="w-6 h-6" />
             </button>
             {/* Thumbnail strip */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-[90vw] px-2">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-[90vw] px-2 z-20">
               {allImages.map((img, i) => (
                 <button
                   key={i}
@@ -131,131 +185,123 @@ export function ProductDetail() {
       </AnimatePresence>
 
       {/* ── Hero ── */}
-      <section className={`relative overflow-hidden bg-gradient-to-br ${product.heroColor} py-24`}>
-        <div className="absolute inset-0">
-          <div className={`absolute top-0 right-0 w-[600px] h-[600px] bg-${product.accentColor}-500/10 rounded-full blur-3xl`} />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/30 rounded-full blur-3xl" />
-        </div>
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
+      {/* ── Modern Hero ── */}
+      <section className="relative h-screen w-full overflow-hidden bg-black flex items-center">
+        {/* Cinematic Background */}
+        <motion.div style={{ y: heroBgY }} className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src={allImages[activeImage]}
+            alt={product.name}
+            className="w-full h-full object-cover opacity-50 transition-opacity duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050a14] via-[#050a14]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+        </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-start pt-20">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-white/40 text-sm mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest mb-12"
+          >
             <Link to="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3 h-3" />
             <Link to="/products" className="hover:text-white transition-colors">Products</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className={accent.text}>KEENON {product.name}</span>
-          </div>
+            <ChevronRight className="w-3 h-3" />
+            <span className={accent.text}>{product.name}</span>
+          </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
-              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border ${accent.border} ${accent.bg} mb-6`}>
-                <span className={`text-sm font-bold uppercase tracking-wider ${accent.text}`}>{product.categoryLabel}</span>
+          <div className="max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className={`inline-block px-4 py-1.5 rounded-full border ${accent.border} ${accent.bg} mb-6`}>
+                <span className={`text-xs font-black uppercase tracking-widest ${accent.text}`}>{product.categoryLabel}</span>
               </div>
 
-              <h1 className="text-6xl lg:text-8xl font-black text-white mb-2">
-                KEENON <span className={accent.text}>{product.name}</span>
+              <h1 className="text-7xl md:text-9xl font-black text-white mb-4 tracking-tighter leading-none select-none">
+                KEENON <br />
+                <span className={`text-transparent bg-clip-text bg-gradient-to-r ${accent.gradient}`}>{product.name}</span>
               </h1>
-              <p className="text-2xl text-white/70 font-semibold mb-6">{product.tagline}</p>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">{product.description}</p>
 
-              <div className="flex flex-wrap gap-4">
+              <p className="text-2xl md:text-3xl text-white/80 font-bold mb-8 italic tracking-tight">{product.tagline}</p>
+
+              <div className="flex flex-wrap gap-5 mt-10">
                 <Link
                   to="/contact"
-                  className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${accent.gradient} rounded-xl text-white font-bold shadow-lg ${accent.shadow} hover:opacity-90 transition-opacity`}
+                  className={`px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-white/90 transition-all rounded-sm shadow-2xl flex items-center gap-2`}
                 >
-                  Request a Demo <ArrowRight className="w-4 h-4" />
+                  Book Demo <ArrowRight className="w-4 h-4" />
                 </Link>
-                <a
-                  href="https://www.keenon.com/en"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white font-bold hover:bg-white/10 transition-colors"
+                <button
+                  onClick={() => openLightbox(activeImage)}
+                  className="px-8 py-4 border border-white/20 text-white font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all rounded-sm flex items-center gap-2 backdrop-blur-sm"
                 >
-                  <Download className="w-4 h-4" /> Download Catalogue
-                </a>
+                  View Gallery <ZoomIn className="w-4 h-4" />
+                </button>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-2">
+              {/* Industries tags */}
+              <div className="mt-16 flex flex-wrap gap-3">
                 {product.industries.map((ind) => (
-                  <span key={ind} className={`px-3 py-1 rounded-lg border ${accent.border} ${accent.bg} ${accent.text} text-xs font-semibold`}>
+                  <span key={ind} className="text-white/40 text-[10px] uppercase font-black tracking-widest border border-white/10 px-3 py-1 rounded-sm">
                     {ind}
                   </span>
                 ))}
               </div>
             </motion.div>
-
-            {/* Hero Image + Thumbnails */}
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
-              <div
-                className={`relative rounded-3xl overflow-hidden border ${accent.border} shadow-2xl ${accent.shadow} cursor-zoom-in group`}
-                onClick={() => openLightbox(activeImage)}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeImage}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <ImageWithFallback
-                      src={allImages[activeImage]}
-                      alt={`KEENON ${product.name}`}
-                      className="w-full aspect-[4/3] object-cover"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-                <div className={`absolute inset-0 bg-gradient-to-tr ${product.heroColor} opacity-30`} />
-                {/* Zoom hint */}
-                <div className="absolute top-3 right-3 w-8 h-8 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ZoomIn className="w-4 h-4 text-white" />
-                </div>
-                <div className="absolute bottom-0 right-0 p-6">
-                  <div className={`text-8xl font-black ${accent.text} opacity-20 leading-none`}>{product.name}</div>
-                </div>
-                {/* Image counter badge */}
-                {hasGallery && (
-                  <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-black/50 backdrop-blur-sm rounded-lg text-white/70 text-xs font-semibold">
-                    {activeImage + 1} / {allImages.length}
-                  </div>
-                )}
-              </div>
-
-              {/* Scrollable thumbnail strip */}
-              {hasGallery && (
-                <div className="flex gap-2.5 mt-4 overflow-x-auto pb-1 scrollbar-hide">
-                  {allImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`relative rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0 ${
-                        activeImage === i
-                          ? `${accent.border} shadow-lg ${accent.shadow} scale-105`
-                          : "border-white/10 opacity-50 hover:opacity-80 hover:scale-102"
-                      }`}
-                      style={{ width: 76, height: 56 }}
-                    >
-                      <ImageWithFallback
-                        src={img}
-                        alt={`KEENON ${product.name} view ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </motion.div>
           </div>
         </div>
+
+        {/* Floating Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3 opacity-30"
+        >
+          <span className="text-[10px] text-white font-black uppercase tracking-[0.2em]">Explore</span>
+          <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
+        </motion.div>
+
+        {/* Subtle Side Thumbnails */}
+        {hasGallery && (
+          <div className="absolute right-10 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-3">
+            {allImages.slice(0, 5).map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveImage(i)}
+                className={`w-16 h-12 rounded-sm overflow-hidden border-2 transition-all duration-300 ${activeImage === i ? `border-white scale-110 shadow-2xl` : 'border-white/10 opacity-30 hover:opacity-60'}`}
+              >
+                <ImageWithFallback src={img} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
       </section>
+
+      {/* FULL WIDTH PARALLAX SECTIONS */}
+      {hasGallery && (
+        <div className="w-full">
+          <div className="flex flex-col w-full">
+            {allImages.map((img, i) => {
+              const featureText = product.features[i] ?? "";
+              return (
+                <ParallaxGalleryItem
+                  key={i}
+                  img={img}
+                  index={i}
+                  featureText={featureText}
+                  accent={accent}
+                  openLightbox={openLightbox}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ── Tabs ── */}
       <div className="sticky top-[72px] z-30 bg-[#050a14]/95 backdrop-blur-md border-b border-white/10">
@@ -265,11 +311,10 @@ export function ProductDetail() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`shrink-0 px-6 py-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 ${
-                  activeTab === tab.key
-                    ? `${accent.text} border-current`
-                    : "text-white/40 border-transparent hover:text-white/70"
-                }`}
+                className={`shrink-0 px-6 py-4 text-sm font-bold uppercase tracking-wider transition-all border-b-2 ${activeTab === tab.key
+                  ? `${accent.text} border-current`
+                  : "text-white/40 border-transparent hover:text-white/70"
+                  }`}
               >
                 {tab.label}
               </button>
@@ -279,156 +324,208 @@ export function ProductDetail() {
       </div>
 
       {/* ── Tab Content ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+      <div className="py-16">
 
         {/* OVERVIEW */}
         {activeTab === "overview" && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-16">
-            <div className="grid lg:grid-cols-3 gap-12">
-              {/* Left: description + features */}
-              <div className="lg:col-span-2 space-y-10">
-                <div>
-                  <h2 className="text-3xl font-black text-white mb-4">About KEENON {product.name}</h2>
-                  <p className="text-white/60 text-lg leading-relaxed">{product.longDescription}</p>
-                </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              <div className="grid lg:grid-cols-3 gap-12">
+                {/* Left: description + features */}
+                <div className="lg:col-span-2 space-y-10">
+                  <div>
+                    <h2 className="text-3xl font-black text-white mb-4">About KEENON {product.name}</h2>
+                    <p className="text-white/60 text-lg leading-relaxed">{product.longDescription}</p>
+                  </div>
 
-                {/* Features paired with gallery images when available */}
-                <div>
-                  <h3 className="text-2xl font-black text-white mb-6">Key Features</h3>
-                  {hasGallery ? (
-                    <div className="space-y-4">
-                      {product.features.map((feature, i) => {
-                        const imgIdx = i < allImages.length ? i : undefined;
-                        return (
+                  {/* Features paired with gallery images when available */}
+                  <div>
+                    <h3 className="text-2xl font-black text-white mb-6">Key Features</h3>
+                    {hasGallery ? (
+                      <div className="space-y-4">
+                        {product.features.map((feature, i) => {
+                          const imgIdx = i < allImages.length ? i : undefined;
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: i * 0.04 }}
+                              className={`flex items-center gap-4 p-4 rounded-2xl border ${accent.border} ${accent.bg} hover:bg-white/5 transition-colors group`}
+                            >
+                              {/* Thumbnail preview */}
+                              {imgIdx !== undefined && (
+                                <button
+                                  onClick={() => { setActiveImage(imgIdx); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                                  className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border ${accent.border} opacity-70 group-hover:opacity-100 transition-opacity`}
+                                >
+                                  <img src={allImages[imgIdx]} alt="" className="w-full h-full object-contain p-1" />
+                                </button>
+                              )}
+                              <CheckCircle className={`w-5 h-5 ${accent.text} shrink-0`} />
+                              <span className="text-white/80 text-sm flex-1">{feature}</span>
+                              {imgIdx !== undefined && (
+                                <span className={`text-xs ${accent.text} opacity-60 font-semibold shrink-0`}>
+                                  View ↑
+                                </span>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {product.features.map((feature, i) => (
                           <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.04 }}
-                            className={`flex items-center gap-4 p-4 rounded-2xl border ${accent.border} ${accent.bg} hover:bg-white/5 transition-colors group`}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.05 }}
+                            className={`flex items-start gap-3 p-4 rounded-xl border ${accent.border} ${accent.bg}`}
                           >
-                            {/* Thumbnail preview */}
-                            {imgIdx !== undefined && (
-                              <button
-                                onClick={() => { setActiveImage(imgIdx); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                                className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border ${accent.border} opacity-70 group-hover:opacity-100 transition-opacity`}
-                              >
-                                <img src={allImages[imgIdx]} alt="" className="w-full h-full object-cover" />
-                              </button>
-                            )}
-                            <CheckCircle className={`w-5 h-5 ${accent.text} shrink-0`} />
-                            <span className="text-white/80 text-sm flex-1">{feature}</span>
-                            {imgIdx !== undefined && (
-                              <span className={`text-xs ${accent.text} opacity-60 font-semibold shrink-0`}>
-                                View ↑
-                              </span>
-                            )}
+                            <CheckCircle className={`w-5 h-5 ${accent.text} mt-0.5 shrink-0`} />
+                            <span className="text-white/80 text-sm">{feature}</span>
                           </motion.div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {product.features.map((feature, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          className={`flex items-start gap-3 p-4 rounded-xl border ${accent.border} ${accent.bg}`}
-                        >
-                          <CheckCircle className={`w-5 h-5 ${accent.text} mt-0.5 shrink-0`} />
-                          <span className="text-white/80 text-sm">{feature}</span>
-                        </motion.div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <h3 className="text-lg font-black text-white mb-4">Quick Specs</h3>
+                    <div className="space-y-3">
+                      {product.specs.slice(0, 6).map((spec) => (
+                        <div key={spec.label} className="flex items-start justify-between gap-2 py-2 border-b border-white/5">
+                          <span className="text-white/40 text-sm">{spec.label}</span>
+                          <span className="text-white text-sm font-semibold text-right">{spec.value}</span>
+                        </div>
                       ))}
+                    </div>
+                    <button onClick={() => setActiveTab("specs")} className={`mt-4 flex items-center gap-1 text-sm font-semibold ${accent.text}`}>
+                      View all specs <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className={`border ${accent.border} ${accent.bg} rounded-2xl p-6`}>
+                    <h3 className="text-white font-black mb-3">Get a Demo in India</h3>
+                    <p className="text-white/60 text-sm mb-4">See KEENON {product.name} in action at your facility. Free demo available across India.</p>
+                    <Link
+                      to="/contact"
+                      className={`flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r ${accent.gradient} rounded-xl text-white font-bold text-sm`}
+                    >
+                      <Phone className="w-4 h-4" /> Book Demo
+                    </Link>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <h3 className="text-white font-black mb-3">Industries</h3>
+                    <div className="space-y-2">
+                      {product.industries.map((ind) => (
+                        <div key={ind} className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${accent.bg} border ${accent.border}`} />
+                          <span className="text-white/60 text-sm">{ind}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick gallery preview in sidebar */}
+                  {hasGallery && (
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                      <h3 className="text-white font-black mb-3">Photo Gallery</h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {allImages.slice(0, 6).map((img, i) => (
+                          <button
+                            key={i}
+                            onClick={() => openLightbox(i)}
+                            className="relative aspect-square rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-all group"
+                          >
+                            <img src={img} alt="" className="w-full h-full object-contain bg-white/5 p-2" />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                              <ZoomIn className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                      {allImages.length > 6 && (
+                        <button
+                          onClick={() => setActiveTab("gallery")}
+                          className={`mt-3 text-sm font-semibold ${accent.text} flex items-center gap-1`}
+                        >
+                          +{allImages.length - 6} more photos <ArrowRight className="w-4 h-4" />
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
-
-                {/* Use Cases */}
-                <div>
-                  <h3 className="text-2xl font-black text-white mb-6">Use Cases in India</h3>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {product.useCases.map((uc, i) => (
-                      <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-5">
-                        <div className={`w-8 h-8 rounded-lg ${accent.bg} flex items-center justify-center mb-3`}>
-                          <span className={`text-lg font-black ${accent.text}`}>{i + 1}</span>
-                        </div>
-                        <p className="text-white font-semibold text-sm">{uc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
 
-              {/* Sidebar */}
-              <div className="space-y-6">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <h3 className="text-lg font-black text-white mb-4">Quick Specs</h3>
-                  <div className="space-y-3">
-                    {product.specs.slice(0, 6).map((spec) => (
-                      <div key={spec.label} className="flex items-start justify-between gap-2 py-2 border-b border-white/5">
-                        <span className="text-white/40 text-sm">{spec.label}</span>
-                        <span className="text-white text-sm font-semibold text-right">{spec.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <button onClick={() => setActiveTab("specs")} className={`mt-4 flex items-center gap-1 text-sm font-semibold ${accent.text}`}>
-                    View all specs <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+              {/* Use Cases Section - Full Width */}
+              <div className="mt-20">
+                <h3 className="text-2xl font-black text-white mb-8 px-2">Use Cases in India</h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {product.useCases.map((uc, i) => {
+                    const ucData: Record<string, { icon: any; desc: string; img: string }> = {
+                      "International airports": {
+                        icon: Bot,
+                        desc: "Maintaining pristine terminal floors with high-frequency coverage and smart obstacle avoidance.",
+                        img: "https://images.unsplash.com/photo-1771945029451-da143c6ea0e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                      },
+                      "Large shopping malls": {
+                        icon: ZoomIn,
+                        desc: "Quiet, efficient cleaning during peak hours in multi-level luxury shopping destinations.",
+                        img: "https://images.unsplash.com/photo-1764795849833-6e9d6e399a77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                      },
+                      "Convention & exhibition centers": {
+                        icon: CheckCircle,
+                        desc: "Industrial-scale cleaning for massive halls and high-traffic event spaces with precision.",
+                        img: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                      },
+                      "Manufacturing plant floors": {
+                        icon: Download,
+                        desc: "Heavy-duty cleaning for industrial floors, handling dust, debris, and tight corners autonomously.",
+                        img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                      },
+                      "Metro station concourses": {
+                        icon: Phone,
+                        desc: "Fast, reliable cleaning for high-passenger-flow transit hubs, ensuring safety and hygiene.",
+                        img: "https://images.unsplash.com/photo-1763788427927-87bc7c1fbcf7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                      }
+                    };
 
-                <div className={`border ${accent.border} ${accent.bg} rounded-2xl p-6`}>
-                  <h3 className="text-white font-black mb-3">Get a Demo in India</h3>
-                  <p className="text-white/60 text-sm mb-4">See KEENON {product.name} in action at your facility. Free demo available across India.</p>
-                  <Link
-                    to="/contact"
-                    className={`flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r ${accent.gradient} rounded-xl text-white font-bold text-sm`}
-                  >
-                    <Phone className="w-4 h-4" /> Book Demo
-                  </Link>
-                </div>
+                    const data = ucData[uc] || {
+                      icon: Bot,
+                      desc: "Advanced autonomous cleaning solution tailored for dynamic Indian environments.",
+                      img: "https://images.unsplash.com/photo-1664526936810-ec0856d31b92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600"
+                    };
+                    const Icon = data.icon;
 
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <h3 className="text-white font-black mb-3">Industries</h3>
-                  <div className="space-y-2">
-                    {product.industries.map((ind) => (
-                      <div key={ind} className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full ${accent.bg} border ${accent.border}`} />
-                        <span className="text-white/60 text-sm">{ind}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quick gallery preview in sidebar */}
-                {hasGallery && (
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                    <h3 className="text-white font-black mb-3">Photo Gallery</h3>
-                    <div className="grid grid-cols-3 gap-2">
-                      {allImages.slice(0, 6).map((img, i) => (
-                        <button
-                          key={i}
-                          onClick={() => openLightbox(i)}
-                          className="relative aspect-square rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-all group"
-                        >
-                          <img src={img} alt="" className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                            <ZoomIn className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                    {allImages.length > 6 && (
-                      <button
-                        onClick={() => setActiveTab("gallery")}
-                        className={`mt-3 text-sm font-semibold ${accent.text} flex items-center gap-1`}
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="group relative h-72 overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-sm"
                       >
-                        +{allImages.length - 6} more photos <ArrowRight className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                )}
+                        <img src={data.img} alt={uc} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500 scale-105 group-hover:scale-100 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                        <div className="relative h-full p-6 flex flex-col justify-end">
+                          <div className={`w-10 h-10 rounded-xl ${accent.bg} border ${accent.border} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                            <Icon className={`w-5 h-5 ${accent.text}`} />
+                          </div>
+                          <h4 className="text-white font-black text-lg mb-2 leading-tight">{uc}</h4>
+                          <p className="text-white/50 text-[10px] leading-relaxed opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-20 transition-all duration-500 overflow-hidden">{data.desc}</p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -436,7 +533,7 @@ export function ProductDetail() {
 
         {/* SPECS */}
         {activeTab === "specs" && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto px-4 sm:px-6">
             <h2 className="text-3xl font-black text-white mb-8">Technical Specifications</h2>
             <div className="grid md:grid-cols-2 gap-4 mb-12">
               {product.specs.map((spec, i) => (
@@ -482,165 +579,81 @@ export function ProductDetail() {
           </motion.div>
         )}
 
-        {/* GALLERY */}
-        {activeTab === "gallery" && hasGallery && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-black text-white">Photo Gallery</h2>
-                <p className="text-white/40 mt-1">Official KEENON {product.name} product photography — {allImages.length} images</p>
-              </div>
-              <span className={`px-4 py-2 rounded-xl border ${accent.border} ${accent.bg} ${accent.text} text-sm font-bold`}>
-                {allImages.length} Photos
-              </span>
-            </div>
 
-            {/* Featured image + grid layout */}
-            <div className="grid grid-cols-12 gap-4 mb-4">
-              {/* Large featured */}
-              <div className="col-span-12 lg:col-span-8">
-                <button
-                  onClick={() => openLightbox(0)}
-                  className={`relative w-full rounded-2xl overflow-hidden border ${accent.border} group cursor-zoom-in`}
-                >
-                  <img src={allImages[0]} alt={`KEENON ${product.name} — main`} className="w-full aspect-[16/9] object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-white text-sm font-semibold flex items-center gap-2">
-                      <ZoomIn className="w-4 h-4" /> View full size
-                    </span>
-                  </div>
-                </button>
-              </div>
-              {/* Right 2-stack */}
-              <div className="col-span-12 lg:col-span-4 grid grid-rows-2 gap-4">
-                {allImages.slice(1, 3).map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => openLightbox(i + 1)}
-                    className="relative rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition-all group cursor-zoom-in"
-                  >
-                    <img src={img} alt={`KEENON ${product.name} — view ${i + 2}`} className="w-full h-full object-cover aspect-[4/3]" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                      <ZoomIn className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            {/* Remaining images: responsive grid */}
-            {allImages.length > 3 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {allImages.slice(3).map((img, i) => {
-                  const realIdx = i + 3;
-                  const feature = product.features[realIdx] ?? null;
-                  return (
-                    <motion.button
-                      key={realIdx}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.05 }}
-                      onClick={() => openLightbox(realIdx)}
-                      className="relative rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition-all group cursor-zoom-in"
-                    >
-                      <img
-                        src={img}
-                        alt={`KEENON ${product.name} — view ${realIdx + 1}`}
-                        className="w-full aspect-square object-cover"
-                      />
-                      {/* Hover overlay with feature label */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                        {feature && (
-                          <p className="text-white text-xs font-semibold leading-tight text-left">{feature}</p>
-                        )}
-                        <div className="flex items-center justify-end mt-1">
-                          <ZoomIn className="w-4 h-4 text-white/70" />
-                        </div>
-                      </div>
-                      {/* Image number badge */}
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-black/50 rounded-full flex items-center justify-center text-white/60 text-xs font-bold">
-                        {realIdx + 1}
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            )}
 
-            <p className="text-center text-white/30 text-sm mt-8">
-              Click any image to open full-screen viewer · Scroll to navigate
-            </p>
-          </motion.div>
-        )}
-
-        {/* VIDEO */}
-        {activeTab === "video" && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h2 className="text-3xl font-black text-white mb-8">Video & Media</h2>
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl mb-4">
-                  <div className="aspect-video bg-[#0d1525]">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`https://www.youtube.com/embed/${product.videoId}?rel=0&modestbranding=1`}
-                      title={`KEENON ${product.name} Demo Video`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    />
-                  </div>
-                </div>
-                <p className="text-white/40 text-sm">
-                  Official KEENON {product.name} product demonstration video. For more videos, visit{" "}
-                  <a href="https://www.keenon.com/en" target="_blank" rel="noopener noreferrer" className={`${accent.text} hover:underline`}>
-                    keenon.com
-                  </a>
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-black text-white">Related Content</h3>
-                {[
-                  { title: `KEENON ${product.name} — Full Product Tour`, duration: "3:42" },
-                  { title: `KEENON ${product.name} in Hotel Setting`, duration: "2:15" },
-                  { title: `How to Setup KEENON ${product.name}`, duration: "8:30" },
-                ].map((video, i) => (
-                  <a
-                    key={i}
-                    href={`https://www.youtube.com/results?search_query=KEENON+${product.name}+robot`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group"
-                  >
-                    <div className="w-12 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                      <Play className="w-5 h-5 text-white/50 group-hover:text-white transition-colors" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium truncate">{video.title}</p>
-                      <p className="text-white/40 text-xs">{video.duration}</p>
-                    </div>
-                  </a>
-                ))}
-
-                <div className={`p-4 border ${accent.border} ${accent.bg} rounded-xl`}>
-                  <p className="text-sm text-white/60 mb-3">Watch the full KEENON product catalogue on their official website.</p>
-                  <a
-                    href="https://www.keenon.com/en"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-2 text-sm font-bold ${accent.text}`}
-                  >
-                    Visit keenon.com <ArrowRight className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
       </div>
+
+      {/* ── Video & Media Section ── */}
+      <section className="bg-black/20 py-24 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">Video & Media</h2>
+            <p className="text-white/40 text-lg">See the official KEENON {product.name} in action with our selection of videos.</p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl mb-4">
+                <div className="aspect-video bg-[#0d1525]">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${product.videoId}?rel=0&modestbranding=1`}
+                    title={`KEENON ${product.name} Demo Video`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
+              <p className="text-white/40 text-sm">
+                Official KEENON {product.name} product demonstration video. For more videos, visit{" "}
+                <a href="https://www.keenon.com/en" target="_blank" rel="noopener noreferrer" className={`${accent.text} hover:underline`}>
+                  keenon.com
+                </a>
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-black text-white italic">Related Content</h3>
+              {[
+                { title: `KEENON ${product.name} — Full Product Tour`, duration: "3:42" },
+                { title: `KEENON ${product.name} in Hotel Setting`, duration: "2:15" },
+                { title: `How to Setup KEENON ${product.name}`, duration: "8:30" },
+              ].map((video, i) => (
+                <a
+                  key={i}
+                  href={`https://www.youtube.com/results?search_query=KEENON+${product.name}+robot`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group"
+                >
+                  <div className="w-12 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                    <Play className="w-5 h-5 text-white/50 group-hover:text-white transition-colors" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-medium truncate">{video.title}</p>
+                    <p className="text-white/40 text-xs">{video.duration}</p>
+                  </div>
+                </a>
+              ))}
+
+              <div className={`p-4 border ${accent.border} ${accent.bg} rounded-xl`}>
+                <p className="text-sm text-white/60 mb-3 font-semibold">Watch the full KEENON product catalogue on their official website.</p>
+                <a
+                  href="https://www.keenon.com/en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-2 text-sm font-bold ${accent.text}`}
+                >
+                  Visit keenon.com <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Prev / Next navigation ── */}
       <div className="border-t border-white/10 bg-[#030710]">
@@ -673,6 +686,6 @@ export function ProductDetail() {
           ) : <div />}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
