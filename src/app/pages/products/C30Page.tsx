@@ -17,20 +17,61 @@ const IMG_GALLERY = [
 /* ─── data ──────────────────────────────────────────────── */
 const SPECS = [
     {
-        category: "3-in-1 Cleaning", items: [
-            { label: "Cleaning Width", value: "610 mm" },
-            { label: "Cleaning Area", value: "2,500 m² per charge" },
-            { label: "Functions", value: "Sweep, Vacuum, Dust Mop" },
+        category: "Physical", items: [
+            { label: "Dimensions (mm)", value: "490 × 520 × 750 (Basic)" },
+            { label: "Operating Weight", value: "35 kg (inc. Battery)" },
         ]
     },
     {
-        category: "Control & Power", items: [
-            { label: "Operation", value: "Manual & Automated" },
-            { label: "Battery Life", value: "4+ hours" },
-            { label: "Suction Power", value: "High-Efficiency Brushless" },
-            { label: "Handle", value: "Extendable Ergonomic" },
+        category: "Power & Runtime", items: [
+            { label: "Suction Power", value: "19,000 Pa (Industry Lead)" },
+            { label: "Charging Time", value: "5-6h (Wall-Plug)" },
+            { label: "Vacuum Runtime", value: "Up to 6 Hours" },
+            { label: "Mop Runtime", value: "Up to 10 Hours" },
         ]
     },
+    {
+        category: "Performance", items: [
+            { label: "Cleaning Width", value: "610 mm (Dual Brush)" },
+            { label: "Moving Speed", value: "0.8 m/s" },
+            { label: "Cleaning Efficiency", value: "Up to 600 m²/h" },
+        ]
+    },
+    {
+        category: "Capabilities", items: [
+            { label: "3-in-1 Tech", value: "Sweep, Vacuum, Dust Mop" },
+            { label: "Navigation", value: "AI + Hybrid Manual" },
+            { label: "Surface Type", value: "All Hard Floors & Carpets" },
+        ]
+    },
+];
+
+const INDUSTRIES = [
+    {
+        title: "Retail Elite",
+        desc: "Precision cleaning for luxury boutiques and high-traffic fashion floors.",
+        img: "/images/products/c30/industry_retail.png"
+    },
+    {
+        title: "Corporate",
+        desc: "Low-noise vacuuming for cubicle corridors and minimalist office lounges.",
+        img: "/images/products/c30/industry_office.png"
+    },
+    {
+        title: "Healthcare",
+        desc: "Sterile-grade dust maintenance in private clinics and pharmacy waiting areas.",
+        img: "/images/products/c30/industry_healthcare.png"
+    },
+    {
+        title: "Boutique",
+        desc: "Intelligent floor care for cafes, art galleries, and luxury boutique hotels.",
+        img: "/images/products/c30/industry_hospitality.png"
+    },
+    {
+        title: "Education",
+        desc: "Safe and silent operation in modern library halls and university classrooms.",
+        img: "/images/products/c30/industry_education.png"
+    }
 ];
 
 const FEATURES = [
@@ -74,33 +115,32 @@ const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow
 };
 
 /* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
+function StickyFeatureSection({ img, index, text, openLightbox }: any) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
 
     return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
+        <div ref={containerRef} className="relative h-screen w-full">
+            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full">
+                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in group">
+                        <motion.div style={{ y, scale }} className="w-full h-full">
+                            <ImageWithFallback src={img} alt={text} className="w-full h-full object-cover" />
+                        </motion.div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 md:to-black/60" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ZoomIn className="w-16 h-16 text-white/50 bg-black/30 p-4 rounded-full backdrop-blur-md" />
                         </div>
                     </button>
                 </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-lime-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
+
+                <div className="relative z-10 max-w-[95rem] mx-auto px-6 w-full flex flex-col items-start justify-end pb-12 md:pb-16 h-full pointer-events-none" />
             </div>
         </div>
     );
@@ -111,10 +151,24 @@ export function C30Page() {
     const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showHangingCTA, setShowHangingCTA] = useState(false);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > window.innerHeight * 0.8) {
+                setShowHangingCTA(true);
+            } else {
+                setShowHangingCTA(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
 
@@ -136,36 +190,75 @@ export function C30Page() {
                 )}
             </AnimatePresence>
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON C30" className="w-full h-full object-cover opacity-20" />
-                </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-lime-400">KEENON C30</span>
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-lime-500/40 bg-lime-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse" />
-                            <span className="text-lime-400 text-sm font-bold uppercase tracking-widest">3-in-1 Dry Cleaning Specialist</span>
-                        </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-lime-100 to-lime-400 bg-clip-text text-transparent">C30</span>
-                        </h1>
-                        <p className="text-2xl text-lime-400 font-semibold mb-6 tracking-wide">"Intelligence You Can Handle"</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Sweeping, vacuuming, and mopping in one. Hybrid manual-auto control. Cleans up to 2,500 m² per charge.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-lime-500 to-yellow-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-lime-500/30">Go Hybrid Cleaning <ArrowRight className="inline ml-2" /></Link>
-                        </div>
+            {/* Hanging CTA */}
+            <AnimatePresence>
+                {showHangingCTA && (
+                    <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }} exit={{ opacity: 0, scale: 0.8, x: 50 }}
+                        className="fixed bottom-10 right-10 z-[80]">
+                        <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-cyan-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(6,182,212,0.4)] hover:shadow-[0_25px_80px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95 transition-all text-center">
+                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
                     </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Hero Section */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
+                    <ImageWithFallback src={IMG_HERO} alt="KEENON C30" className="w-full h-full object-cover opacity-60" />
+                </motion.div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/40" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-cyan-400">
+                            3-in-1 Dry Cleaning Specialist
+                        </div>
+                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter uppercase italic">
+                            <span className="bg-gradient-to-br from-white via-cyan-100 to-cyan-500 bg-clip-text text-transparent">C30</span>
+                        </h1>
+                        <p className="text-2xl text-cyan-400 font-black uppercase tracking-[0.2em] mb-6 drop-shadow-[0_0_20px_rgba(6,182,212,0.3)] italic">"Intelligence You Can Handle"</p>
+                        <p className="text-white/40 text-lg max-w-2xl mx-auto mb-10 font-light">
+                            Professional vacuuming, sweeping, and dust mopping with 19,000 Pa suction and breakthrough hybrid manual control.
+                        </p>
+                    </motion.div>
+                </div>
+
+                <div className="absolute bottom-12 right-12 z-20">
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+                        <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(6,182,212,0.3)] hover:shadow-[0_0_60px_rgba(6,182,212,0.5)] transition-all flex items-center gap-3">
+                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </motion.div>
+                </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-cyan-500 to-transparent rounded-full" />
+                </div>
+            </section>
+
+            {/* Mobilise Authority Section */}
+            <section className="py-32 bg-[#050a14] relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-cyan-500/50 via-transparent to-transparent" />
+                    <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-cyan-500/50 via-transparent to-transparent" />
+                </div>
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                        className="text-cyan-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">The Partner You Trust</motion.span>
+                    <motion.h2 initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}
+                        className="text-5xl md:text-8xl font-black text-white mb-4 tracking-tighter leading-none italic uppercase">
+                        GLOBAL TECHNOLOGY. <br />
+                        <span className="text-cyan-500">LOCAL MASTERY.</span>
+                    </motion.h2>
+                    <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+                        className="text-white/40 text-xl md:text-2xl font-black uppercase tracking-widest mb-12 italic">Developed by Keenon. Implemented by Mobilise.</motion.p>
+                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+                        className="text-white/60 text-xl md:text-2xl max-w-4xl mx-auto font-light leading-relaxed">
+                        While Keenon builds the hardware, <span className="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We specialize in deploying high-precision dry-cleaning solutions for India's premier commercial and retail spaces.
+                    </motion.p>
                 </div>
             </section>
 
@@ -176,33 +269,69 @@ export function C30Page() {
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Dry Clean <span className="text-lime-400">Performance.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-lime-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* technical Superiority */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-cyan-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Power Meets Precision</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">Technical <span className="text-cyan-500">Superiority.</span></h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-lime-400 font-bold text-sm">{item.value}</span>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.flatMap(cat => cat.items).map((item, idx) => (
+                            <div key={idx} className="group p-5 bg-[#0a101f] border border-cyan-500/20 rounded-2xl hover:border-cyan-500/60 transition-all">
+                                <span className="block text-white/30 text-[10px] uppercase font-black tracking-widest mb-1">{item.label}</span>
+                                <span className="block text-cyan-400 font-black text-sm uppercase tracking-tighter transition-colors group-hover:text-white">{item.value}</span>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Revolutionize your <span className="text-lime-400">Floors.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-lime-500 to-yellow-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-lime-500/40">Request Site Assessment <ArrowRight className="w-5 h-5" /></Link>
+            {/* Industry Solutions Grid */}
+            <section className="py-32 bg-[#050a14] border-t border-white/5 relative overflow-hidden">
+                <div className="max-w-[95rem] mx-auto px-6">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-center md:text-left">
+                        <div className="flex-1">
+                            <span className="text-cyan-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Specialist Deployment</span>
+                            <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">Industry <span className="text-cyan-500">Solutions.</span></h2>
+                        </div>
+                        <p className="flex-1 text-white/40 text-xl max-w-xl font-light leading-relaxed italic">The C30 is engineered for high-precision dry maintenance in the most detailed commercial environments.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {INDUSTRIES.map((industry, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                                whileHover={{ y: -15, scale: 1.02 }}
+                                className="group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/5 bg-[#0a101f]">
+                                <ImageWithFallback src={industry.img} alt={industry.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100 opacity-60 group-hover:opacity-100" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                                    <h3 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tighter transition-transform group-hover:-translate-y-2">{industry.title}</h3>
+                                    <p className="text-white/60 text-sm leading-relaxed translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">{industry.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="py-40 relative flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-cyan-950/20 via-[#050a14] to-[#050a14]" />
+
+                <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+                    <h2 className="text-6xl md:text-[6rem] font-black text-white mb-8 tracking-tighter leading-none italic">PRECISION <span className="text-cyan-500">DRY CLEAN.</span></h2>
+                    <p className="text-white/60 text-2xl mb-16 max-w-2xl mx-auto font-light leading-relaxed italic">Experience the ultimate in autonomous floor maintenance. Engineered by KEENON, mastered by Mobilise.</p>
+
+                    <Link to="/contact" className="group relative inline-flex items-center gap-4 px-12 py-6 bg-white text-black font-black text-2xl rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_0_80px_rgba(255,255,255,0.2)]">
+                        Schedule a Demo <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                        <div className="absolute inset-0 rounded-full bg-cyan-500 blur-2xl opacity-0 group-hover:opacity-20 transition-opacity" />
+                    </Link>
+                </div>
+
+                <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                    className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12 pointer-events-none italic">C30</motion.div>
             </section>
 
         </div>
