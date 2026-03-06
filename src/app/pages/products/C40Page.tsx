@@ -21,7 +21,6 @@ const IMG_FEATURES = [
     "/images/products/c40/c40_feature_7.webp",
     "/images/products/c40/c40_feature_8.webp",
     "/images/products/c40/c40_feature_9.webp",
-    "/images/products/c40/c40_feature_10.webp",
 ];
 
 const FEATURE_TEXTS = [
@@ -34,7 +33,6 @@ const FEATURE_TEXTS = [
     { title: "Four-Function Versatility", desc: "Sweeping, vacuuming, scrubbing, and dust pushing—addressed diverse cleaning challenges across marble, wood, and tiles." },
     { title: "Smart Control Dashboard", desc: "Monitor your fleet in real-time. Schedule tasks, receive instant alerts, and generate detailed results via the App or Web Dashboard." },
     { title: "Autonomous Workstation", desc: "Zero-touch maintenance with automatic charging, sewage drainage, and detergent replenishment for true hands-free operation." },
-    { title: "Industrial Titan Design", desc: "The pinnacle of autonomous cleaning technology, designed to elevate hygiene standards with a robust and premium robot architecture." },
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
@@ -129,7 +127,7 @@ export function C40Page() {
                             allow="autoplay; fullscreen"
                         />
                     </div>
-                    <div className="absolute inset-0 bg-[#050a14]/50" />
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/40" />
