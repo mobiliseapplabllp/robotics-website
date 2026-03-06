@@ -220,10 +220,12 @@ export function C40Page() {
                     <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
                         className="text-orange-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">The Partner You Trust</motion.span>
                     <motion.h2 initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}
-                        className="text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none italic uppercase">
-                        EXPERTLY DEPLOYED. <br />
-                        <span className="text-orange-500">DOMINANTLY MAINTAINED.</span>
+                        className="text-5xl md:text-8xl font-black text-white mb-4 tracking-tighter leading-none italic uppercase">
+                        GLOBAL TECHNOLOGY. <br />
+                        <span className="text-orange-500">LOCAL MASTERY.</span>
                     </motion.h2>
+                    <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
+                        className="text-white/40 text-xl md:text-2xl font-black uppercase tracking-widest mb-12">Developed by Keenon. Implemented by Mobilise.</motion.p>
                     <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
                         className="text-white/60 text-xl md:text-2xl max-w-4xl mx-auto font-light leading-relaxed">
                         While Keenon builds the hardware, <span className="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We don’t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.
