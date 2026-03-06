@@ -68,6 +68,34 @@ const SPECS = [
     },
 ];
 
+const INDUSTRIES = [
+    {
+        title: "Hospitality",
+        desc: "Luxurious cleaning for marble lobbies and guest corridors with 5-star precision.",
+        img: "/images/products/c40/industry_hospitality.png"
+    },
+    {
+        title: "Healthcare",
+        desc: "Maintaining sterile standards in clinics and corridors with anti-bacterial precision.",
+        img: "/images/products/c40/industry_healthcare.png"
+    },
+    {
+        title: "Retail",
+        desc: "Spotless shopping experiences in high-traffic malls and luxury glass displays.",
+        img: "/images/products/c40/industry_retail.png"
+    },
+    {
+        title: "Corporate",
+        desc: "Modern office environments demand quiet, efficient, and minimalist maintenance.",
+        img: "/images/products/c40/industry_corporate.png"
+    },
+    {
+        title: "Industrial",
+        desc: "Precision cleaning in logistics hubs and high-tech clean-zone warehouses.",
+        img: "/images/products/c40/industry_industrial.png"
+    }
+];
+
 /* ─── sub-components ────────────────────────────────────── */
 function StickyFeatureSection({ img, index, text, openLightbox }: any) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -96,11 +124,24 @@ export function C40Page() {
     const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showHangingCTA, setShowHangingCTA] = useState(false);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
     const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
     const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > window.innerHeight * 0.8) {
+                setShowHangingCTA(true);
+            } else {
+                setShowHangingCTA(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const allImages = [IMG_HERO, ...IMG_FEATURES];
 
@@ -123,6 +164,18 @@ export function C40Page() {
                             <span>Industrial Cleaning Titan</span>
                             <span>Image {lightboxIndex + 1} / {allImages.length}</span>
                         </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Hanging CTA */}
+            <AnimatePresence>
+                {showHangingCTA && (
+                    <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }} exit={{ opacity: 0, scale: 0.8, x: 50 }}
+                        className="fixed bottom-10 right-10 z-[80]">
+                        <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-orange-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(249,115,22,0.4)] hover:shadow-[0_25px_80px_rgba(249,115,22,0.6)] hover:scale-105 active:scale-95 transition-all">
+                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -154,6 +207,27 @@ export function C40Page() {
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-orange-500 to-transparent rounded-full" />
+                </div>
+            </section>
+
+            {/* Mobilise Authority Section */}
+            <section className="py-32 bg-[#050a14] relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-orange-500/50 via-transparent to-transparent" />
+                    <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-orange-500/50 via-transparent to-transparent" />
+                </div>
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                        className="text-orange-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">The Partner You Trust</motion.span>
+                    <motion.h2 initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}
+                        className="text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none italic uppercase">
+                        EXPERTLY DEPLOYED. <br />
+                        <span className="text-orange-500">DOMINANTLY MAINTAINED.</span>
+                    </motion.h2>
+                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+                        className="text-white/60 text-xl md:text-2xl max-w-4xl mx-auto font-light leading-relaxed">
+                        While Keenon builds the hardware, <span className="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We don’t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.
+                    </motion.p>
                 </div>
             </section>
 
@@ -204,6 +278,33 @@ export function C40Page() {
                                 <div className="text-4xl font-black text-white mb-2">{stat.val}</div>
                                 <div className="text-white/40 text-xs font-black uppercase tracking-widest">{stat.label}</div>
                             </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Industry Solutions Grid */}
+            <section className="py-32 bg-[#050a14] border-t border-white/5">
+                <div className="max-w-[95rem] mx-auto px-6">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-center md:text-left">
+                        <div className="flex-1">
+                            <span className="text-orange-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Universal Precision</span>
+                            <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">Industry <span className="text-orange-500">Solutions.</span></h2>
+                        </div>
+                        <p className="flex-1 text-white/40 text-xl max-w-xl font-light leading-relaxed">The C40 isn't just a robot; it's a specialist that adapts to the unique sanitation demands of every high-traffic sector.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {INDUSTRIES.map((industry, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                                className="group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/5">
+                                <ImageWithFallback src={industry.img} alt={industry.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                                    <h3 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tighter">{industry.title}</h3>
+                                    <p className="text-white/60 text-sm leading-relaxed translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">{industry.desc}</p>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
