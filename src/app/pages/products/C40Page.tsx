@@ -38,21 +38,32 @@ const FEATURE_TEXTS = [
 /* ─── data ──────────────────────────────────────────────── */
 const SPECS = [
     {
-        category: "Industrial Power", items: [
-            { label: "Cleaning Width", value: "720 mm" },
-            { label: "Efficiency", value: "4,000 m²/h" },
-            { label: "Clean Water Tank", value: "120 L" },
-            { label: "Dirty Water Tank", value: "120 L" },
-            { label: "Brush Motor", value: "2 × 400W" },
+        category: "Physical", items: [
+            { label: "Dimensions (mm)", value: "578 × 500 × 690 (Basic)\n616 × 550 × 690 (w/ Squeegee)" },
+            { label: "Operating Weight", value: "70 kg (inc. Battery)" },
         ]
     },
     {
-        category: "Intelligence", items: [
-            { label: "Mapping Area", value: "50,000 m²" },
-            { label: "Navigation", value: "LIDAR + Vision SLAM" },
-            { label: "Obstacle Perception", value: "360° Multi-Sensor" },
-            { label: "IoT Platform", value: "KEENON Cloud 2.0" },
-            { label: "Max Speed", value: "1.2 m/s" },
+        category: "Power & Runtime", items: [
+            { label: "Battery Spec", value: "DC 25.6V, 50Ah" },
+            { label: "Charging Type", value: "2h Quick Replacement" },
+            { label: "Scrubbing Runtime", value: "Up to 5 Hours" },
+            { label: "Sweeping Runtime", value: "Up to 12 Hours" },
+        ]
+    },
+    {
+        category: "Performance", items: [
+            { label: "Sweeper Width", value: "560 mm (Dual Brush)" },
+            { label: "Vacuum/Scrub Width", value: "400 mm" },
+            { label: "Cleaning Efficiency", value: "Up to 1,100 m²/h" },
+        ]
+    },
+    {
+        category: "Capacity", items: [
+            { label: "Clean Water Tank", value: "16 L" },
+            { label: "Waste Water Tank", value: "14 L" },
+            { label: "Dust Bag Capacity", value: "8 L" },
+            { label: "Trash Bin Capacity", value: "0.7 L" },
         ]
     },
 ];
