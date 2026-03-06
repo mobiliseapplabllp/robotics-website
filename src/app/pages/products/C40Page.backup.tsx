@@ -99,22 +99,13 @@ const INDUSTRIES = [
 /* ─── sub-components ────────────────────────────────────── */
 function StickyFeatureSection({ img, index, text, openLightbox }: any) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"]
-    });
-
-    const y = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
-    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
 
     return (
         <div ref={containerRef} className="relative h-screen w-full">
             <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full">
                     <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in group">
-                        <motion.div style={{ y, scale }} className="w-full h-full">
-                            <ImageWithFallback src={img} alt={text.title} className="w-full h-full object-cover" />
-                        </motion.div>
+                        <ImageWithFallback src={img} alt={text.title} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 md:to-black/60" />
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <ZoomIn className="w-16 h-16 text-white/50 bg-black/30 p-4 rounded-full backdrop-blur-md" />
@@ -295,7 +286,7 @@ export function C40Page() {
             </section>
 
             {/* Industry Solutions Grid */}
-            <section className="py-32 bg-[#050a14] border-t border-white/5 relative overflow-hidden">
+            <section className="py-32 bg-[#050a14] border-t border-white/5">
                 <div className="max-w-[95rem] mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-center md:text-left">
                         <div className="flex-1">
@@ -308,12 +299,11 @@ export function C40Page() {
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         {INDUSTRIES.map((industry, i) => (
                             <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                                whileHover={{ y: -15, scale: 1.02 }}
-                                className="group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/5 bg-[#0a101f]">
-                                <ImageWithFallback src={industry.img} alt={industry.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" />
+                                className="group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/5">
+                                <ImageWithFallback src={industry.img} alt={industry.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                                    <h3 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tighter transition-transform group-hover:-translate-y-2">{industry.title}</h3>
+                                    <h3 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tighter">{industry.title}</h3>
                                     <p className="text-white/60 text-sm leading-relaxed translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">{industry.desc}</p>
                                 </div>
                             </motion.div>
@@ -336,8 +326,8 @@ export function C40Page() {
                     </Link>
                 </div>
 
-                <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12 pointer-events-none">C40</motion.div>
+                <div className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12">C40</div>
+            </section>
 
         </div>
     );
