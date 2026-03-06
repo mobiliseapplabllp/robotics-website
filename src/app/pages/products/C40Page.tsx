@@ -174,27 +174,14 @@ export function C40Page() {
                         <p className="text-white/40 text-xl max-w-2xl mx-auto">No placeholders. No compromises. Just pure industrial innovation.</p>
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-4 mb-16">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-8 py-4 rounded-full text-base font-black uppercase tracking-widest transition-all ${activeSpecCat === i
-                                    ? "bg-orange-500 text-white shadow-[0_0_30px_rgba(249,115,22,0.4)]"
-                                    : "bg-white/5 border border-white/10 text-white/30 hover:bg-white/10 hover:text-white/60"
-                                    }`}>
-                                {cat.category}
-                            </button>
-                        ))}
-                    </div>
-
-                    <motion.div key={activeSpecCat} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {SPECS[activeSpecCat].items.map((item, idx) => (
-                            <div key={idx} className="group p-8 bg-[#050a14] border border-white/5 hover:border-orange-500/30 rounded-3xl transition-all hover:bg-white/[0.02]">
-                                <div className="text-white/30 text-xs font-black uppercase tracking-widest mb-4 group-hover:text-orange-500/50 transition-colors">{item.label}</div>
-                                <div className="text-white text-3xl font-black tracking-tight">{item.value}</div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        {SPECS.flatMap(cat => cat.items).map((item, idx) => (
+                            <div key={idx} className="group p-5 bg-[#050a14] border border-white/5 hover:border-orange-500/30 rounded-2xl transition-all hover:bg-white/[0.02] flex flex-col justify-between">
+                                <div className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-3 group-hover:text-orange-500/50 transition-colors uppercase">{item.label}</div>
+                                <div className="text-white text-lg md:text-xl font-bold tracking-tight leading-snug whitespace-pre-line">{item.value}</div>
                             </div>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
