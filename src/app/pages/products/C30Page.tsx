@@ -265,7 +265,7 @@ export function C30Page() {
             {/* Feature Parallax */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} index={i} text={feat.title} openLightbox={openLightbox} />
                 ))}
             </div>
 
