@@ -190,6 +190,10 @@ export function C40Page() {
             {/* Global Impact Grid */}
             <section className="py-32 bg-[#050a14]">
                 <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-24">
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none mb-6">Global <span className="text-orange-500">Impact.</span></h2>
+                        <p className="text-white/40 text-xl font-light tracking-wide uppercase tracking-[0.2em]">KEENON Robotics • Worldwide Presence</p>
+                    </div>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
                             { label: "Daily Deliveries", val: "100K+", icon: Bot },
