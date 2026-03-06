@@ -176,9 +176,9 @@ export function C40Page() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {SPECS.flatMap(cat => cat.items).map((item, idx) => (
-                            <div key={idx} className="group p-5 bg-[#050a14] border border-white/5 hover:border-orange-500/30 rounded-2xl transition-all hover:bg-white/[0.02] flex flex-col justify-between">
-                                <div className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-3 group-hover:text-orange-500/50 transition-colors uppercase">{item.label}</div>
-                                <div className="text-white text-lg md:text-xl font-bold tracking-tight leading-snug whitespace-pre-line">{item.value}</div>
+                            <div key={idx} className="group p-5 bg-[#050a14] border border-orange-500/10 hover:border-orange-500/50 rounded-2xl transition-all hover:bg-orange-500/[0.03] flex flex-col justify-between shadow-[0_0_20px_rgba(249,115,22,0.02)] hover:shadow-[0_0_30px_rgba(249,115,22,0.1)]">
+                                <div className="text-white/30 text-[10px] font-black uppercase tracking-widest mb-3 group-hover:text-white/50 transition-colors uppercase">{item.label}</div>
+                                <div className="text-orange-500 text-lg md:text-xl font-black tracking-tight leading-snug whitespace-pre-line group-hover:text-orange-400 transition-colors">{item.value}</div>
                             </div>
                         ))}
                     </div>
