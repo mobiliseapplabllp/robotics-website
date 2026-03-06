@@ -338,6 +338,7 @@ export function C40Page() {
 
                 <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                     className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12 pointer-events-none">C40</motion.div>
+            </section>
 
         </div>
     );
