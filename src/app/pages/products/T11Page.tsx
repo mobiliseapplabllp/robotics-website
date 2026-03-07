@@ -183,8 +183,8 @@ export function T11Page() {
                         Global Technology.<br /><span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Local Mastery.</span>
                     </motion.h2>
                     <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-                        className="max-w-3xl mx-auto text-white/50 text-lg leading-relaxed mb-12">
-                        Dinerbot T11 is more than a robot; it&apos;s a marketing powerhouse. Developed by <span className="text-white font-semibold">Keenon</span> and expertly implemented by <span className="text-white font-semibold italic">Mobilise</span>, we ensure your intelligent delivery node integrates seamlessly into your brand&apos;s unique hospitality ecosystem.
+                        className="max-w-4xl mx-auto text-white/50 text-lg leading-relaxed mb-12">
+                        While <span className="text-white font-semibold">Keenon</span> builds the hardware, <span className="text-white font-semibold italic">Mobilise App Lab Limited</span> delivers the mastery. We don’t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.
                     </motion.p>
                 </div>
             </section>
