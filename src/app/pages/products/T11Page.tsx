@@ -2,133 +2,129 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, Lock, Box
+    ChevronRight, ArrowRight, X, ZoomIn, Bot,
+    Navigation, Eye, Clock, Layers, Award, Shield, UserCheck,
+    Monitor, Maximize2, Zap, ZapOff, Briefcase, Activity, Calendar
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/08/27/d0e3350948ba4a86a0f604b7a4a23ba6.jpg?x-oss-process=image/format,webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/08/27/bff71a3e19bc43f6ba5f7ee905555f1.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/08/27/e5d5ba0f417346fbb0cbbdb038746f8a.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/08/27/15eba5c9e4b54040a2048fd7dea74722.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/09/01/aef7c671bab445fdbd46cea9cd50a781.png?x-oss-process=image/format,webp"
+    "https://static.keenon.com/uploads/2025/08/27/bff71a3e19bc43f6ba5f7ee905555f1.jpg?x-oss-process=image/format,webp", // feature 1
+    "https://static.keenon.com/uploads/2025/08/27/e5d5ba0f417346fbb0cbbdb038746f8a.jpg?x-oss-process=image/format,webp", // feature 2
+    "https://static.keenon.com/uploads/2025/08/27/15eba5c9e4b54040a2048fd7dea74722.jpg?x-oss-process=image/format,webp", // feature 3
+    "https://static.keenon.com/uploads/2025/09/01/aef7c671bab445fdbd46cea9cd50a781.png?x-oss-process=image/format,webp"  // feature 4
 ];
 
-/* ─── data ──────────────────────────────────────────────── */
+const INDUSTRIES = [
+    {
+        title: "Fine Dining",
+        desc: "Sovereign delivery in narrow corridors with high-density patron seating.",
+        img: "/images/products/t11/industry_fine_dining.png"
+    },
+    {
+        title: "Corporate",
+        desc: "Automated tray retrieval and catering service for modern tech campuses.",
+        img: "/images/products/t11/industry_corporate.png"
+    },
+    {
+        title: "Healthcare",
+        desc: "Sterile-grade reliable transport for pharmaceutical and nutrition logistics.",
+        img: "/images/products/t11/industry_healthcare.png"
+    },
+    {
+        title: "Event Venues",
+        desc: "18.5-inch marketing screen creates high-impact advertising and guest engagement.",
+        img: "/images/products/t11/industry_events.png"
+    },
+    {
+        title: "Hospitality",
+        desc: "Compact guestroom deliveries and VIP service in luxury boutique hotels.",
+        img: "/images/products/t11/industry_hospitality.png"
+    }
+];
+
 const SPECS = [
-    {
-        category: "Capacity & Design", items: [
-            { label: "Compartments", value: "4 Independent Locked Trays" },
-            { label: "Total Payload", value: "Up to 40 kg" },
-            { label: "Per Tray Payload", value: "10 kg" },
-            { label: "Weight", value: "55 kg" },
-        ]
-    },
-    {
-        category: "Performance", items: [
-            { label: "Maximum Speed", value: "1.2 m/s" },
-            { label: "Battery Life", value: "10+ hours" },
-            { label: "Charging", value: "Auto-docking" },
-        ]
-    },
-    {
-        category: "Intelligence", items: [
-            { label: "Navigation", value: "LIDAR SLAM + 3D Vision" },
-            { label: "Display", value: "10.1\" Interactive Screen" },
-            { label: "Connectivity", value: "Wi-Fi 5 GHz" },
-            { label: "Lock System", value: "Electronic individual lock" },
-        ]
-    },
+    { label: "Narrow-Aisle Access", value: "49 cm (Industry Limit)", icon: Maximize2, highlight: true },
+    { label: "Display Size", value: "18.5-inch Ads Screen", icon: Monitor, highlight: true },
+    { label: "Self-Pickup Accuracy", value: "99% AI Detection", icon: UserCheck, highlight: true },
+    { label: "Total Payload", value: "20 kg Capacity", icon: Layers },
+    { label: "Battery Endurance", value: "13.5 Hours Shift", icon: Zap },
+    { label: "Stability System", value: "6-Wheel Independent", icon: Activity },
+    { label: "Obstacle Avoidance", value: "LiDAR + Depth Vision", icon: Eye },
+    { label: "Delivery Speed", value: "0.1 - 1.0 m/s", icon: Clock },
 ];
 
 const FEATURES = [
     {
-        id: "security",
-        icon: "🔐",
-        iconComponent: Lock,
-        title: "Secure Multi-Stop Delivery",
-        subtitle: "Individual Electronic Locks",
-        description: "The T11 features four fully independent, electronically locked compartments. This allows for secure, chain-of-custody delivery of sensitive items like pharmaceuticals, specimens, or high-value hotel room service items in a single dispatch trip.",
-        image: IMG_GALLERY[0],
-        color: "amber",
-        highlights: [
-            "Individual compartment access codes",
-            "Tamper-evident electronic sensors",
-            "Automatic door closure & locking",
-            "Real-time delivery confirmation",
-        ],
+        id: "narrow_aisle",
+        title: "The Narrow-Aisle Marketing Expert",
+        image: IMG_GALLERY[1], // Tight space photo
     },
     {
-        id: "volume",
-        icon: "📦",
-        iconComponent: Box,
-        title: "High-Throughput Engineering",
-        subtitle: "40kg Maximum Payload",
-        description: "Designed for high-volume environments like large-scale hospitals and 1000+ room resorts. The T11's robust chassis and high-torque motors can handle heavy daily cycles without fatigue, significantly reducing human labor requirements for routine transport.",
-        image: IMG_GALLERY[1],
-        color: "orange",
-        highlights: [
-            "Professional-grade torque motors",
-            "Heavy-duty suspension system",
-            "4× Large storage compartments",
-            "Optimized multi-stop routing",
-        ],
+        id: "advertising",
+        title: "High-Impact 18.5\" Promotion Node",
+        image: IMG_GALLERY[3], // Large screen photo
     },
+    {
+        id: "intelligence",
+        title: "Self-Service Intelligent Sensing",
+        image: IMG_GALLERY[2], // Tray interaction photo
+    },
+    {
+        id: "stability",
+        title: "Six-Wheel Shock Absorbing Chassis",
+        image: IMG_GALLERY[0], // Lower chassis details
+    }
 ];
 
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    amber: { text: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-400/30", glow: "shadow-amber-500/20", gradient: "from-amber-500 to-amber-700" },
-    orange: { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-400/30", glow: "shadow-orange-500/20", gradient: "from-orange-500 to-orange-700" },
-};
-
 /* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
+
+function StickyFeatureSection({ img, index, text, openLightbox }: any) {
     const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
+    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+    const y = useTransform(scrollYProgress, [0, 1], [-100, 100]);
 
     return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
+        <section ref={ref} className="relative h-[80vh] md:h-screen w-full overflow-hidden flex items-center justify-center">
+            <motion.div style={{ y }} className="absolute inset-0 w-full h-full scale-110">
+                <ImageWithFallback src={img} alt={text} className="w-full h-full object-cover select-none" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+            </motion.div>
+
+            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center px-6">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                    className="max-w-4xl text-center">
+                    {/* Clean pure images as per C40 overhaul */}
                 </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-amber-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
             </div>
-        </div>
+
+            <button onClick={() => openLightbox(index)}
+                className="absolute inset-0 z-20 w-full h-full cursor-zoom-in" />
+        </section>
     );
 }
 
-/* ─── main component ────────────────────────────────────── */
 export function T11Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showHangingCTA, setShowHangingCTA] = useState(false);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > window.innerHeight * 0.8) setShowHangingCTA(true);
+            else setShowHangingCTA(false);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
-
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
@@ -139,82 +135,133 @@ export function T11Page() {
             <AnimatePresence>
                 {lightboxOpen && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
+                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 lg:p-12" onClick={closeLightbox}>
                         <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
+                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
+                            className="max-w-full max-h-full object-contain rounded-2xl" onClick={(e) => e.stopPropagation()} />
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON T11" className="w-full h-full object-cover opacity-20" />
+            {/* Hanging CTA */}
+            <AnimatePresence>
+                {showHangingCTA && (
+                    <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }} exit={{ opacity: 0, scale: 0.8, x: 50 }}
+                        className="fixed bottom-10 right-10 z-[80]">
+                        <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-blue-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(59,130,246,0.4)] hover:shadow-[0_25px_80px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-all">
+                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Video Hero Section */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
+                    <div className="absolute inset-0 bg-black/40 z-10" />
+                    <iframe
+                        className="w-full h-[120%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none scale-110 md:scale-100"
+                        src="https://www.youtube.com/embed/9xLvVsv86KA?autoplay=1&mute=1&loop=1&playlist=9xLvVsv86KA&controls=0&showinfo=0&rel=0&iv_load_policy=3"
+                        allow="autoplay; encrypted-media"
+                        frameBorder="0"
+                    />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-amber-400">KEENON T11</span>
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-amber-500/40 bg-amber-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                            <span className="text-amber-400 text-sm font-bold uppercase tracking-widest">High-Capacity Delivery Titan</span>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/20 z-20" />
+
+                <div className="relative z-30 max-w-7xl mx-auto px-6 text-center pt-20">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/40 bg-blue-500/10 mb-8 uppercase tracking-[0.4em] font-black text-[10px] text-blue-400">
+                            Marketing Expert in Narrow-Aisles
                         </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-amber-100 to-amber-400 bg-clip-text text-transparent">T11</span>
+                        <h1 className="text-7xl sm:text-8xl lg:text-[11rem] font-black leading-none mb-4 tracking-tighter uppercase italic">
+                            <span className="bg-gradient-to-br from-white via-blue-100 to-blue-500 bg-clip-text text-transparent italic">T11</span>
                         </h1>
-                        <p className="text-2xl text-amber-400 font-semibold mb-6 tracking-wide">"Volume Meets Intelligence"</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Four lockable compartments. 40kg payload. Optimized for high-throughput hospitals, hotels, and corporate campuses.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-amber-500/30">Request a Demo <ArrowRight className="inline ml-2" /></Link>
+                        <p className="text-2xl text-blue-400 font-black uppercase tracking-[0.2em] mb-12 drop-shadow-[0_0_20px_rgba(59,130,246,0.5)] italic">"Intelligent Presence, Narrow Impact"</p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <Link to="/contact" className="group px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full text-white font-black text-xl shadow-[0_0_50px_rgba(59,130,246,0.3)] hover:shadow-[0_0_70px_rgba(59,130,246,0.5)] transition-all flex items-center gap-3">
+                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
                         </div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* Mobilise Authority Section */}
+            <section className="py-32 bg-[#050a14] relative overflow-hidden border-b border-white/5">
+                <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/5 blur-[120px] rounded-full translate-x-1/2" />
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                        className="text-blue-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">The Partner You Trust</motion.span>
+                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+                        className="text-5xl md:text-7xl font-black mb-8 italic uppercase tracking-tighter">
+                        Global Technology.<br /><span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Local Mastery.</span>
+                    </motion.h2>
+                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+                        className="max-w-3xl mx-auto text-white/50 text-lg leading-relaxed mb-12">
+                        Dinerbot T11 is more than a robot; it&apos;s a marketing powerhouse. Developed by <span className="text-white font-semibold">Keenon</span> and expertly implemented by <span className="text-white font-semibold italic">Mobilise</span>, we ensure your intelligent delivery node integrates seamlessly into your brand&apos;s unique hospitality ecosystem.
+                    </motion.p>
+                </div>
+            </section>
+
+            {/* Technical Superiority Cards */}
+            <section className="py-24 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="mb-16 text-center md:text-left">
+                        <h3 className="text-white/30 text-xs font-black uppercase tracking-[0.5em] mb-4">Dinerbot T11</h3>
+                        <h2 className="text-4xl md:text-6xl font-black tracking-tighter italic uppercase">Technical <span className="text-blue-500">Superiority</span></h2>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {SPECS.map((spec, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                                className={`p-8 rounded-3xl border ${spec.highlight ? 'border-blue-500/30 bg-blue-500/5' : 'border-white/5 bg-white/[0.02]'} group hover:border-blue-500 transition-all cursor-default`}>
+                                <div className="mb-6 p-3 rounded-2xl bg-white/5 w-fit group-hover:bg-blue-500/20 transition-colors">
+                                    <spec.icon className={`w-8 h-8 ${spec.highlight ? 'text-blue-500' : 'text-white/40'} group-hover:text-blue-400`} />
+                                </div>
+                                <h4 className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-black mb-1">{spec.label}</h4>
+                                <p className={`text-xl font-black italic uppercase ${spec.highlight ? 'text-blue-400' : 'text-white'}`}>{spec.value}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Sticky Parallax Reveal */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} index={i} text={feat.title} openLightbox={openLightbox} />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Built for <span className="text-amber-400">High Volume.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-amber-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* Industry Solutions Grid */}
+            <section className="py-24 bg-[#050a14] border-t border-white/5">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="mb-20 text-center">
+                        <h2 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none mb-6">
+                            Tailored for <span className="text-blue-500">Narrow Aisles</span>
+                        </h2>
+                        <p className="text-white/40 text-lg max-w-2xl mx-auto uppercase tracking-widest font-black">Intelligent Logic for Every Segment</p>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-amber-400 font-bold text-sm">{item.value}</span>
-                            </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        {INDUSTRIES.map((industry, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                                className="group relative h-[450px] overflow-hidden rounded-[2.5rem] bg-[#0d121c] border border-white/5">
+                                <ImageWithFallback src={industry.img} alt={industry.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                                <div className="absolute inset-0 flex flex-col justify-end p-8">
+                                    <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{industry.title}</h4>
+                                    <p className="text-white/40 text-xs font-medium leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">{industry.desc}</p>
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Scale your <span className="text-amber-400">Operations.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-amber-500/40">Optimize Your Workflow <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* Decorative Background Text */}
+            <div className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12 pointer-events-none">T11</div>
 
         </div>
     );
