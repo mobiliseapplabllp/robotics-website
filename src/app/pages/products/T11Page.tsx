@@ -9,12 +9,12 @@ import {
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/08/27/d0e3350948ba4a86a0f604b7a4a23ba6.jpg?x-oss-process=image%2Fformat%2Cwebp";
+const IMG_HERO = "/images/products/t11/t11_hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/08/27/bff71a3e19bc43f6ba5f7ee905555f1.jpg?x-oss-process=image%2Fformat%2Cwebp", // feature 1
-    "https://static.keenon.com/uploads/2025/08/27/e5d5ba0f417346fbb0cbbdb038746f8a.jpg?x-oss-process=image%2Fformat%2Cwebp", // feature 2
-    "https://static.keenon.com/uploads/2025/08/27/15eba5c9e4b54040a2048fd7dea74722.jpg?x-oss-process=image%2Fformat%2Cwebp", // feature 3
-    "https://static.keenon.com/uploads/2025/09/01/aef7c671bab445fdbd46cea9cd50a781.png?x-oss-process=image%2Fformat%2Cwebp"  // feature 4
+    "/images/products/t11/t11_feature_1.webp", // feature 1
+    "/images/products/t11/t11_feature_2.webp", // feature 2
+    "/images/products/t11/t11_feature_3.webp", // feature 3
+    "/images/products/t11/t11_feature_4.webp"  // feature 4
 ];
 
 const INDUSTRIES = [
