@@ -153,7 +153,7 @@ export function T11Page() {
             {/* Video Hero Section */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
-                    <div className="absolute inset-0 bg-black/40 z-10" />
+                    <div className="absolute inset-0 bg-transparent z-10" />
                     <iframe
                         className="w-full h-[120%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none scale-110 md:scale-100"
                         src="https://www.youtube.com/embed/9xLvVsv86KA?autoplay=1&mute=1&loop=1&playlist=9xLvVsv86KA&controls=0&showinfo=0&rel=0&iv_load_policy=3"
