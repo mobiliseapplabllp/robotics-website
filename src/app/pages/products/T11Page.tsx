@@ -84,11 +84,10 @@ const FEATURES = [
 function StickyFeatureSection({ img, index, text, openLightbox }: any) {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-    const y = useTransform(scrollYProgress, [0, 1], [-100, 100]);
 
     return (
         <section ref={ref} className="relative h-[80vh] md:h-screen w-full overflow-hidden flex items-center justify-center">
-            <motion.div style={{ y }} className="absolute inset-0 w-full h-full scale-110">
+            <motion.div className="absolute inset-0 w-full h-full scale-100">
                 <ImageWithFallback src={img} alt={text} className="w-full h-full object-cover select-none" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
             </motion.div>
@@ -144,16 +143,12 @@ export function T11Page() {
             </AnimatePresence>
 
             {/* Hanging CTA */}
-            <AnimatePresence>
-                {showHangingCTA && (
-                    <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }} exit={{ opacity: 0, scale: 0.8, x: 50 }}
-                        className="fixed bottom-10 right-10 z-[80]">
-                        <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-blue-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(59,130,246,0.4)] hover:shadow-[0_25px_80px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-all">
-                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }}
+                className="fixed bottom-10 right-10 z-[80]">
+                <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-blue-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(59,130,246,0.4)] hover:shadow-[0_25px_80px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-all">
+                    Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+            </motion.div>
 
             {/* Video Hero Section */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -169,22 +164,11 @@ export function T11Page() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/20 z-20" />
 
-                <div className="relative z-30 max-w-7xl mx-auto px-6 text-center pt-20">
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/40 bg-blue-500/10 mb-8 uppercase tracking-[0.4em] font-black text-[10px] text-blue-400">
-                            Marketing Expert in Narrow-Aisles
-                        </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[11rem] font-black leading-none mb-4 tracking-tighter uppercase italic">
-                            <span className="bg-gradient-to-br from-white via-blue-100 to-blue-500 bg-clip-text text-transparent italic">T11</span>
-                        </h1>
-                        <p className="text-2xl text-blue-400 font-black uppercase tracking-[0.2em] mb-12 drop-shadow-[0_0_20px_rgba(59,130,246,0.5)] italic">"Intelligent Presence, Narrow Impact"</p>
-
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                            <Link to="/contact" className="group px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full text-white font-black text-xl shadow-[0_0_50px_rgba(59,130,246,0.3)] hover:shadow-[0_0_70px_rgba(59,130,246,0.5)] transition-all flex items-center gap-3">
-                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-                    </motion.div>
+                <div className="relative z-30 w-full h-full pt-20">
+                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                        <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-blue-500 to-transparent rounded-full" />
+                    </div>
                 </div>
             </section>
 
