@@ -1,123 +1,95 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
-import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, Sparkles, Filter
-} from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowRight, Volume2, Filter, Minimize2, Sparkles } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, ParallaxGalleryItem, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp"; // Using a placeholder cleaning image
+const IMG_HERO = "https://static.keenon.com/uploads/2025/05/30/3c032df429624ffa92ac6637b5dabe04.jpg?x-oss-process=image/format,webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/a8179615751d47d587d41b6301deb648.webp"
+    "https://static.keenon.com/uploads/2025/05/30/92729e51aaa74750b1d077c75c631a2b.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/05/30/cecf06ebc4bb492688f605e2412e4052.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/05/30/be9a556dec134c0ca696adad0952edd3.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/04/10/bffedda3ed8a49fb9d48db0731dafa3b.png?x-oss-process=image/format,webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
+const NOISE_COMPARISON = [
+    { label: "Jet Engine", db: 140, width: "100%" },
+    { label: "Concert", db: 110, width: "78%" },
+    { label: "City Traffic", db: 85, width: "60%" },
+    { label: "Normal Talk", db: 60, width: "42%" },
+    { label: "C20 Operating", db: 52, width: "37%", highlight: true },
+    { label: "Library", db: 40, width: "28%" },
+    { label: "Whisper", db: 30, width: "21%" },
+];
+
+const COMPACT_FEATURES = [
+    {
+        icon: Minimize2,
+        title: "351mm Ultra-Low Profile",
+        desc: "At just 351mm tall and 22 kg, the C20 fits under furniture, shelving, and through tight spaces where larger robots cannot operate.",
+    },
+    {
+        icon: Sparkles,
+        title: "3-in-1 Cleaning",
+        desc: "Sweeping (450mm), scrubbing (285mm), and mopping in a single pass. One robot replaces three separate cleaning processes.",
+    },
+    {
+        icon: Filter,
+        title: "Professional Filtration",
+        desc: "Multi-surface cleaning across tile, marble, vinyl, and hardwood with precision edge-following for thorough coverage.",
+    },
+];
+
 const SPECS = [
-    {
-        category: "Agile Cleaning", items: [
-            { label: "Cleaning Width", value: "400 mm" },
-            { label: "Cleaning Area", value: "Up to 1,000 m²/charge" },
-            { label: "Water Tank", value: "25 L clean / 25 L dirty" },
-        ]
-    },
-    {
-        category: "Hygiene & Ops", items: [
-            { label: "Filtration", value: "H13 HEPA Filter" },
-            { label: "Battery Life", value: "2.5 hours" },
-            { label: "Noise Level", value: "<52 dB (Whisper Quiet)" },
-            { label: "Navigation", value: "Multi-sensor SLAM" },
-        ]
-    },
+    { label: "Dimensions (W×D×H)", value: "523 × 400 × 351 mm" },
+    { label: "Weight", value: "22 kg" },
+    { label: "Sweeping Width", value: "450 mm" },
+    { label: "Scrubbing Width", value: "285 mm" },
+    { label: "Cleaning Efficiency", value: "400 m²/h" },
+    { label: "Clean Water Tank", value: "7 L" },
+    { label: "Dirty Water Tank", value: "5 L" },
+    { label: "Charging Time", value: "4 hours" },
+    { label: "Navigation", value: "LiDAR + Visual SLAM" },
+    { label: "Operation Modes", value: "Auto / Manual / Schedule" },
+    { label: "Connectivity", value: "Wi-Fi / 4G" },
+    { label: "Multi-Surface", value: "Tile, Marble, Vinyl, Wood" },
 ];
 
-const FEATURES = [
-    {
-        id: "quiet",
-        icon: "🤫",
-        iconComponent: Volume2,
-        title: "Whisper-Quiet Hygiene",
-        subtitle: "Clean Without Disturbance",
-        description: "The C20 operates at a barely-audible 52dB, making it the perfect choice for hospital corridors, hotel floors during rest hours, and high-end retail environments. It maintains impeccable hygiene standards without ever disrupting the guest experience.",
-        image: IMG_GALLERY[0],
-        color: "green",
-        highlights: [
-            "Ultra-low 52dB noise output",
-            "Night-time cleaning optimization",
-            "H13 HEPA medical-grade filtration",
-            "Bacterial-resistant chassis material",
-        ],
-    },
-    {
-        id: "agile",
-        icon: "✨",
-        iconComponent: Sparkles,
-        title: "Obstacle-Free Agility",
-        subtitle: "Navigates Tightest Spaces",
-        description: "Designed with a compact footprint and high-precision mapping, the C20 excels where larger cleaning machines fail. It easily maneuvers around lobby furniture, through narrow clinic corridors, and under retail shelving with sub-centimeter accuracy.",
-        image: IMG_HERO,
-        color: "emerald",
-        highlights: [
-            "Slim-profile chassis design",
-            "360° proximity sensor array",
-            "Under-furniture cleaning mode",
-            "Sub-centimeter wall-following",
-        ],
-    },
+const INDUSTRIES = [
+    { title: "Clinics", desc: "Whisper-quiet cleaning in patient-sensitive environments with medical-grade surface care.", img: "/images/products/c20/industry_clinic.png" },
+    { title: "Hotels", desc: "Nighttime cleaning in guest corridors and lobbies without disturbing rest hours.", img: "/images/products/c20/industry_hotel.png" },
+    { title: "Libraries", desc: "Silent autonomous maintenance for study halls, reading rooms, and archive areas.", img: "/images/products/c20/industry_library.png" },
+    { title: "Retail", desc: "Ultra-compact maneuvering between display aisles and under shelving units.", img: "/images/products/c20/industry_retail.png" },
+    { title: "Offices", desc: "Scheduled after-hours cleaning for co-working spaces and corporate floors.", img: "/images/products/c20/industry_office.png" },
 ];
 
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    green: { text: "text-green-400", bg: "bg-green-500/10", border: "border-green-400/30", glow: "shadow-green-500/20", gradient: "from-green-500 to-green-700" },
-    emerald: { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-400/30", glow: "shadow-emerald-500/20", gradient: "from-emerald-500 to-emerald-700" },
-};
-
-/* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
-
-    return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
-                </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-green-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
+const GALLERY_FEATURES = [
+    { id: "compact", text: "Ultra-Compact 351mm Profile" },
+    { id: "cleaning", text: "3-in-1 Sweep, Scrub & Mop" },
+];
 
 /* ─── main component ────────────────────────────────────── */
 export function C20Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowVideo(true), 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
-
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
@@ -125,86 +97,237 @@ export function C20Page() {
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
             {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox
+                images={allImages}
+                isOpen={lightboxOpen}
+                currentIndex={lightboxIndex}
+                onClose={closeLightbox}
+                productName="C20"
+                glowColor="rgba(163,230,53,0.15)"
+            />
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON C20" className="w-full h-full object-cover opacity-20" />
+            {/* Floating CTA */}
+            <FloatingCTA
+                bgColor="bg-lime-500"
+                glowColor="rgba(163,230,53,0.4)"
+                glowHoverColor="rgba(163,230,53,0.6)"
+            />
+
+            {/* ── Hero: Sound-Wave Minimalist ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
+                    {!showVideo && (
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON C20" className="w-full h-full object-cover opacity-30" />
+                    )}
+                    {showVideo && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
+                            <iframe
+                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
+                                src="https://www.youtube.com/embed/JAEnvexMePw?autoplay=1&mute=1&controls=0&loop=1&playlist=JAEnvexMePw&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
+                                title="KEENON C20 Hero Video"
+                                allow="autoplay; fullscreen"
+                            />
+                        </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-green-400">KEENON C20</span>
-                    </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/70 to-black/30" />
+
+                {/* Concentric sound waves */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    {[1, 2, 3, 4].map((ring) => (
+                        <motion.div
+                            key={ring}
+                            className="absolute rounded-full border border-lime-500/10"
+                            style={{ width: `${ring * 200}px`, height: `${ring * 200}px` }}
+                            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.08, 0.3] }}
+                            transition={{ duration: 3 + ring * 0.5, repeat: Infinity, delay: ring * 0.3 }}
+                        />
+                    ))}
+                </div>
+
+                <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
                     <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-green-500/40 bg-green-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                            <span className="text-green-400 text-sm font-bold uppercase tracking-widest">Compact Cleaning Champion</span>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-lime-500/40 bg-lime-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-lime-400">
+                            <Volume2 className="w-3.5 h-3.5" /> Ultra-Compact 3-in-1
                         </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-green-100 to-green-400 bg-clip-text text-transparent">C20</span>
+                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-2 tracking-tighter uppercase italic">
+                            <span className="bg-gradient-to-br from-white via-lime-100 to-lime-500 bg-clip-text text-transparent">C20</span>
                         </h1>
-                        <p className="text-2xl text-green-400 font-semibold mb-6 tracking-wide">"Invisible Hygiene, Visible Quality"</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Whisper-quiet 52dB operation. H13 HEPA filtration. The ultimate agile cleaning partner for hospitality and healthcare.
+                        <p className="text-2xl text-lime-400 font-black uppercase tracking-[0.15em] mb-3 italic drop-shadow-[0_0_20px_rgba(163,230,53,0.3)]">
+                            The Silent Guardian
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-green-500/30">Request a Site Survey <ArrowRight className="inline ml-2" /></Link>
+
+                        {/* Decibel Infographic */}
+                        <div className="inline-flex items-baseline gap-3 mb-6">
+                            <span className="text-6xl md:text-7xl font-black text-white tracking-tighter">52</span>
+                            <span className="text-lg text-lime-400 font-black uppercase tracking-widest">dB</span>
+                            <span className="text-white/30 text-sm font-medium ml-2">Quieter than a library</span>
                         </div>
+
+                        <p className="text-white/40 text-lg max-w-2xl mx-auto mb-10 font-light">
+                            22 kg. 351mm low profile. Professional 3-in-1 cleaning that fits everywhere and disturbs no one.
+                        </p>
                     </motion.div>
+                </div>
+
+                <div className="absolute bottom-12 right-12 z-20">
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+                        <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-lime-500 to-green-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(163,230,53,0.3)] hover:shadow-[0_0_60px_rgba(163,230,53,0.5)] transition-all flex items-center gap-3">
+                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </motion.div>
+                </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-lime-500 to-transparent rounded-full" />
                 </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* ── Mobilise Authority ── */}
+            <MobiliseAuthoritySection
+                variant="minimal"
+                accentColor="lime"
+                description='While Keenon builds the hardware, <strong class="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We deploy ultra-compact cleaning solutions for India&apos;s most space-constrained and noise-sensitive commercial environments.'
+            />
+
+            {/* ── Noise Comparison Visualization ── */}
+            <section className="py-32 bg-[#030710] border-t border-lime-500/10">
+                <div className="max-w-5xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-lime-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Silence Engineered</span>
+                        <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            HOW QUIET IS <span className="text-lime-500">52 dB?</span>
+                        </h2>
+                    </div>
+
+                    <div className="space-y-3">
+                        {NOISE_COMPARISON.map((item, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.4, delay: i * 0.08 }}
+                                className={`flex items-center gap-4 p-4 rounded-xl ${item.highlight ? "bg-lime-500/10 border border-lime-500/30" : "bg-white/[0.02]"}`}
+                            >
+                                <span className={`text-xs font-black uppercase tracking-wider w-28 shrink-0 ${item.highlight ? "text-lime-400" : "text-white/30"}`}>
+                                    {item.label}
+                                </span>
+                                <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden relative">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: item.width }}
+                                        transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
+                                        className={`h-full rounded-full ${item.highlight ? "bg-gradient-to-r from-lime-500 to-green-400" : "bg-white/10"}`}
+                                    />
+                                </div>
+                                <span className={`text-sm font-black w-16 text-right ${item.highlight ? "text-lime-400" : "text-white/40"}`}>
+                                    {item.db} dB
+                                </span>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Compact Features: 3-Column ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-lime-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Compact Engineering</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            FITS <span className="text-lime-500">EVERYWHERE.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {COMPACT_FEATURES.map((feat, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: i * 0.15 }}
+                                className="group p-8 bg-[#0a101f] border border-lime-500/10 rounded-3xl hover:border-lime-500/40 transition-all"
+                            >
+                                <div className="mb-6 p-4 rounded-2xl bg-lime-500/5 w-fit group-hover:bg-lime-500/15 transition-colors">
+                                    <feat.icon className="w-8 h-8 text-lime-400" />
+                                </div>
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3">{feat.title}</h3>
+                                <p className="text-white/40 text-sm leading-relaxed">{feat.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video Section ── */}
+            <VideoSection
+                videoId="EW4Td73DFEI"
+                title="KEENON C20 — Ultra-Compact 3-in-1 Cleaning Robot"
+                variant="inline"
+                accentColor="lime"
+            />
+
+            {/* ── Parallax Gallery ── */}
             <div className="w-full">
-                {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                {GALLERY_FEATURES.map((feat, i) => (
+                    <ParallaxGalleryItem
+                        key={feat.id}
+                        img={IMG_GALLERY[i] || IMG_HERO}
+                        index={i + 1}
+                        featureText={feat.text}
+                        accentBorder="border-lime-500"
+                        openLightbox={openLightbox}
+                    />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Smart <span className="text-green-400">Agility.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-green-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* ── Spec Grid ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-lime-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Compact Powerhouse</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TECHNICAL <span className="text-lime-500">SUPERIORITY.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-green-400 font-bold text-sm">{item.value}</span>
-                            </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.map((spec, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 15 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                className="group p-5 bg-[#0a101f] border border-lime-500/10 rounded-2xl hover:border-lime-500/40 transition-all"
+                            >
+                                <span className="block text-white/25 text-[10px] uppercase font-black tracking-widest mb-1">{spec.label}</span>
+                                <span className="block text-lime-400 font-black text-sm uppercase tracking-tight group-hover:text-white transition-colors">{spec.value}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Elevate your <span className="text-green-400">Environment.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-green-500/40">Request Site Assessment <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* ── Industry Grid ── */}
+            <IndustryGrid
+                industries={INDUSTRIES}
+                accentColor="lime"
+                heading="Engineered for"
+                headingAccent="Quiet Spaces"
+                label="Silent Deployment"
+                description="The C20 excels in noise-sensitive and space-constrained environments where traditional cleaning equipment simply cannot operate."
+            />
 
+            {/* ── CTA ── */}
+            <ProductCTA
+                heading="SILENT"
+                headingAccent="CLEAN."
+                subtitle="Experience ultra-compact autonomous cleaning that disturbs no one. Engineered by KEENON, mastered by Mobilise."
+                accentColor="lime"
+                modelLabel="C20"
+            />
         </div>
     );
 }

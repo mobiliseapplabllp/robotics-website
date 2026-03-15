@@ -1,48 +1,29 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ChevronRight, ArrowRight, X, ZoomIn, Bot,
-    Navigation, Eye, Clock, Layers, Award, Shield, UserCheck,
-    Monitor, Maximize2, Zap, ZapOff, Briefcase, Activity, Calendar
+    Eye, Clock, Layers, UserCheck,
+    Monitor, Maximize2, Zap, Activity
 } from "lucide-react";
-import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, StickyFeatureSection, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, ProductCTA,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "/images/products/t11/t11_hero.webp";
 const IMG_GALLERY = [
-    "/images/products/t11/t11_feature_1.webp", // feature 1
-    "/images/products/t11/t11_feature_2.webp", // feature 2
-    "/images/products/t11/t11_feature_3.webp", // feature 3
-    "/images/products/t11/t11_feature_4.webp"  // feature 4
+    "/images/products/t11/t11_feature_1.webp",
+    "/images/products/t11/t11_feature_2.webp",
+    "/images/products/t11/t11_feature_3.webp",
+    "/images/products/t11/t11_feature_4.webp",
 ];
 
 const INDUSTRIES = [
-    {
-        title: "Fine Dining",
-        desc: "Sovereign delivery in narrow corridors with high-density patron seating.",
-        img: "/images/products/t11/industry_fine_dining.png"
-    },
-    {
-        title: "Corporate",
-        desc: "Automated tray retrieval and catering service for modern tech campuses.",
-        img: "/images/products/t11/industry_corporate.png"
-    },
-    {
-        title: "Healthcare",
-        desc: "Sterile-grade reliable transport for pharmaceutical and nutrition logistics.",
-        img: "/images/products/t11/industry_healthcare.png"
-    },
-    {
-        title: "Event Venues",
-        desc: "18.5-inch marketing screen creates high-impact advertising and guest engagement.",
-        img: "/images/products/t11/industry_events.png"
-    },
-    {
-        title: "Hospitality",
-        desc: "Compact guestroom deliveries and VIP service in luxury boutique hotels.",
-        img: "/images/products/t11/industry_hospitality.png"
-    }
+    { title: "Fine Dining", desc: "Sovereign delivery in narrow corridors with high-density patron seating.", img: "/images/products/t11/industry_fine_dining.png" },
+    { title: "Corporate", desc: "Automated tray retrieval and catering service for modern tech campuses.", img: "/images/products/t11/industry_corporate.png" },
+    { title: "Healthcare", desc: "Sterile-grade reliable transport for pharmaceutical and nutrition logistics.", img: "/images/products/t11/industry_healthcare.png" },
+    { title: "Event Venues", desc: "18.5-inch marketing screen creates high-impact advertising and guest engagement.", img: "/images/products/t11/industry_events.png" },
+    { title: "Hospitality", desc: "Compact guestroom deliveries and VIP service in luxury boutique hotels.", img: "/images/products/t11/industry_hospitality.png" },
 ];
 
 const SPECS = [
@@ -57,71 +38,20 @@ const SPECS = [
 ];
 
 const FEATURES = [
-    {
-        id: "narrow_aisle",
-        title: "The Narrow-Aisle Marketing Expert",
-        image: IMG_GALLERY[1], // Tight space photo
-    },
-    {
-        id: "advertising",
-        title: "High-Impact 18.5\" Promotion Node",
-        image: IMG_GALLERY[3], // Large screen photo
-    },
-    {
-        id: "intelligence",
-        title: "Self-Service Intelligent Sensing",
-        image: IMG_GALLERY[2], // Tray interaction photo
-    },
-    {
-        id: "stability",
-        title: "Six-Wheel Shock Absorbing Chassis",
-        image: IMG_GALLERY[0], // Lower chassis details
-    }
+    { id: "narrow_aisle", title: "The Narrow-Aisle Marketing Expert", image: IMG_GALLERY[1] },
+    { id: "advertising", title: "High-Impact 18.5\" Promotion Node", image: IMG_GALLERY[3] },
+    { id: "intelligence", title: "Self-Service Intelligent Sensing", image: IMG_GALLERY[2] },
+    { id: "stability", title: "Six-Wheel Shock Absorbing Chassis", image: IMG_GALLERY[0] },
 ];
 
-/* ─── sub-components ────────────────────────────────────── */
-
-function StickyFeatureSection({ img, index, text, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-    return (
-        <section ref={ref} className="relative h-[80vh] md:h-screen w-full overflow-hidden flex items-center justify-center">
-            <motion.div className="absolute inset-0 w-full h-full scale-100">
-                <ImageWithFallback src={img} alt={text} className="w-full h-full object-cover select-none" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-            </motion.div>
-
-            <div className="relative z-10 w-full h-full flex flex-col justify-center items-center px-6">
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    className="max-w-4xl text-center">
-                    {/* Clean pure images as per C40 overhaul */}
-                </motion.div>
-            </div>
-
-            <button onClick={() => openLightbox(index)}
-                className="absolute inset-0 z-20 w-full h-full cursor-zoom-in" />
-        </section>
-    );
-}
-
+/* ─── main component ────────────────────────────────────── */
 export function T11Page() {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
-    const [showHangingCTA, setShowHangingCTA] = useState(false);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
     const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > window.innerHeight * 0.8) setShowHangingCTA(true);
-            else setShowHangingCTA(false);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
@@ -131,24 +61,19 @@ export function T11Page() {
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
             {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 lg:p-12" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-full max-h-full object-contain rounded-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox
+                images={allImages}
+                isOpen={lightboxOpen}
+                currentIndex={lightboxIndex}
+                onClose={closeLightbox}
+            />
 
-            {/* Hanging CTA */}
-            <motion.div initial={{ opacity: 0, scale: 0.8, x: 50 }} animate={{ opacity: 1, scale: 1, x: 0 }}
-                className="fixed bottom-10 right-10 z-[80]">
-                <Link to="/contact" className="group flex items-center gap-3 px-8 py-4 bg-blue-500 rounded-full text-white font-black text-lg shadow-[0_20px_60px_rgba(59,130,246,0.4)] hover:shadow-[0_25px_80px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-all">
-                    Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-            </motion.div>
+            {/* Floating CTA */}
+            <FloatingCTA
+                bgColor="bg-blue-500"
+                glowColor="rgba(59,130,246,0.4)"
+                glowHoverColor="rgba(59,130,246,0.6)"
+            />
 
             {/* Video Hero Section */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -173,21 +98,12 @@ export function T11Page() {
             </section>
 
             {/* Mobilise Authority Section */}
-            <section className="py-32 bg-[#050a14] relative overflow-hidden border-b border-white/5">
-                <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-500/5 blur-[120px] rounded-full translate-x-1/2" />
-                <div className="max-w-7xl mx-auto px-6 text-center">
-                    <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                        className="text-blue-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">The Partner You Trust</motion.span>
-                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-                        className="text-5xl md:text-7xl font-black mb-8 italic uppercase tracking-tighter">
-                        Global Technology.<br /><span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Local Mastery.</span>
-                    </motion.h2>
-                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-                        className="max-w-4xl mx-auto text-white/50 text-lg leading-relaxed mb-12">
-                        While <span className="text-white font-semibold">Keenon</span> builds the hardware, <span className="text-white font-semibold italic">Mobilise App Lab Limited</span> delivers the mastery. We don’t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.
-                    </motion.p>
-                </div>
-            </section>
+            <MobiliseAuthoritySection
+                variant="glow"
+                accentColor="blue"
+                showBorder
+                description='While <span class="text-white font-semibold">Keenon</span> builds the hardware, <span class="text-white font-semibold italic">Mobilise App Lab Limited</span> delivers the mastery. We don&apos;t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.'
+            />
 
             {/* Technical Superiority Cards */}
             <section className="py-24 bg-[#050a14]">
@@ -214,35 +130,26 @@ export function T11Page() {
             {/* Sticky Parallax Reveal */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <StickyFeatureSection key={feat.id} img={feat.image} index={i} text={feat.title} openLightbox={openLightbox} />
+                    <StickyFeatureSection
+                        key={feat.id}
+                        img={feat.image}
+                        alt={feat.title}
+                        index={i}
+                        openLightbox={openLightbox}
+                        parallax={false}
+                        showZoomIcon={false}
+                    />
                 ))}
             </div>
 
             {/* Industry Solutions Grid */}
-            <section className="py-24 bg-[#050a14] border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="mb-20 text-center">
-                        <h2 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-none mb-6">
-                            Tailored for <span className="text-blue-500">Narrow Aisles</span>
-                        </h2>
-                        <p className="text-white/40 text-lg max-w-2xl mx-auto uppercase tracking-widest font-black">Intelligent Logic for Every Segment</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                        {INDUSTRIES.map((industry, i) => (
-                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                                className="group relative h-[450px] overflow-hidden rounded-[2.5rem] bg-[#0d121c] border border-white/5">
-                                <ImageWithFallback src={industry.img} alt={industry.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
-                                <div className="absolute inset-0 flex flex-col justify-end p-8">
-                                    <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{industry.title}</h4>
-                                    <p className="text-white/40 text-xs font-medium leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">{industry.desc}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <IndustryGrid
+                industries={INDUSTRIES}
+                accentColor="blue"
+                heading="Tailored for"
+                headingAccent="Narrow Aisles"
+                label="Intelligent Logic for Every Segment"
+            />
 
             {/* Decorative Background Text */}
             <div className="absolute -bottom-20 -right-20 text-[30rem] font-black text-white/[0.02] select-none leading-none -rotate-12 pointer-events-none">T11</div>

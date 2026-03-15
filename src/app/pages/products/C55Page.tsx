@@ -1,212 +1,230 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, Droplets, ZapOff
+    ArrowRight, Droplets, Zap, Eye, Battery, Gauge,
+    RotateCcw, Waves, ScanLine, Timer,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, StickyFeatureSection, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/11/06/a3d819df7793438f972564c14317a30a.jpg?x-oss-process=image/format,webp";
 const IMG_GALLERY = [
     "https://static.keenon.com/uploads/2025/11/06/f48c34667e804421b3adad48fd4a5554.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/11/06/81b0e062e21641709871839ebd0e51f5.jpg?x-oss-process=image/format,webp"
+    "https://static.keenon.com/uploads/2025/11/06/81b0e062e21641709871839ebd0e51f5.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/11/06/c59144d457384c979a929e1ebd75ed66.jpg?x-oss-process=image/format,webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
+const HERO_STATS = [
+    { value: "2,376", unit: "m²/h", label: "Efficiency" },
+    { value: "5s", unit: "swap", label: "Battery" },
+    { value: "550", unit: "mm", label: "Scrub Width" },
+    { value: "360°", unit: "view", label: "Perception" },
+];
+
+const TRIPLE_VS_DUAL = [
+    { aspect: "Debris Capture", triple: "Sweeps & scrubs in one pass", dual: "Requires separate sweep pass", icon: Droplets },
+    { aspect: "Water Usage", triple: "Doubled efficiency per liter", dual: "Standard water consumption", icon: Waves },
+    { aspect: "Coverage Speed", triple: "2,376 m²/h continuous", dual: "Lower throughput per cycle", icon: Gauge },
+];
+
+const BATTERY_STEPS = [
+    { step: "01", title: "Dock", desc: "C55 returns to battery station automatically when charge is low.", icon: Battery },
+    { step: "02", title: "Eject", desc: "Depleted battery pack slides out in under 3 seconds.", icon: RotateCcw },
+    { step: "03", title: "Insert", desc: "Fresh battery snaps in — total swap time under 5 seconds.", icon: Zap },
+    { step: "04", title: "Resume", desc: "Cleaning resumes instantly from where it stopped. Zero downtime.", icon: Timer },
+];
+
 const SPECS = [
-    {
-        category: "Triple-Roller Power", items: [
-            { label: "Design", value: "Industry-First Triple-Roller" },
-            { label: "Functions", value: "Sweep & Scrub in One Pass" },
-            { label: "Obstacle Clearance", value: "Up to 5 cm" },
-            { label: "Perception", value: "360° Panoramic (LiDAR + 4 Cameras)" },
-        ]
-    },
-    {
-        category: "Endurance & Maintenance", items: [
-            { label: "Battery", value: "Dual-Battery (5s Hot Swap)" },
-            { label: "Water Control", value: "Autonomous Workstation Support" },
-            { label: "Tank Design", value: "3-Second Flip for easy clean" },
-            { label: "Management", value: "24/7 Digital Platform & IoT" },
-        ]
-    },
+    { label: "Dimensions (W×D×H)", value: "860 × 850 × 1082 mm" },
+    { label: "Weight", value: "150 kg" },
+    { label: "Scrub Width", value: "550 mm" },
+    { label: "Cleaning Efficiency", value: "2,376 m²/h" },
+    { label: "Clean Water Tank", value: "60 L" },
+    { label: "Dirty Water Tank", value: "47 L" },
+    { label: "Runtime", value: "5 hours per battery set" },
+    { label: "Battery", value: "Dual hot-swappable (5s)" },
+    { label: "Roller System", value: "Triple-roller (industry first)" },
+    { label: "Obstacle Clearance", value: "Up to 5 cm" },
+    { label: "Perception", value: "360° (LiDAR + 4 stereo cameras)" },
+    { label: "Tank Design", value: "Patented 3-second flip" },
+    { label: "Water Control", value: "Autonomous workstation" },
+];
+
+const INDUSTRIES = [
+    { title: "Infrastructure", desc: "Underground parking, transit hubs, and large public facility cleaning at scale.", img: "/images/products/c55/industry_infrastructure.png" },
+    { title: "Retail", desc: "Shopping mall and commercial center floor maintenance with zero disruption.", img: "/images/products/c55/industry_retail.png" },
+    { title: "Aviation", desc: "Airport terminal cleaning with autonomous operation across massive floor areas.", img: "/images/products/c55/industry_aviation.png" },
+    { title: "Manufacturing", desc: "Factory floor and warehouse cleaning with obstacle clearance up to 5 cm.", img: "/images/products/c55/industry_manufacturing.png" },
+    { title: "Hospitality", desc: "Convention center and large hotel lobby cleaning with 24/7 operation.", img: "/images/products/c55/industry_hospitality.png" },
 ];
 
 const FEATURES = [
-    {
-        id: "tripleroller",
-        icon: "🌀",
-        iconComponent: Droplets,
-        title: "Triple-Roller Innovation",
-        subtitle: "Sweep & Scrub Simultaneously",
-        description: "The C55 redefines industrial cleaning with its patented triple-roller design. Unlike traditional dual-roller machines, the C55 sweeps debris and scrubs stubborn stains in a single, high-efficiency pass—outperforming others while using less water.",
-        image: IMG_GALLERY[0],
-        color: "emerald",
-        highlights: [
-            "Industry-first triple-roller scrubbing",
-            "Sweep and scrub in one pass",
-            "Doubled water efficiency",
-            "Cleans area of 3 football fields/fill",
-        ],
-    },
-    {
-        id: "nonstop",
-        icon: "⚡",
-        iconComponent: ZapOff,
-        title: "Zero-Downtime Operation",
-        subtitle: "5-Second Hot Battery Swap",
-        description: "Built for missions that never stop. The C55 features a dual-battery system with 5-second hot-swapping technology. Keep one set on charge while the robot continues its route, ensuring your facility stays clean 24 hours a day, 365 days a year.",
-        image: IMG_HERO,
-        color: "teal",
-        highlights: [
-            "5-second dual hot-swap batteries",
-            "24/7 continuous operation cycle",
-            "Top-mounted long-range LiDAR",
-            "4 x Stereo depth perception cameras",
-        ],
-    },
+    { id: "roller", title: "Triple-Roller Sweep & Scrub", image: IMG_GALLERY[0] },
+    { id: "perception", title: "360° Panoramic Perception", image: IMG_GALLERY[1] },
+    { id: "tank", title: "3-Second Flip Tank Design", image: IMG_GALLERY[2] },
 ];
-
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    emerald: { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-400/30", glow: "shadow-emerald-500/20", gradient: "from-emerald-500 to-emerald-700" },
-    teal: { text: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-400/30", glow: "shadow-teal-500/20", gradient: "from-teal-500 to-teal-700" },
-};
-
-/* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
-
-    return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
-                </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-cyan-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
 
 /* ─── main component ────────────────────────────────────── */
 export function C55Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowVideo(true), 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+    const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
-
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
     return (
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox images={allImages} isOpen={lightboxOpen} currentIndex={lightboxIndex} onClose={closeLightbox} productName="C55" glowColor="rgba(16,185,129,0.15)" />
+            <FloatingCTA bgColor="bg-emerald-500" glowColor="rgba(16,185,129,0.4)" glowHoverColor="rgba(16,185,129,0.6)" />
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON C55" className="w-full h-full object-cover opacity-20" />
+            {/* ── Hero: Engineering Cutaway ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
+                    {!showVideo && (
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON C55" className="w-full h-full object-cover" />
+                    )}
+                    {showVideo && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
+                            <iframe
+                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
+                                src="https://www.youtube.com/embed/WBlkoDMBsZI?autoplay=1&mute=1&controls=0&loop=1&playlist=WBlkoDMBsZI&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
+                                title="KEENON C55 Hero Video"
+                                allow="autoplay; fullscreen"
+                            />
+                        </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-emerald-400">KEENON C55</span>
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-emerald-400 text-sm font-bold uppercase tracking-widest">Industrial Sweep & Scrub Specialist</span>
-                        </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent">C55</span>
-                        </h1>
-                        <p className="text-2xl text-emerald-400 font-semibold mb-6 tracking-wide">"Zero Downtime. Triple Performance."</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Innovative triple-roller design. 5-second hot-swap batteries. 360° panoramic perception for medium to large commercial spaces.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-emerald-500/30">Optimize Your Operations <ArrowRight className="inline ml-2" /></Link>
-                        </div>
-                    </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+
+                <div className="relative z-10" />
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-emerald-500 to-transparent rounded-full" />
                 </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* ── Mobilise Authority ── */}
+            <MobiliseAuthoritySection variant="glow" accentColor="emerald" />
+
+            {/* ── Triple vs Dual Comparison ── */}
+            <section className="py-32 bg-[#030710] border-t border-emerald-500/10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-emerald-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Innovation</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TRIPLE-ROLLER <span className="text-emerald-500">ADVANTAGE.</span>
+                        </h2>
+                    </div>
+
+                    <div className="space-y-4">
+                        {TRIPLE_VS_DUAL.map((item, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                                className="grid md:grid-cols-[1fr_2fr_2fr] gap-4 items-center p-6 bg-[#0a101f] border border-emerald-500/10 rounded-2xl hover:border-emerald-500/30 transition-all">
+                                <div className="flex items-center gap-3">
+                                    <item.icon className="w-6 h-6 text-emerald-400" />
+                                    <span className="text-white font-black uppercase text-sm">{item.aspect}</span>
+                                </div>
+                                <div className="px-4 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                                    <span className="text-[9px] text-emerald-400 uppercase tracking-widest font-black block mb-1">C55 Triple</span>
+                                    <span className="text-white/70 text-sm">{item.triple}</span>
+                                </div>
+                                <div className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl">
+                                    <span className="text-[9px] text-white/30 uppercase tracking-widest font-black block mb-1">Standard Dual</span>
+                                    <span className="text-white/40 text-sm">{item.dual}</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Hot-Swap Battery System ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-emerald-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Zero Downtime</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            HOT-SWAP <span className="text-emerald-500">BATTERY.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-4 gap-6 relative">
+                        <div className="hidden md:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent -translate-y-1/2" />
+                        {BATTERY_STEPS.map((item, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.15 }}
+                                className="relative bg-[#0a101f] border border-emerald-500/15 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+                                <div className="absolute -top-3 -left-2 text-[4rem] font-black text-emerald-500/10 leading-none select-none">{item.step}</div>
+                                <div className="relative pt-10">
+                                    <div className="p-3 rounded-xl bg-emerald-500/10 w-fit mb-4 group-hover:bg-emerald-500/20 transition-colors">
+                                        <item.icon className="w-6 h-6 text-emerald-400" />
+                                    </div>
+                                    <h3 className="text-lg font-black text-white uppercase tracking-tight mb-2">{item.title}</h3>
+                                    <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video Section ── */}
+            <VideoSection videoId="Bv9XN3S_DkI" title="KEENON C55 — Triple-Roller Revolution" variant="cinematic" accentColor="emerald" />
+
+            {/* ── Sticky Feature Sections ── */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} alt={feat.title} index={i + 1} openLightbox={openLightbox} />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Advanced <span className="text-emerald-400">Engineering.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-emerald-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* ── Spec Grid ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-emerald-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Industrial Grade</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TECHNICAL <span className="text-emerald-500">SUPERIORITY.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-emerald-400 font-bold text-sm">{item.value}</span>
-                            </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.map((spec, idx) => (
+                            <motion.div key={idx} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
+                                className="group p-5 bg-[#0a101f] border border-emerald-500/10 rounded-2xl hover:border-emerald-500/40 transition-all">
+                                <span className="block text-white/25 text-[10px] uppercase font-black tracking-widest mb-1">{spec.label}</span>
+                                <span className="block text-emerald-400 font-black text-sm uppercase tracking-tight group-hover:text-white transition-colors">{spec.value}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Revolutionize your <span className="text-emerald-400">Environment.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-emerald-500/40">Request Site Assessment <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* ── Industry Grid ── */}
+            <IndustryGrid industries={INDUSTRIES} accentColor="emerald" heading="Built for" headingAccent="Industrial Scale" label="Commercial Deployment"
+                description="The C55 is engineered for the largest commercial cleaning operations — from airport terminals to underground parking garages." />
 
+            {/* ── CTA ── */}
+            <ProductCTA heading="TRIPLE-ROLLER" headingAccent="REVOLUTION." subtitle="Experience industrial cleaning redefined. Engineered by KEENON, mastered by Mobilise." accentColor="emerald" modelLabel="C55" />
         </div>
     );
 }

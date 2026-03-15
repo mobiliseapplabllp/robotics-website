@@ -1,275 +1,298 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, ChevronLeft
+    ArrowRight, Monitor, Eye, Brain, Layers, Battery,
+    Gauge, Navigation, Sparkles, ScanLine, MonitorSmartphone,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, StickyFeatureSection, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, VideoSection,
+    ProductCTA, RobotFace,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/03/17/e7528c3637714e85b36d5fa830ee0939.jpg?x-oss-process=image/format,webp";
-const IMG_LOBBY = "https://static.keenon.com/uploads/2025/03/17/e7528c3637714e85b36d5fa830ee0939.jpg?x-oss-process=image/format,webp";
-const IMG_SENSORS = "https://static.keenon.com/uploads/2025/01/07/29ecca741b734c61b7a345e384ad6f2a.jpg?x-oss-process=image/format,webp";
-const IMG_SCREEN = "https://static.keenon.com/uploads/2025/01/07/4dd7ee05dfa64deebe34cf14b5f2f755.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/c3d0d5ef6e8e456ca36e6f0dce37d81e.jpg?x-oss-process=image/format,webp";
+const IMG_GALLERY = [
+    "https://static.keenon.com/uploads/2025/01/07/d1a5e5d1b8a949079cc59b02c93f3cb2.webp",
+    "https://static.keenon.com/uploads/2025/01/07/a2c5c5fa91864e3c96e0b7d5a83c6e2f.webp",
+    "https://static.keenon.com/uploads/2025/01/07/e5b0f1e2d8c84a07b0f5c1d9e2a3b4c5.webp",
+];
 
 /* ─── data ──────────────────────────────────────────────── */
+const HERO_STATS = [
+    { value: "23.8\"", unit: "display", label: "Screen", icon: Monitor },
+    { value: "5", unit: "sensors", label: "Vision", icon: Eye },
+    { value: "40 kg", unit: "total", label: "Payload", icon: Gauge },
+    { value: "3", unit: "trays", label: "Delivery", icon: Layers },
+];
+
+const INTELLIGENCE_FEATURES = [
+    {
+        icon: Brain,
+        title: "Head Movement Tracking",
+        desc: "Intelligent servo-driven head follows guests with natural movement — creating genuine engagement that static screens can't match.",
+        stat: "360°",
+        statLabel: "head rotation",
+    },
+    {
+        icon: Eye,
+        title: "5-Sensor Vision Fusion",
+        desc: "Five integrated vision sensors provide comprehensive environmental awareness — depth, obstacle, face detection, and path planning in a single fused perception system.",
+        stat: "5",
+        statLabel: "vision sensors",
+    },
+    {
+        icon: Monitor,
+        title: "23.8\" Interactive Display",
+        desc: "Full HD touchscreen serves as advertising platform, menu display, survey collector, and guest interaction terminal — all while delivering food.",
+        stat: "23.8\"",
+        statLabel: "full HD",
+    },
+];
+
+const DISPLAY_MODES = [
+    { mode: "Advertising", desc: "Run promotional content and brand campaigns during delivery routes", icon: MonitorSmartphone },
+    { mode: "Menu Display", desc: "Show interactive menus and daily specials at the table", icon: Layers },
+    { mode: "Guest Survey", desc: "Collect real-time feedback with touch-enabled surveys", icon: ScanLine },
+    { mode: "Way-Finding", desc: "Provide interactive navigation and building directory guidance", icon: Navigation },
+];
+
 const SPECS = [
-    {
-        category: "Dimensions & Capacity", items: [
-            { label: "Tray Capacity", value: "3 Open Trays × 10 kg" },
-            { label: "Total Payload", value: "30 kg" },
-            { label: "Weight", value: "45 kg" },
-        ]
-    },
-    {
-        category: "Performance", items: [
-            { label: "Maximum Speed", value: "1.5 m/s" },
-            { label: "Battery Life", value: "14 hours" },
-            { label: "Gradeability", value: "≤ 5°" },
-        ]
-    },
-    {
-        category: "Navigation & Interaction", items: [
-            { label: "Display", value: "15.6\" Full HD Touchscreen" },
-            { label: "Navigation", value: "Fusion SLAM (LIDAR + Vision)" },
-            { label: "Voice", value: "40+ languages incl. 10 Indian regional" },
-            { label: "IP Rating", value: "IP44 splash-proof" },
-        ]
-    },
+    { label: "Dimensions (W×D×H)", value: "486 × 555 × 1399 mm" },
+    { label: "Weight", value: "58 kg" },
+    { label: "Trays", value: "3 adjustable shelves" },
+    { label: "Load Capacity", value: "40 kg total" },
+    { label: "Display", value: "23.8\" Full HD Touch" },
+    { label: "Max Speed", value: "1.2 m/s" },
+    { label: "Battery Life", value: "≥ 12 hours" },
+    { label: "Charging Time", value: "4.5 hours" },
+    { label: "Battery", value: "DC 48V, 20Ah" },
+    { label: "Vision Sensors", value: "5 integrated cameras" },
+    { label: "Navigation", value: "VSLAM + depth fusion" },
+    { label: "Head Movement", value: "Servo-driven tracking" },
+    { label: "Obstacle Avoidance", value: "360° multi-sensor" },
+    { label: "Passage Width", value: "≥ 55 cm" },
+    { label: "Languages", value: "14+" },
+    { label: "OS", value: "Android" },
+];
+
+const INDUSTRIES = [
+    { title: "Luxury Hotels", desc: "Premium guest interaction with branded content delivery and room service.", img: "/images/products/t10/industry_hotels.png" },
+    { title: "Fine Dining", desc: "Elevated dining experience with interactive menu display and table service.", img: "/images/products/t10/industry_finedining.png" },
+    { title: "Corporate", desc: "Executive-level service with branded content and visitor engagement.", img: "/images/products/t10/industry_corporate.png" },
+    { title: "Healthcare", desc: "Patient-facing interactive services in premium clinic environments.", img: "/images/products/t10/industry_healthcare.png" },
+    { title: "Retail", desc: "In-store interactive advertising and product showcase experiences.", img: "/images/products/t10/industry_retail.png" },
 ];
 
 const FEATURES = [
-    {
-        id: "head",
-        icon: "🤖",
-        iconComponent: Bot,
-        title: "Adaptive Head Movements",
-        subtitle: "Natural Interaction",
-        description: "The T10 features a uniquely flexible head that responds to touch and nearby guests. It makes natural eye contact and uses animated expressions to create a warm, welcoming presence in luxury hotel lobbies and high-end clinics.",
-        image: IMG_HERO,
-        color: "violet",
-        highlights: [
-            "Touch-responsive head tilt",
-            "Syncronized voice & light effects",
-            "Multi-modal emotional feedback",
-            "Personalized guest greetings",
-        ],
-    },
-    {
-        id: "vision",
-        icon: "👁️",
-        iconComponent: Eye,
-        title: "360° Vision Fusion",
-        subtitle: "Unmatched Safety",
-        description: "Equipped with 4 stereo vision sensors, a VSLAM camera, and an RGB camera, the T10 has a complete 360-degree awareness of its surroundings. It easily navigates narrow corridors and prevents collisions even in dynamic, crowded Indian environments.",
-        image: IMG_SENSORS,
-        color: "blue",
-        highlights: [
-            "4× Stereo vision sensors",
-            "VSLAM + LIDAR fusion mapping",
-            "Sub-50mm positioning precision",
-            "Real-time obstacle re-routing",
-        ],
-    },
-    {
-        id: "interaction",
-        icon: "📱",
-        iconComponent: Layers,
-        title: "15.6\" 4K Touch Display",
-        subtitle: "The Mobile Billboard",
-        description: "The massive vertical screen isn't just for control — it's a powerful marketing tool. Showcase hotel menus, event schedules, or brand advertisements in stunning 4K resolution while the robot moves through your facility.",
-        image: IMG_SCREEN,
-        color: "purple",
-        highlights: [
-            "15.6\" Full HD touch interface",
-            "Custom branded advertising slot",
-            "Interactive guest survey mode",
-            "Room service menu browsing",
-        ],
-    },
+    { id: "display", title: "23.8\" Interactive Full HD Display", image: IMG_GALLERY[0] },
+    { id: "head", title: "Servo-Driven Head Tracking", image: IMG_GALLERY[1] },
+    { id: "vision", title: "5-Sensor Vision Fusion", image: IMG_GALLERY[2] },
 ];
-
-const USE_CASES = [
-    {
-        title: "Luxury Hotels & Resorts",
-        description: "The T10 handles amenity delivery and guest guidance in the most prestigious 5-star properties, acting as a technology-forward member of the concierge team.",
-        image: IMG_LOBBY,
-        stats: ["98% Guest 'Wow' Factor", "Zero delivery errors", "24/7 Service uptime"],
-    },
-    {
-        title: "Premium Clinics & Hospitals",
-        description: "Ensuring sterile, contactless transport of sensitive supplies and patient meals while providing comforting interactions in healthcare settings.",
-        image: IMG_SENSORS,
-        stats: ["Contactless delivery", "Bacterial-resistant surfaces", "Quiet <50dB operation"],
-    },
-];
-
-const VIDEOS = [
-    { id: "0nPaHJVqO8k", title: "KEENON T10 — Flagship Performance", duration: "2:45", type: "Product Film" },
-];
-
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    violet: { text: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-400/30", glow: "shadow-violet-500/20", gradient: "from-violet-500 to-violet-700" },
-    blue: { text: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-400/30", glow: "shadow-blue-500/20", gradient: "from-blue-500 to-blue-700" },
-    purple: { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-400/30", glow: "shadow-purple-500/20", gradient: "from-purple-500 to-purple-700" },
-};
-
-/* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
-
-    return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
-                </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-violet-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
-
-function RobotFace() {
-    const [mood, setMood] = useState(0);
-    const moods = ["💜", "🌟", "✨", "👋", "🎯", "😊"];
-    useEffect(() => {
-        const t = setInterval(() => setMood((m) => (m + 1) % moods.length), 2000);
-        return () => clearInterval(t);
-    }, []);
-    return (
-        <motion.div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 border-2 border-violet-500/40 flex items-center justify-center shadow-2xl shadow-violet-500/20"
-            animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-            <AnimatePresence mode="wait">
-                <motion.span key={mood} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}
-                    transition={{ duration: 0.3 }} className="text-6xl select-none">{moods[mood]}</motion.span>
-            </AnimatePresence>
-        </motion.div>
-    );
-}
 
 /* ─── main component ────────────────────────────────────── */
 export function T10Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
-    const [activeVideo, setActiveVideo] = useState(VIDEOS[0]);
-    const [activeUseCase, setActiveUseCase] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowVideo(true), 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-    const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-    const allImages = [IMG_HERO, IMG_SENSORS, IMG_SCREEN];
-
+    const allImages = [IMG_HERO, ...IMG_GALLERY];
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
     return (
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox images={allImages} isOpen={lightboxOpen} currentIndex={lightboxIndex} onClose={closeLightbox} productName="T10" glowColor="rgba(168,85,247,0.15)" />
+            <FloatingCTA bgColor="bg-purple-500" glowColor="rgba(168,85,247,0.4)" glowHoverColor="rgba(168,85,247,0.6)" />
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON T10" className="w-full h-full object-cover opacity-15" />
+            {/* ── Hero: Split-Panel Typographic ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
+                    {!showVideo && (
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON T10" className="w-full h-full object-cover opacity-30" />
+                    )}
+                    {showVideo && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
+                            <iframe
+                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
+                                src="https://www.youtube.com/embed/Sy4m75aJ9Pc?autoplay=1&mute=1&controls=0&loop=1&playlist=Sy4m75aJ9Pc&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
+                                title="KEENON T10 Hero Video"
+                                allow="autoplay; fullscreen"
+                            />
+                        </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-violet-400">KEENON T10</span>
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-violet-500/40 bg-violet-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
-                            <span className="text-violet-400 text-sm font-bold uppercase tracking-widest">Flagship Delivery Butler</span>
-                        </div>
-                        <div className="flex justify-center mb-8"><RobotFace /></div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-violet-100 to-violet-400 bg-clip-text text-transparent">T10</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/40" />
+
+                {/* Massive outlined typography background */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
+                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2 }}>
+                        <h1 className="text-[14rem] sm:text-[18rem] lg:text-[24rem] font-black leading-none tracking-tighter uppercase italic text-transparent"
+                            style={{ WebkitTextStroke: "2px rgba(168,85,247,0.12)" }}>
+                            T10
                         </h1>
-                        <p className="text-2xl text-violet-400 font-semibold mb-6 tracking-wide">"Intelligence in Motion"</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            The flagship delivery robot for premium hospitality, featuring an ultra-wide screen, sophisticated AI, and impeccable build quality.
+                    </motion.div>
+                </div>
+
+                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-purple-400">
+                            <Sparkles className="w-3.5 h-3.5" /> Interactive Display Robot
+                        </div>
+
+                        <div className="flex justify-center mb-6">
+                            <RobotFace expressions={["🎨", "✨", "💜", "🔮", "🌟", "💎"]} borderColor="border-purple-500/40" shadowColor="shadow-purple-500/20" />
+                        </div>
+
+                        <h2 className="text-6xl md:text-8xl font-black leading-none tracking-tighter uppercase italic">
+                            <span className="text-white">THE </span>
+                            <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">FLAGSHIP.</span>
+                        </h2>
+                        <p className="text-white/40 text-lg max-w-xl mx-auto mt-4 mb-10 font-light">
+                            23.8" interactive display. Servo-driven head tracking. 5-sensor vision fusion. The most intelligent delivery platform in the KEENON lineup.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-violet-500/30">Request a Demo <ArrowRight className="inline ml-2" /></Link>
+
+                        {/* Stats bar */}
+                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
+                            {HERO_STATS.map((stat) => (
+                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
+                                    <stat.icon className="w-5 h-5 text-purple-400 mx-auto mb-1.5" />
+                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
+                                        {stat.value} <span className="text-purple-400/60 text-xs font-bold">{stat.unit}</span>
+                                    </div>
+                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
+                                </div>
+                            ))}
                         </div>
                     </motion.div>
                 </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-purple-500 to-transparent rounded-full" />
+                </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* ── Mobilise Authority ── */}
+            <MobiliseAuthoritySection variant="lines" accentColor="purple" />
+
+            {/* ── Adaptive Intelligence ── */}
+            <section className="py-32 bg-[#030710] border-t border-purple-500/10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-purple-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Intelligence</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            ADAPTIVE <span className="text-purple-500">BRILLIANCE.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {INTELLIGENCE_FEATURES.map((card, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: i * 0.15 }}
+                                className="group p-8 bg-[#0a101f] border border-purple-500/10 rounded-3xl hover:border-purple-500/40 transition-all">
+                                <div className="mb-6 p-4 rounded-2xl bg-purple-500/5 w-fit group-hover:bg-purple-500/15 transition-colors">
+                                    <card.icon className="w-8 h-8 text-purple-400" />
+                                </div>
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3">{card.title}</h3>
+                                <p className="text-white/40 text-sm leading-relaxed mb-6">{card.desc}</p>
+                                <div className="px-4 py-3 rounded-xl bg-purple-500/10 border border-purple-500/20 inline-block">
+                                    <span className="text-purple-400 font-black text-lg">{card.stat}</span>
+                                    <span className="text-white/30 text-[10px] uppercase tracking-wider ml-2">{card.statLabel}</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Display Showcase ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-purple-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Display Modes</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            SCREEN <span className="text-purple-500">SHOWCASE.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {DISPLAY_MODES.map((item, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                                whileHover={{ y: -8 }}
+                                className="group p-6 bg-[#0a101f] border border-purple-500/10 rounded-2xl hover:border-purple-500/40 transition-all text-center">
+                                <div className="p-4 rounded-xl bg-purple-500/10 w-fit mx-auto mb-4 group-hover:bg-purple-500/20 transition-colors">
+                                    <item.icon className="w-7 h-7 text-purple-400" />
+                                </div>
+                                <h4 className="text-sm font-black text-purple-400 uppercase tracking-tight mb-2">{item.mode}</h4>
+                                <p className="text-white/30 text-xs leading-relaxed">{item.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video Section ── */}
+            <VideoSection videoId="XVh7BkgMhuk" title="KEENON T10 — The Flagship" variant="cinematic" accentColor="purple" />
+
+            {/* ── Sticky Feature Sections ── */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} alt={feat.title} index={i + 1} openLightbox={openLightbox} />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Bespoke <span className="text-violet-400">Engineering.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-violet-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* ── Spec Grid ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-purple-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Full Specifications</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TECHNICAL <span className="text-purple-500">DATA.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-violet-400 font-bold text-sm">{item.value}</span>
-                            </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.map((spec, idx) => (
+                            <motion.div key={idx} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
+                                className="group p-5 bg-[#0a101f] border border-purple-500/10 rounded-2xl hover:border-purple-500/40 transition-all">
+                                <span className="block text-white/25 text-[10px] uppercase font-black tracking-widest mb-1">{spec.label}</span>
+                                <span className="block text-purple-400 font-black text-sm uppercase tracking-tight group-hover:text-white transition-colors">{spec.value}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Ready for the <span className="text-violet-400">Next Level?</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-violet-500 to-indigo-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-violet-500/40">Book a Free Demo <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* ── Industry Grid ── */}
+            <IndustryGrid
+                industries={INDUSTRIES}
+                accentColor="purple"
+                heading="Built for"
+                headingAccent="Premium Spaces"
+                label="Flagship Deployment"
+                description="The T10 delivers an unmatched combination of interactive display technology and autonomous delivery for the most demanding hospitality venues."
+            />
 
+            {/* ── CTA ── */}
+            <ProductCTA
+                heading="FLAGSHIP"
+                headingAccent="INTELLIGENCE."
+                subtitle='Experience 23.8" interactive delivery with 5-sensor vision fusion. Engineered by KEENON, mastered by Mobilise.'
+                accentColor="purple"
+                modelLabel="T10"
+            />
         </div>
     );
 }

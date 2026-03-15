@@ -1,230 +1,251 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, Coffee, Smile
+    ArrowRight, Layers, Gauge, Battery, Navigation,
+    Maximize2, Coffee, Utensils, Building2, PartyPopper,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, StickyFeatureSection, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, VideoSection,
+    ProductCTA, RobotFace,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/08/27/aef7c671bab445fdbd46cea9cd50a781.png?x-oss-process=image%2Fformat%2Cwebp"; // Reusing T11/T10 style image or placeholder
+const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/08/27/d0e3350948ba4a86a0f604b7a4a23ba6.jpg?x-oss-process=image%2Fformat%2Cwebp"
+    "https://static.keenon.com/uploads/2025/01/07/3f1030d1ed7f419e8d1fe25536af2051.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
+const HERO_STATS = [
+    { value: "4", unit: "trays", label: "Adjustable", icon: Layers },
+    { value: "40 kg", unit: "total", label: "Payload", icon: Gauge },
+    { value: "12+ hr", unit: "shift", label: "Battery", icon: Battery },
+    { value: "1.2 m/s", unit: "speed", label: "Max Speed", icon: Navigation },
+];
+
+const WHY_CARDS = [
+    {
+        icon: Maximize2,
+        title: "Compact Agility",
+        desc: "At 506 mm wide with 70 cm passage capability, the T5 navigates crowded dining layouts and narrow hotel corridors where other robots can't fit.",
+        stat: "70 cm",
+        statLabel: "min passage",
+    },
+    {
+        icon: Layers,
+        title: "Multi-Point Delivery",
+        desc: "Four adjustable trays carry up to 40 kg total. Serve up to 3 tables per trip with intelligent multi-stop routing and automatic return.",
+        stat: "3 tables",
+        statLabel: "per trip",
+    },
+    {
+        icon: Navigation,
+        title: "Smart Navigation",
+        desc: "SLAM + LIDAR + 3D camera fusion provides sub-centimeter positioning accuracy. Auto-adapts speed on slopes and handles dynamic obstacles in real-time.",
+        stat: "SLAM",
+        statLabel: "fusion nav",
+    },
+];
+
 const SPECS = [
-    {
-        category: "Agility", items: [
-            { label: "Width", value: "380 mm" },
-            { label: "Turning Radius", value: "0 mm (In-place)" },
-            { label: "Max Speed", value: "1.0 m/s" },
-            { label: "Min Passable Width", value: "55 cm" },
-        ]
-    },
-    {
-        category: "Delivery", items: [
-            { label: "Load Capacity", value: "20 kg total" },
-            { label: "Trays", value: "2 Open Trays" },
-            { label: "Battery Life", value: "10+ hours" },
-            { label: "Navigation", value: "LIDAR + Vision SLAM" },
-        ]
-    },
+    { label: "Dimensions (W×D×H)", value: "506 × 502 × 1205 mm" },
+    { label: "Weight", value: "55 kg" },
+    { label: "Trays", value: "4 adjustable shelves" },
+    { label: "Load Capacity", value: "40 kg total (10 kg/tray)" },
+    { label: "Shelf Size (Top)", value: "490 × 404 × 188 mm" },
+    { label: "Shelf Size (Others)", value: "490 × 404 × 176 mm" },
+    { label: "Max Speed", value: "1.2 m/s" },
+    { label: "Battery Life", value: "≥ 12 hours" },
+    { label: "Charging Time", value: "5 hours" },
+    { label: "Battery", value: "DC 48V, 12Ah" },
+    { label: "Display", value: "7\" Touchscreen (1024×600)" },
+    { label: "Min Passage Width", value: "70 cm" },
+    { label: "Slope", value: "≤ 5°" },
+    { label: "Navigation", value: "SLAM + LIDAR + 3D cameras" },
+    { label: "OS", value: "Android" },
+    { label: "Languages", value: "14+" },
+];
+
+const INDUSTRIES = [
+    { title: "Hospitality", desc: "Room service and amenity delivery across multi-floor hotel properties.", img: "/images/products/t5/industry_hospitality.png" },
+    { title: "F&B", desc: "High-volume restaurant service with multi-table delivery in a single trip.", img: "/images/products/t5/industry_fb.png" },
+    { title: "Corporate", desc: "Office tea, coffee, and document delivery across modern campuses.", img: "/images/products/t5/industry_corporate.png" },
+    { title: "Events", desc: "Catering delivery at banquets, conferences, and exhibition halls.", img: "/images/products/t5/industry_events.png" },
+    { title: "Cafes", desc: "Boutique café service with compact navigation and warm guest interactions.", img: "/images/products/t5/industry_cafes.png" },
 ];
 
 const FEATURES = [
-    {
-        id: "compact",
-        icon: "☕",
-        iconComponent: Coffee,
-        title: "The Ultimate Café Companion",
-        subtitle: "Built for Boutique Spaces",
-        description: "The T5 is KEENON's most agile delivery robot. With a 380mm width and zero-turn radius, it glides through crowded boutique cafés and narrow office corridors where other robots simply can't fit. Perfect for snack, coffee, and document delivery.",
-        image: IMG_GALLERY[0],
-        color: "rose",
-        highlights: [
-            "Ultra-slim 380mm chassis",
-            "Zero-degree turning radius",
-            "55cm minimum passage width",
-            "Gentle acceleration for beverages",
-        ],
-    },
-    {
-        id: "interaction",
-        icon: "😊",
-        iconComponent: Smile,
-        title: "Compact but Expressive",
-        subtitle: "Big Personality, Small Footprint",
-        description: "Despite its size, the T5 features the signature KEENON expressive face and voice interaction system. It greets customers with warmth, announces orders clearly, and adds a touch of technological delight to any small business environment.",
-        image: IMG_HERO,
-        color: "pink",
-        highlights: [
-            "Animated emotional expressions",
-            "Multi-language voice prompts",
-            "Smart obstacle avoidance",
-            "Auto-return to base",
-        ],
-    },
+    { id: "trays", title: "4-Tray Adjustable Delivery System", image: IMG_GALLERY[0] },
 ];
-
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    rose: { text: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-400/30", glow: "shadow-rose-500/20", gradient: "from-rose-500 to-rose-700" },
-    pink: { text: "text-pink-400", bg: "bg-pink-500/10", border: "border-pink-400/30", glow: "shadow-pink-500/20", gradient: "from-pink-500 to-pink-700" },
-};
-
-/* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
-
-    return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
-                </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-yellow-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
-
-function RobotFace() {
-    const [mood, setMood] = useState(0);
-    const moods = ["🌹", "👋", "✨", "😊", "💖", "🌟"];
-    useEffect(() => {
-        const t = setInterval(() => setMood((m) => (m + 1) % moods.length), 2000);
-        return () => clearInterval(t);
-    }, []);
-    return (
-        <motion.div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 border-2 border-rose-500/40 flex items-center justify-center shadow-2xl shadow-rose-500/20"
-            animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-            <AnimatePresence mode="wait">
-                <motion.span key={mood} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}
-                    transition={{ duration: 0.3 }} className="text-6xl select-none">{moods[mood]}</motion.span>
-            </AnimatePresence>
-        </motion.div>
-    );
-}
 
 /* ─── main component ────────────────────────────────────── */
 export function T5Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowVideo(true), 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
-
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
     return (
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox images={allImages} isOpen={lightboxOpen} currentIndex={lightboxIndex} onClose={closeLightbox} productName="T5" glowColor="rgba(244,63,94,0.15)" />
+            <FloatingCTA bgColor="bg-rose-500" glowColor="rgba(244,63,94,0.4)" glowHoverColor="rgba(244,63,94,0.6)" />
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON T5" className="w-full h-full object-cover opacity-20" />
+            {/* ── Hero: Size-Comparison ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
+                    {!showVideo && (
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON T5" className="w-full h-full object-cover opacity-40" />
+                    )}
+                    {showVideo && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
+                            <iframe
+                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
+                                src="https://www.youtube.com/embed/7USoOfg2aro?autoplay=1&mute=1&controls=0&loop=1&playlist=7USoOfg2aro&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
+                                title="KEENON T5 Hero Video"
+                                allow="autoplay; fullscreen"
+                            />
+                        </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-rose-400">KEENON T5</span>
-                    </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/30" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
                     <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-rose-500/40 bg-rose-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
-                            <span className="text-rose-400 text-sm font-bold uppercase tracking-widest">Agile Delivery Assistant</span>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-rose-500/40 bg-rose-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-rose-400">
+                            <Coffee className="w-3.5 h-3.5" /> Stable Heavy-Load Delivery
                         </div>
-                        <div className="flex justify-center mb-8"><RobotFace /></div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-rose-100 to-rose-400 bg-clip-text text-transparent">T5</span>
+
+                        <div className="flex justify-center mb-6">
+                            <RobotFace expressions={["🌹", "👋", "✨", "😊", "💖", "🌟"]} borderColor="border-rose-500/40" shadowColor="shadow-rose-500/20" />
+                        </div>
+
+                        <h1 className="text-8xl sm:text-9xl lg:text-[12rem] font-black leading-none tracking-tighter uppercase italic">
+                            <span className="bg-gradient-to-br from-white via-rose-100 to-rose-500 bg-clip-text text-transparent">T5</span>
                         </h1>
-                        <p className="text-2xl text-rose-400 font-semibold mb-6 tracking-wide">"Tiny Footprint. Giant Service."</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Ultra-slim 380mm design. Zero-turn radius agility. The compact hero for boutique cafés and modern offices.
+                        <p className="text-2xl text-rose-400 font-black uppercase tracking-[0.15em] mt-2 italic">The Pocket Rocket</p>
+                        <p className="text-white/40 text-lg max-w-xl mx-auto mt-4 mb-10 font-light">
+                            4 adjustable trays. 40 kg payload. 12+ hours of nonstop service for high-volume hospitality environments.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-rose-500/30">Request a Site Survey <ArrowRight className="inline ml-2" /></Link>
+
+                        {/* Stats bar */}
+                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-rose-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
+                            {HERO_STATS.map((stat) => (
+                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
+                                    <stat.icon className="w-5 h-5 text-rose-400 mx-auto mb-1.5" />
+                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
+                                        {stat.value} <span className="text-rose-400/60 text-xs font-bold">{stat.unit}</span>
+                                    </div>
+                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
+                                </div>
+                            ))}
                         </div>
                     </motion.div>
                 </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-rose-500 to-transparent rounded-full" />
+                </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* ── Mobilise Authority ── */}
+            <MobiliseAuthoritySection variant="minimal" accentColor="rose" />
+
+            {/* ── Why T5: Feature Cards ── */}
+            <section className="py-32 bg-[#030710] border-t border-rose-500/10">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-rose-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Why T5</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            COMPACT <span className="text-rose-500">POWERHOUSE.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {WHY_CARDS.map((card, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: i * 0.15 }}
+                                className="group p-8 bg-[#0a101f] border border-rose-500/10 rounded-3xl hover:border-rose-500/40 transition-all">
+                                <div className="mb-6 p-4 rounded-2xl bg-rose-500/5 w-fit group-hover:bg-rose-500/15 transition-colors">
+                                    <card.icon className="w-8 h-8 text-rose-400" />
+                                </div>
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3">{card.title}</h3>
+                                <p className="text-white/40 text-sm leading-relaxed mb-6">{card.desc}</p>
+                                <div className="px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 inline-block">
+                                    <span className="text-rose-400 font-black text-lg">{card.stat}</span>
+                                    <span className="text-white/30 text-[10px] uppercase tracking-wider ml-2">{card.statLabel}</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video Section ── */}
+            <VideoSection videoId="7PaZSanCbHI" title="KEENON T5 — Stable Heavy-Load Delivery" variant="inline" accentColor="rose" />
+
+            {/* ── Sticky Feature Sections ── */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} alt={feat.title} index={i + 1} openLightbox={openLightbox} />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Boutique <span className="text-rose-400">Agility.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-rose-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* ── Spec Grid ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-rose-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Full Specifications</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TECHNICAL <span className="text-rose-500">DATA.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-rose-400 font-bold text-sm">{item.value}</span>
-                            </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.map((spec, idx) => (
+                            <motion.div key={idx} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
+                                className="group p-5 bg-[#0a101f] border border-rose-500/10 rounded-2xl hover:border-rose-500/40 transition-all">
+                                <span className="block text-white/25 text-[10px] uppercase font-black tracking-widest mb-1">{spec.label}</span>
+                                <span className="block text-rose-400 font-black text-sm uppercase tracking-tight group-hover:text-white transition-colors">{spec.value}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Upgrade your <span className="text-rose-400">Ambience.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-rose-500/40">Optimize Your Space <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* ── Industry Grid ── */}
+            <IndustryGrid
+                industries={INDUSTRIES}
+                accentColor="rose"
+                heading="Built for"
+                headingAccent="Every Venue"
+                label="Universal Service"
+                description="From boutique cafés to banquet halls, the T5 delivers consistent, high-capacity service across every hospitality environment."
+            />
 
+            {/* ── CTA ── */}
+            <ProductCTA
+                heading="COMPACT"
+                headingAccent="BRILLIANCE."
+                subtitle="Experience 4-tray heavy-load delivery in a compact frame. Engineered by KEENON, mastered by Mobilise."
+                accentColor="rose"
+                modelLabel="T5"
+            />
         </div>
     );
 }

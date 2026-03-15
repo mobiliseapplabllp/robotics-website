@@ -1,231 +1,286 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ChevronRight, ArrowRight, Play, CheckCircle, Star, Zap, Shield, Battery,
-    Wifi, Volume2, ChevronDown, Download, Phone, ExternalLink, Bot,
-    Navigation, Eye, Clock, Layers, Award, TrendingUp, Users, ZoomIn, X, UserCheck, Search
+    ArrowRight, Weight, Battery, Route, Shield, Clock,
+    Package, Truck, WifiOff, Zap, Navigation, Gauge,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
+import {
+    ProductLightbox, StickyFeatureSection, FloatingCTA,
+    MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+} from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/da5945d838104e25a86b225b448ac7f9.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "https://static.keenon.com/uploads/2025/10/10/c2f2f2bff40b48718b70e8b2f8a1ae44.jpg?x-oss-process=image/format,webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/02/10/23658280543b4d7d9302e689b6981ce5.png?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/02/10/13ec3c5471fc426da62aa2b187f9d8b0.png?x-oss-process=image/format,webp"
+    "https://static.keenon.com/uploads/2025/10/10/3a5fd78d1c4b4ce78a8bb4b43c1c5d4f.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/10/10/a9d49a2aff6e44b496f8f5001b3ef14c.jpg?x-oss-process=image/format,webp",
+    "https://static.keenon.com/uploads/2025/10/10/d1e65db5cd994f2cb2b91a0f59e8f1a7.jpg?x-oss-process=image/format,webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
+const TRIPLE_ROLES = [
+    {
+        num: "01",
+        title: "Heavy-Load",
+        accent: "Courier",
+        desc: "Carry 100+ kg payloads autonomously — linen carts, supply bins, equipment trolleys — across hospital corridors, hotel service areas, and factory floors without a single manual push.",
+        stats: [
+            { label: "Payload", value: "100+ kg" },
+            { label: "Battery Swap", value: "15 seconds" },
+        ],
+        icon: Weight,
+    },
+    {
+        num: "02",
+        title: "Multi-Point",
+        accent: "Routing",
+        desc: "Intelligent loop and multi-stop delivery routes that adapt in real-time. Queue tasks, set priorities, and let the S100 optimize its own path through complex facility layouts.",
+        stats: [
+            { label: "Modes", value: "Loop / Direct / Queue" },
+            { label: "Runtime", value: "8+ hours" },
+        ],
+        icon: Route,
+    },
+    {
+        num: "03",
+        title: "24/7",
+        accent: "Operation",
+        desc: "15-second hot-swap battery design enables true round-the-clock deployment. No charging downtime — swap and resume instantly from where the robot left off.",
+        stats: [
+            { label: "Swap Time", value: "15 seconds" },
+            { label: "Availability", value: "24/7 continuous" },
+        ],
+        icon: Battery,
+    },
+];
+
 const SPECS = [
-    {
-        category: "Interaction", items: [
-            { label: "Display", value: "21.5\" Full HD Interactive Screen" },
-            { label: "AI Engine", value: "NLP-powered conversational AI" },
-            { label: "Camera", value: "Face recognition HD camera" },
-            { label: "Languages", value: "40+ incl. 10 Indian languages" },
-        ]
-    },
-    {
-        category: "Capabilities", items: [
-            { label: "Navigation", value: "LIDAR + Visual SLAM" },
-            { label: "Battery Life", value: "8+ hours" },
-            { label: "Integration", value: "Access control, CRM, ERP" },
-            { label: "Payload Tray", value: "5 kg (document/card delivery)" },
-        ]
-    },
+    { label: "Dimensions (W×D×H)", value: "925 × 620 × 1282 mm" },
+    { label: "Weight", value: "87.5 kg" },
+    { label: "Load Capacity", value: "100+ kg" },
+    { label: "Max Speed", value: "1.0 m/s" },
+    { label: "Battery Life", value: "8+ hours" },
+    { label: "Battery Swap", value: "15 seconds" },
+    { label: "Navigation", value: "LiDAR SLAM + Stereo Vision" },
+    { label: "Safety", value: "360° obstacle avoidance" },
+    { label: "Deployment", value: "Marker-free" },
+    { label: "Delivery Modes", value: "Loop, Direct, Multi-point" },
+    { label: "Slope", value: "≤ 5°" },
+    { label: "Offline Mode", value: "Network-independent" },
+];
+
+const INDUSTRIES = [
+    { title: "Healthcare", desc: "Hospital linen, pharmacy, and sterile supply transport across multi-floor campuses.", img: "/images/products/s100/industry_healthcare.png" },
+    { title: "Hospitality", desc: "Hotel back-of-house logistics — towels, amenities, and F&B supplies delivered autonomously.", img: "/images/products/s100/industry_hospitality.png" },
+    { title: "Manufacturing", desc: "Factory floor material shuttle between stations, warehouses, and loading docks.", img: "/images/products/s100/industry_manufacturing.png" },
+    { title: "Logistics", desc: "Internal warehouse sortation and last-mile delivery within large distribution centers.", img: "/images/products/s100/industry_logistics.png" },
+    { title: "Corporate", desc: "Campus-wide document, package, and supply delivery for large enterprise facilities.", img: "/images/products/s100/industry_corporate.png" },
 ];
 
 const FEATURES = [
-    {
-        id: "reception",
-        icon: "👤",
-        iconComponent: UserCheck,
-        title: "AI Receptionist",
-        subtitle: "Smart Guest Management",
-        description: "The S100 transforms your foyer. Equipped with advanced face recognition and multi-language AI, it greets VIPs by name, verifies visitor identities, prints badges, and even integrates with your corporate access control to open gates autonomously.",
-        image: IMG_GALLERY[0],
-        color: "pink",
-        highlights: [
-            "Face recognition for VIP identification",
-            "Visitor management system integration",
-            "Autonomous guest escorting",
-            "Access control & badge printing",
-        ],
-    },
-    {
-        id: "display",
-        icon: "📱",
-        iconComponent: Layers,
-        title: "21.5\" Interactive Hub",
-        subtitle: "Commanding Visual Presence",
-        description: "Featuring a massive vertical touchscreen, the S100 serves as a powerful information kiosk. Whether it's showing building directories, hospital ward layouts, or corporate presentations, the high-vivid display ensures clarity and impact in any lighting.",
-        image: IMG_HERO,
-        color: "rose",
-        highlights: [
-            "21.5\" HD vivid touch interface",
-            "Interactive property guidance",
-            "Live video concierge support",
-            "Branded advertising playout",
-        ],
-    },
+    { id: "chassis", title: "Low-Profile Heavy-Load Chassis", image: IMG_GALLERY[0] },
+    { id: "navigation", title: "LiDAR SLAM Navigation System", image: IMG_GALLERY[1] },
+    { id: "safety", title: "360° Safety Shield", image: IMG_GALLERY[2] },
 ];
-
-const COLOR_MAP: Record<string, { text: string; bg: string; border: string; glow: string; gradient: string }> = {
-    pink: { text: "text-pink-400", bg: "bg-pink-500/10", border: "border-pink-400/30", glow: "shadow-pink-500/20", gradient: "from-pink-500 to-pink-700" },
-    rose: { text: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-400/30", glow: "shadow-rose-500/20", gradient: "from-rose-500 to-rose-700" },
-};
-
-/* ─── sub-components ────────────────────────────────────── */
-function ParallaxGalleryItem({ img, index, featureText, accent, openLightbox }: any) {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.4]);
-
-    return (
-        <div ref={ref} className="relative h-screen w-full">
-            <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#050a14]">
-                <motion.div style={{ scale, opacity }} className="absolute inset-0 w-full h-full">
-                    <button onClick={() => openLightbox(index)} className="w-full h-full cursor-zoom-in relative block focus:outline-none">
-                        <ImageWithFallback src={img} alt={featureText} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 md:to-black/40" />
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <ZoomIn className="w-12 h-12 text-white opacity-0 hover:opacity-100 transition-opacity bg-black/40 p-3 rounded-full backdrop-blur-sm" />
-                        </div>
-                    </button>
-                </motion.div>
-                {featureText && (
-                    <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-12 md:p-24">
-                        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                            className="bg-black/40 backdrop-blur-xl border-l-4 border-blue-500 p-6 rounded-r-xl max-w-md">
-                            <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black mb-2">Feature {index + 1}</p>
-                            <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight drop-shadow-2xl uppercase leading-none">{featureText}</h3>
-                        </motion.div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
-
-function RobotFace() {
-    const [mood, setMood] = useState(0);
-    const moods = ["💖", "👋", "✨", "🎯", "😊", "🌟"];
-    useEffect(() => {
-        const t = setInterval(() => setMood((m) => (m + 1) % moods.length), 2000);
-        return () => clearInterval(t);
-    }, []);
-    return (
-        <motion.div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 border-2 border-pink-500/40 flex items-center justify-center shadow-2xl shadow-pink-500/20"
-            animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-            <AnimatePresence mode="wait">
-                <motion.span key={mood} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}
-                    transition={{ duration: 0.3 }} className="text-6xl select-none">{moods[mood]}</motion.span>
-            </AnimatePresence>
-        </motion.div>
-    );
-}
 
 /* ─── main component ────────────────────────────────────── */
 export function S100Page() {
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [showVideo, setShowVideo] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowVideo(true), 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+    const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
 
     const allImages = [IMG_HERO, ...IMG_GALLERY];
-
     function openLightbox(i: number) { setLightboxIndex(i); setLightboxOpen(true); }
     function closeLightbox() { setLightboxOpen(false); }
 
     return (
         <div className="min-h-screen bg-[#050a14] text-white overflow-x-hidden">
 
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxOpen && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={closeLightbox}>
-                        <button onClick={closeLightbox} className="absolute top-5 right-5 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
-                        <motion.img key={lightboxIndex} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} src={allImages[lightboxIndex]}
-                            className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <ProductLightbox images={allImages} isOpen={lightboxOpen} currentIndex={lightboxIndex} onClose={closeLightbox} productName="S100" glowColor="rgba(236,72,153,0.15)" />
+            <FloatingCTA bgColor="bg-pink-500" glowColor="rgba(236,72,153,0.4)" glowHoverColor="rgba(236,72,153,0.6)" />
 
-            {/* Hero */}
-            <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-                <motion.div style={{ y: heroY }} className="absolute inset-0">
-                    <ImageWithFallback src={IMG_HERO} alt="KEENON S100" className="w-full h-full object-cover opacity-20" />
+            {/* ── Hero: Cinematic Low-Angle ── */}
+            <section ref={heroRef} className="relative h-screen flex items-end overflow-hidden">
+                <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
+                    {!showVideo && (
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON S100" className="w-full h-full object-cover" />
+                    )}
+                    {showVideo && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
+                            <iframe
+                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
+                                src="https://www.youtube.com/embed/KGtbV6l5aJQ?autoplay=1&mute=1&controls=0&loop=1&playlist=KGtbV6l5aJQ&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
+                                title="KEENON S100 Hero Video"
+                                allow="autoplay; fullscreen"
+                            />
+                        </motion.div>
+                    )}
+                    <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#050a14]/60 via-[#050a14]/40 to-[#050a14]" />
-                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-                    <div className="flex items-center justify-center gap-2 text-white/30 text-sm mb-8">
-                        <Link to="/" className="hover:text-white/60">Home</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <Link to="/products" className="hover:text-white/60">Products</Link>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-pink-400">KEENON S100</span>
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-pink-500/40 bg-pink-500/10 mb-6">
-                            <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" />
-                            <span className="text-pink-400 text-sm font-bold uppercase tracking-widest">Intelligent Service Ambassador</span>
-                        </div>
-                        <div className="flex justify-center mb-8"><RobotFace /></div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-4 tracking-tighter">
-                            <span className="bg-gradient-to-br from-white via-pink-100 to-pink-400 bg-clip-text text-transparent">S100</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/20" />
+
+                {/* Massive outlined typography */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
+                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2 }}>
+                        <h1 className="text-[12rem] sm:text-[16rem] lg:text-[22rem] font-black leading-none tracking-tighter uppercase italic text-transparent"
+                            style={{ WebkitTextStroke: "2px rgba(236,72,153,0.15)" }}>
+                            S100
                         </h1>
-                        <p className="text-2xl text-pink-400 font-semibold mb-6 tracking-wide">"Reception Reimagined"</p>
-                        <p className="text-white/50 text-lg max-w-2xl mx-auto mb-10">
-                            Sophisticated guest management. 21.5" HD interaction. Multi-language AI built for India's booming corporate and hospitality sectors.
+                    </motion.div>
+                </div>
+
+                <div className="relative z-10 max-w-7xl mx-auto px-6 pb-20 w-full">
+                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-pink-500/40 bg-pink-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-pink-400">
+                            <Weight className="w-3.5 h-3.5" /> Heavy-Load Autonomous Courier
+                        </div>
+                        <h2 className="text-5xl md:text-7xl font-black leading-none mb-3 tracking-tighter uppercase italic">
+                            <span className="text-white">THE</span>{" "}
+                            <span className="bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">COURIER.</span>
+                        </h2>
+                        <p className="text-white/40 text-lg max-w-xl mb-8 font-light">
+                            100+ kg payload. 15-second battery swap. Marker-free deployment. The autonomous heavy-load courier for 24/7 facility logistics.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                            <Link to="/contact" className="px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-pink-500/30">Request a Demo <ArrowRight className="inline ml-2" /></Link>
+
+                        <div className="flex flex-wrap gap-4 items-center">
+                            <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(236,72,153,0.3)] hover:shadow-[0_0_60px_rgba(236,72,153,0.5)] transition-all flex items-center gap-3">
+                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                            <div className="flex gap-6 ml-4">
+                                {[
+                                    { value: "100+ kg", label: "Payload" },
+                                    { value: "15s", label: "Battery Swap" },
+                                    { value: "24/7", label: "Operation" },
+                                ].map((stat) => (
+                                    <div key={stat.label} className="text-center">
+                                        <div className="text-xl font-black text-pink-400 tracking-tight">{stat.value}</div>
+                                        <div className="text-[9px] text-white/30 uppercase tracking-widest font-black">{stat.label}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </motion.div>
                 </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
+                    <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-pink-500 to-transparent rounded-full" />
+                </div>
             </section>
 
-            {/* Feature Parallax */}
+            {/* ── Mobilise Authority ── */}
+            <MobiliseAuthoritySection variant="glow" accentColor="pink" />
+
+            {/* ── Triple Role: Z-Pattern Cards ── */}
+            <section className="py-32 bg-[#030710] border-t border-pink-500/10 relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-pink-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Triple Capability</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            ONE ROBOT. <span className="text-pink-500">THREE ROLES.</span>
+                        </h2>
+                    </div>
+
+                    <div className="space-y-8">
+                        {TRIPLE_ROLES.map((role, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 40 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.7, delay: i * 0.15 }}
+                                className={`grid md:grid-cols-2 gap-8 items-center ${i % 2 === 1 ? "md:direction-rtl" : ""}`}
+                            >
+                                <div className={`${i % 2 === 1 ? "md:order-2" : ""}`}>
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="text-[5rem] font-black text-pink-500/15 leading-none select-none">{role.num}</div>
+                                        <div>
+                                            <div className="p-3 rounded-xl bg-pink-500/10 w-fit mb-2">
+                                                <role.icon className="w-6 h-6 text-pink-400" />
+                                            </div>
+                                            <h3 className="text-3xl font-black text-white uppercase tracking-tight">
+                                                {role.title} <span className="text-pink-400">{role.accent}</span>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <p className="text-white/40 text-base leading-relaxed mb-6">{role.desc}</p>
+                                    <div className="flex gap-6">
+                                        {role.stats.map((stat) => (
+                                            <div key={stat.label} className="bg-pink-500/5 border border-pink-500/15 rounded-xl px-4 py-3">
+                                                <span className="block text-[9px] text-white/30 uppercase tracking-widest font-black mb-0.5">{stat.label}</span>
+                                                <span className="block text-pink-400 font-black text-sm">{stat.value}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className={`${i % 2 === 1 ? "md:order-1" : ""} h-px bg-gradient-to-r from-transparent via-pink-500/20 to-transparent hidden md:block`} />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video Section ── */}
+            <VideoSection videoId="nWFOEiiLzTc" title="KEENON S100 — Heavy-Load Autonomous Courier" variant="cinematic" accentColor="pink" />
+
+            {/* ── Sticky Feature Sections ── */}
             <div className="w-full">
                 {FEATURES.map((feat, i) => (
-                    <ParallaxGalleryItem key={feat.id} img={feat.image} index={i} featureText={feat.title} accent={feat.color} openLightbox={openLightbox} />
+                    <StickyFeatureSection key={feat.id} img={feat.image} alt={feat.title} index={i} openLightbox={openLightbox} />
                 ))}
             </div>
 
-            {/* Full Specs */}
-            <section className="py-28 bg-[#030710] border-t border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-black text-white mb-16">Smart <span className="text-pink-400">Interactions.</span></h2>
-                    <div className="flex flex-wrap justify-center gap-2 mb-10">
-                        {SPECS.map((cat, i) => (
-                            <button key={i} onClick={() => setActiveSpecCat(i)}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${activeSpecCat === i ? "bg-pink-500 text-white" : "bg-white/5 border border-white/10 text-white/50"}`}>{cat.category}</button>
-                        ))}
+            {/* ── Spec Grid ── */}
+            <section className="py-32 bg-[#050a14]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <span className="text-pink-500 text-sm font-black uppercase tracking-[0.4em] mb-4 block">Industrial Grade</span>
+                        <h2 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter italic leading-none">
+                            TECHNICAL <span className="text-pink-500">SUPERIORITY.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-3 text-left">
-                        {SPECS[activeSpecCat].items.map((item) => (
-                            <div key={item.label} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl">
-                                <span className="text-white/50 text-sm">{item.label}</span>
-                                <span className="text-pink-400 font-bold text-sm">{item.value}</span>
-                            </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {SPECS.map((spec, idx) => (
+                            <motion.div key={idx} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}
+                                className="group p-5 bg-[#0a101f] border border-pink-500/10 rounded-2xl hover:border-pink-500/40 transition-all">
+                                <span className="block text-white/25 text-[10px] uppercase font-black tracking-widest mb-1">{spec.label}</span>
+                                <span className="block text-pink-400 font-black text-sm uppercase tracking-tight group-hover:text-white transition-colors">{spec.value}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-24 relative overflow-hidden text-center">
-                <div className="relative z-10 max-w-4xl mx-auto px-4">
-                    <h2 className="text-5xl lg:text-7xl font-black text-white mb-6">Upgrade your <span className="text-pink-400">Welcome.</span></h2>
-                    <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl text-white font-black text-xl shadow-2xl shadow-pink-500/40">Optimize Your Front Desk <ArrowRight className="w-5 h-5" /></Link>
-                </div>
-            </section>
+            {/* ── Industry Grid ── */}
+            <IndustryGrid
+                industries={INDUSTRIES}
+                accentColor="pink"
+                heading="Built for"
+                headingAccent="Heavy Logistics"
+                label="Industrial Deployment"
+                description="The S100 is engineered for autonomous heavy-load courier operations — from hospital supply chains to hotel back-of-house logistics."
+            />
 
+            {/* ── CTA ── */}
+            <ProductCTA
+                heading="HEAVY-LOAD"
+                headingAccent="COURIER."
+                subtitle="Experience 100+ kg autonomous delivery with 15-second battery swap. Engineered by KEENON, mastered by Mobilise."
+                accentColor="pink"
+                modelLabel="S100"
+            />
         </div>
     );
 }
