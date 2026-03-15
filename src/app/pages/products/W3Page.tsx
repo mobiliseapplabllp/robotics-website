@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Building2, Package, Wifi, Battery, Gauge, Eye, DoorClosed, Layers } from "lucide-react";
+import { Building2, Package, Wifi, Battery, DoorClosed, Layers } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
@@ -101,11 +100,11 @@ export function W3Page() {
                 glowHoverColor="rgba(34,197,94,0.6)"
             />
 
-            {/* ── Hero: Industrial Gauge ── */}
+            {/* ── Hero ── */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON W3" className="w-full h-full object-cover opacity-50" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON W3" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -119,52 +118,9 @@ export function W3Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/60 to-black/40" />
-
-                {/* Steel texture overlay */}
-                <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
-                    style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34,197,94,0.3) 2px, rgba(34,197,94,0.3) 3px)" }}
-                />
-
-                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-green-500/40 bg-green-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-green-400">
-                            <Building2 className="w-3.5 h-3.5" /> Autonomous Hotel Delivery Butler
-                        </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-2 tracking-tighter uppercase italic">
-                            <span className="bg-gradient-to-br from-white via-green-100 to-green-500 bg-clip-text text-transparent">W3</span>
-                        </h1>
-                        <p className="text-2xl text-green-400 font-black uppercase tracking-[0.15em] mb-6 italic drop-shadow-[0_0_20px_rgba(34,197,94,0.3)]">
-                            The Industrial Powerhouse
-                        </p>
-                        <p className="text-white/40 text-lg max-w-2xl mx-auto mb-12 font-light">
-                            4 enclosed compartments. IoT elevator integration. 120+ autonomous deliveries per day across unlimited floors.
-                        </p>
-
-                        {/* Gauge Stats Bar */}
-                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-green-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
-                            {GAUGE_STATS.map((stat) => (
-                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
-                                    <stat.icon className="w-5 h-5 text-green-400 mx-auto mb-1.5" />
-                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
-                                        {stat.value} <span className="text-green-400/60 text-xs font-bold">{stat.unit}</span>
-                                    </div>
-                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
-
-                <div className="absolute bottom-12 right-12 z-20">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-                        <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(34,197,94,0.3)] hover:shadow-[0_0_60px_rgba(34,197,94,0.5)] transition-all flex items-center gap-3">
-                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-                </div>
-
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+                <div className="relative z-10" />
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-green-500 to-transparent rounded-full" />
                 </div>

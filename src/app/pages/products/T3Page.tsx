@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, DoorOpen, Layers, ShieldCheck, Route, Footprints, Lock, Thermometer, Box } from "lucide-react";
+import { DoorOpen, Layers, ShieldCheck, Route, Footprints, Lock, Thermometer, Box } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
@@ -108,11 +107,11 @@ export function T3Page() {
                 glowHoverColor="rgba(20,184,166,0.6)"
             />
 
-            {/* ── Hero: Frosted-Glass Split ── */}
-            <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
+            {/* ── Hero ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON T3" className="w-full h-full object-cover opacity-40" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON T3" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -126,52 +125,11 @@ export function T3Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#050a14] via-[#050a14]/80 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
 
-                <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    {/* Left: Text + Stats Panel */}
-                    <div>
-                        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-teal-500/40 bg-teal-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-teal-400">
-                                <DoorOpen className="w-3.5 h-3.5" /> Hygienic Delivery Master
-                            </div>
-                            <h1 className="text-7xl sm:text-8xl lg:text-[9rem] font-black leading-none mb-4 tracking-tighter uppercase italic">
-                                <span className="bg-gradient-to-br from-white via-teal-100 to-teal-500 bg-clip-text text-transparent">T3</span>
-                            </h1>
-                            <p className="text-2xl text-teal-400 font-black uppercase tracking-[0.15em] mb-4 italic drop-shadow-[0_0_20px_rgba(20,184,166,0.3)]">
-                                The Hygienic Vault
-                            </p>
-                            <p className="text-white/40 text-lg max-w-lg mb-10 font-light leading-relaxed">
-                                180L enclosed cabin with step-activated doors and password security. Engineered for the highest hygiene standards in healthcare and premium F&B.
-                            </p>
+                <div className="relative z-10" />
 
-                            {/* Frosted Stats Panel */}
-                            <div className="bg-white/5 backdrop-blur-xl border border-teal-500/20 rounded-2xl p-6 max-w-md">
-                                <div className="grid grid-cols-3 divide-x divide-white/10">
-                                    {HERO_STATS.map((stat) => (
-                                        <div key={stat.label} className="px-4 text-center first:pl-0 last:pr-0">
-                                            <stat.icon className="w-5 h-5 text-teal-400 mx-auto mb-2" />
-                                            <div className="text-2xl font-black text-white tracking-tight">{stat.value}</div>
-                                            <div className="text-[10px] text-white/30 uppercase tracking-widest font-black mt-1">{stat.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    {/* Right: Hero CTA */}
-                    <div className="hidden lg:flex justify-end items-end pb-8">
-                        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.4 }}>
-                            <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(20,184,166,0.3)] hover:shadow-[0_0_60px_rgba(20,184,166,0.5)] transition-all flex items-center gap-3">
-                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </motion.div>
-                    </div>
-                </div>
-
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-teal-500 to-transparent rounded-full" />
                 </div>

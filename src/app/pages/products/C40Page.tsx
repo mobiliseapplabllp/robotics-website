@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Bot, Navigation, Zap, Shield } from "lucide-react";
+import { Bot, Navigation, Zap, Shield } from "lucide-react";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, ProductCTA,
@@ -110,17 +109,11 @@ export function C40Page() {
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
 
-                <div className="absolute bottom-12 right-12 z-20">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-                        <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)] transition-all flex items-center gap-3">
-                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-                </div>
+                <div className="relative z-10" />
 
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-orange-500 to-transparent rounded-full" />
                 </div>

@@ -112,10 +112,10 @@ export function T9ProPage() {
             <FloatingCTA bgColor="bg-yellow-500" glowColor="rgba(234,179,8,0.4)" glowHoverColor="rgba(234,179,8,0.6)" />
 
             {/* ── Hero: Automotive Luxury Reveal ── */}
-            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON T9 Pro" className="w-full h-full object-cover opacity-30" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON T9 Pro" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -129,47 +129,8 @@ export function T9ProPage() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                {/* Gold horizontal accent line */}
-                <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
-                    className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/40 to-black/50" />
-
-                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-yellow-500/40 bg-yellow-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-yellow-400">
-                            <Crown className="w-3.5 h-3.5" /> Premium Delivery Robot
-                        </div>
-
-                        <div className="flex justify-center mb-6">
-                            <RobotFace expressions={["👑", "💎", "✨", "🏆", "⭐", "💫"]} borderColor="border-yellow-500/40" shadowColor="shadow-yellow-500/20" />
-                        </div>
-
-                        <h1 className="text-8xl sm:text-9xl lg:text-[10rem] font-black leading-none tracking-tighter uppercase italic">
-                            <span className="bg-gradient-to-br from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text text-transparent">T9 Pro</span>
-                        </h1>
-                        <p className="text-2xl text-yellow-400 font-black uppercase tracking-[0.15em] mt-2 italic">The Gold Standard</p>
-                        <p className="text-white/40 text-lg max-w-xl mx-auto mt-4 mb-10 font-light">
-                            Enhanced stereo vision. Tuned suspension. Premium build quality. The definitive upgrade for discerning hospitality operators.
-                        </p>
-
-                        {/* Stats bar */}
-                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-yellow-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
-                            {HERO_STATS.map((stat) => (
-                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
-                                    <stat.icon className="w-5 h-5 text-yellow-400 mx-auto mb-1.5" />
-                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
-                                        {stat.value} <span className="text-yellow-400/60 text-xs font-bold">{stat.unit}</span>
-                                    </div>
-                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+                <div className="relative z-10" />
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>

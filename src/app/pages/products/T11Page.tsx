@@ -87,7 +87,7 @@ export function T11Page() {
                     />
                 </motion.div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-black/20 z-20" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent z-20" />
 
                 <div className="relative z-30 w-full h-full pt-20">
                     <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">

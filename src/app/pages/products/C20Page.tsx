@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Volume2, Filter, Minimize2, Sparkles } from "lucide-react";
+import { Filter, Minimize2, Sparkles } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
@@ -113,11 +112,11 @@ export function C20Page() {
                 glowHoverColor="rgba(163,230,53,0.6)"
             />
 
-            {/* ── Hero: Sound-Wave Minimalist ── */}
+            {/* ── Hero ── */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON C20" className="w-full h-full object-cover opacity-30" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON C20" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -131,55 +130,9 @@ export function C20Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/70 to-black/30" />
-
-                {/* Concentric sound waves */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    {[1, 2, 3, 4].map((ring) => (
-                        <motion.div
-                            key={ring}
-                            className="absolute rounded-full border border-lime-500/10"
-                            style={{ width: `${ring * 200}px`, height: `${ring * 200}px` }}
-                            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.08, 0.3] }}
-                            transition={{ duration: 3 + ring * 0.5, repeat: Infinity, delay: ring * 0.3 }}
-                        />
-                    ))}
-                </div>
-
-                <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-lime-500/40 bg-lime-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-lime-400">
-                            <Volume2 className="w-3.5 h-3.5" /> Ultra-Compact 3-in-1
-                        </div>
-                        <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-black leading-none mb-2 tracking-tighter uppercase italic">
-                            <span className="bg-gradient-to-br from-white via-lime-100 to-lime-500 bg-clip-text text-transparent">C20</span>
-                        </h1>
-                        <p className="text-2xl text-lime-400 font-black uppercase tracking-[0.15em] mb-3 italic drop-shadow-[0_0_20px_rgba(163,230,53,0.3)]">
-                            The Silent Guardian
-                        </p>
-
-                        {/* Decibel Infographic */}
-                        <div className="inline-flex items-baseline gap-3 mb-6">
-                            <span className="text-6xl md:text-7xl font-black text-white tracking-tighter">52</span>
-                            <span className="text-lg text-lime-400 font-black uppercase tracking-widest">dB</span>
-                            <span className="text-white/30 text-sm font-medium ml-2">Quieter than a library</span>
-                        </div>
-
-                        <p className="text-white/40 text-lg max-w-2xl mx-auto mb-10 font-light">
-                            22 kg. 351mm low profile. Professional 3-in-1 cleaning that fits everywhere and disturbs no one.
-                        </p>
-                    </motion.div>
-                </div>
-
-                <div className="absolute bottom-12 right-12 z-20">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
-                        <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-lime-500 to-green-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(163,230,53,0.3)] hover:shadow-[0_0_60px_rgba(163,230,53,0.5)] transition-all flex items-center gap-3">
-                            Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-                </div>
-
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+                <div className="relative z-10" />
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-lime-500 to-transparent rounded-full" />
                 </div>

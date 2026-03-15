@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Compass, Zap, Eye, Battery, Clock,
+    Compass, Zap, Eye, Battery, Clock,
     Building2, Gauge, Scan, Hand,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
@@ -102,8 +101,8 @@ export function T8Page() {
             <ProductLightbox images={allImages} isOpen={lightboxOpen} currentIndex={lightboxIndex} onClose={closeLightbox} productName="T8" glowColor="rgba(56,189,248,0.15)" />
             <FloatingCTA bgColor="bg-sky-500" glowColor="rgba(56,189,248,0.4)" glowHoverColor="rgba(56,189,248,0.6)" />
 
-            {/* ── Hero: Blueprint Technical ── */}
-            <section ref={heroRef} className="relative h-screen flex items-end overflow-hidden">
+            {/* ── Hero ── */}
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
                     {!showVideo && (
                         <ImageWithFallback src={IMG_HERO} alt="KEENON T8" className="w-full h-full object-cover" />
@@ -120,51 +119,9 @@ export function T8Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
 
-                {/* Blueprint grid overlay */}
-                <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
-                    style={{ backgroundImage: "linear-gradient(rgba(56,189,248,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/20" />
-
-                {/* Outlined typography */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
-                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2 }}>
-                        <h1 className="text-[12rem] sm:text-[16rem] lg:text-[22rem] font-black leading-none tracking-tighter uppercase italic text-transparent"
-                            style={{ WebkitTextStroke: "2px rgba(56,189,248,0.12)" }}>
-                            T8
-                        </h1>
-                    </motion.div>
-                </div>
-
-                {/* Dimension annotations */}
-                <div className="absolute top-1/3 right-[15%] hidden lg:block pointer-events-none">
-                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}
-                        className="text-sky-400/60 font-mono text-xs border-l border-sky-400/30 pl-3">
-                        <div>384 × 468 × 1111 mm</div>
-                        <div className="text-white/20 mt-1">Compact Chassis</div>
-                    </motion.div>
-                </div>
-
-                <div className="relative z-10 max-w-7xl mx-auto px-6 pb-20 w-full">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-sky-500/40 bg-sky-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-sky-400">
-                            <Compass className="w-3.5 h-3.5" /> Compact Agility Champion
-                        </div>
-                        <h2 className="text-5xl md:text-7xl font-black leading-none mb-3 tracking-tighter uppercase italic">
-                            <span className="text-white">THE</span>{" "}
-                            <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">WORKHORSE.</span>
-                        </h2>
-                        <p className="text-white/40 text-lg max-w-xl mb-8 font-light">
-                            55 cm ultra-narrow passage. 15-hour endurance. Trusted by 60,000+ businesses worldwide. The industry's most agile delivery robot.
-                        </p>
-
-                        <div className="flex flex-wrap gap-4 items-center">
-                            <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(56,189,248,0.3)] hover:shadow-[0_0_60px_rgba(56,189,248,0.5)] transition-all flex items-center gap-3">
-                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </div>
-                    </motion.div>
-                </div>
+                <div className="relative z-10" />
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>

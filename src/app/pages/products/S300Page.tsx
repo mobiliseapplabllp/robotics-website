@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Weight, Truck, Shield, Battery, Navigation,
+    Weight, Truck, Shield, Battery, Navigation,
     Zap, Route, WifiOff, Package, Clock, Gauge
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
@@ -127,7 +126,7 @@ export function S300Page() {
             />
 
             {/* ── Hero: Cinematic Low-Angle Panoramic ── */}
-            <section ref={heroRef} className="relative h-screen flex items-end overflow-hidden">
+            <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0">
                     {!showVideo && (
                         <ImageWithFallback src={IMG_HERO} alt="KEENON S300" className="w-full h-full object-cover" />
@@ -144,54 +143,9 @@ export function S300Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/20" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
 
-                {/* Massive outlined typography */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.2 }}
-                    >
-                        <h1 className="text-[12rem] sm:text-[16rem] lg:text-[22rem] font-black leading-none tracking-tighter uppercase italic text-transparent"
-                            style={{ WebkitTextStroke: "2px rgba(129,140,248,0.15)" }}>
-                            S300
-                        </h1>
-                    </motion.div>
-                </div>
-
-                <div className="relative z-10 max-w-7xl mx-auto px-6 pb-20 w-full">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-indigo-500/40 bg-indigo-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-indigo-400">
-                            <Weight className="w-3.5 h-3.5" /> Heavy-Load Delivery Robot
-                        </div>
-                        <h2 className="text-5xl md:text-7xl font-black leading-none mb-3 tracking-tighter uppercase italic">
-                            <span className="text-white">THE</span>{" "}
-                            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">VANGUARD.</span>
-                        </h2>
-                        <p className="text-white/40 text-lg max-w-xl mb-8 font-light">
-                            300 kg payload. 23 cm ultra-low chassis. 1-day marker-free deployment. The most powerful autonomous delivery platform in the KEENON lineup.
-                        </p>
-
-                        <div className="flex flex-wrap gap-4 items-center">
-                            <Link to="/contact" className="group px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-full text-white font-black text-lg shadow-[0_0_40px_rgba(99,102,241,0.3)] hover:shadow-[0_0_60px_rgba(99,102,241,0.5)] transition-all flex items-center gap-3">
-                                Talk To Experts <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                            <div className="flex gap-6 ml-4">
-                                {[
-                                    { value: "300 kg", label: "Payload" },
-                                    { value: "23 cm", label: "Chassis" },
-                                    { value: "24/7", label: "Operation" },
-                                ].map((stat) => (
-                                    <div key={stat.label} className="text-center">
-                                        <div className="text-xl font-black text-indigo-400 tracking-tight">{stat.value}</div>
-                                        <div className="text-[9px] text-white/30 uppercase tracking-widest font-black">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
+                <div className="relative z-10" />
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>

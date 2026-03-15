@@ -121,7 +121,7 @@ export function T10Page() {
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON T10" className="w-full h-full object-cover opacity-30" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON T10" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -135,50 +135,8 @@ export function T10Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/40" />
-
-                {/* Massive outlined typography background */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
-                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2 }}>
-                        <h1 className="text-[14rem] sm:text-[18rem] lg:text-[24rem] font-black leading-none tracking-tighter uppercase italic text-transparent"
-                            style={{ WebkitTextStroke: "2px rgba(168,85,247,0.12)" }}>
-                            T10
-                        </h1>
-                    </motion.div>
-                </div>
-
-                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-purple-400">
-                            <Sparkles className="w-3.5 h-3.5" /> Interactive Display Robot
-                        </div>
-
-                        <div className="flex justify-center mb-6">
-                            <RobotFace expressions={["🎨", "✨", "💜", "🔮", "🌟", "💎"]} borderColor="border-purple-500/40" shadowColor="shadow-purple-500/20" />
-                        </div>
-
-                        <h2 className="text-6xl md:text-8xl font-black leading-none tracking-tighter uppercase italic">
-                            <span className="text-white">THE </span>
-                            <span className="bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">FLAGSHIP.</span>
-                        </h2>
-                        <p className="text-white/40 text-lg max-w-xl mx-auto mt-4 mb-10 font-light">
-                            23.8" interactive display. Servo-driven head tracking. 5-sensor vision fusion. The most intelligent delivery platform in the KEENON lineup.
-                        </p>
-
-                        {/* Stats bar */}
-                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-purple-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
-                            {HERO_STATS.map((stat) => (
-                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
-                                    <stat.icon className="w-5 h-5 text-purple-400 mx-auto mb-1.5" />
-                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
-                                        {stat.value} <span className="text-purple-400/60 text-xs font-bold">{stat.unit}</span>
-                                    </div>
-                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
+                <div className="relative z-10" />
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>

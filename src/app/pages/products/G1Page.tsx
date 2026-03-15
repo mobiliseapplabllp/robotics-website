@@ -1,15 +1,14 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Monitor, Eye, Globe, Users, MessageSquare,
-    MapPin, HandMetal, Sparkles, Languages, ScanFace,
+    Monitor, Eye, Globe, Users, MessageSquare,
+    MapPin, HandMetal, ScanFace,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection,
-    ProductCTA, RobotFace,
+    ProductCTA,
 } from "../../components/product";
 
 /* ─── image assets ─────────────────────────────────────── */
@@ -20,13 +19,6 @@ const IMG_GALLERY = [
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "40+", unit: "langs", label: "Languages", icon: Globe },
-    { value: "Dual", unit: "screen", label: "Display", icon: Monitor },
-    { value: "Face", unit: "ID", label: "Recognition", icon: ScanFace },
-    { value: "24/7", unit: "active", label: "Operation", icon: Users },
-];
-
 const GUEST_JOURNEY = [
     { step: "01", title: "Arrival", desc: "G1 detects guest approach via depth sensors and initiates greeting protocol.", icon: Eye },
     { step: "02", title: "Recognition", desc: "Face recognition identifies returning VIPs and retrieves personalized preferences.", icon: ScanFace },
@@ -92,7 +84,7 @@ export function G1Page() {
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
                     {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON G1" className="w-full h-full object-cover opacity-30" />
+                        <ImageWithFallback src={IMG_HERO} alt="KEENON G1" className="w-full h-full object-cover" />
                     )}
                     {showVideo && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
@@ -106,43 +98,9 @@ export function G1Page() {
                     )}
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
-                {/* Soft radial glow */}
-                <div className="absolute inset-0 pointer-events-none"
-                    style={{ background: "radial-gradient(ellipse 50% 60% at 50% 40%, rgba(217,70,239,0.06) 0%, transparent 70%)" }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/50 to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
 
-                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-fuchsia-500/40 bg-fuchsia-500/10 mb-6 uppercase tracking-[0.3em] font-black text-[10px] text-fuchsia-400">
-                            <Sparkles className="w-3.5 h-3.5" /> AI Service & Reception Robot
-                        </div>
-
-                        <div className="flex justify-center mb-6">
-                            <RobotFace expressions={["🎀", "✨", "💜", "🌸", "⭐", "💫"]} borderColor="border-fuchsia-500/40" shadowColor="shadow-fuchsia-500/20" />
-                        </div>
-
-                        <h1 className="text-8xl sm:text-9xl lg:text-[12rem] font-black leading-none tracking-tighter uppercase italic">
-                            <span className="bg-gradient-to-br from-white via-fuchsia-100 to-fuchsia-500 bg-clip-text text-transparent">G1</span>
-                        </h1>
-                        <p className="text-2xl text-fuchsia-400 font-black uppercase tracking-[0.15em] mt-2 italic">The Digital Concierge</p>
-                        <p className="text-white/40 text-lg max-w-xl mx-auto mt-4 mb-10 font-light">
-                            40+ languages. Face recognition. Dual advertising screens. The AI-powered service and reception robot for premium hospitality.
-                        </p>
-
-                        {/* Stats bar */}
-                        <div className="inline-flex flex-wrap justify-center gap-4 md:gap-0 bg-white/5 backdrop-blur-xl border border-fuchsia-500/20 rounded-2xl p-4 md:divide-x md:divide-white/10">
-                            {HERO_STATS.map((stat) => (
-                                <div key={stat.label} className="px-6 md:px-8 py-2 text-center">
-                                    <stat.icon className="w-5 h-5 text-fuchsia-400 mx-auto mb-1.5" />
-                                    <div className="text-2xl md:text-3xl font-black text-white tracking-tight">
-                                        {stat.value} <span className="text-fuchsia-400/60 text-xs font-bold">{stat.unit}</span>
-                                    </div>
-                                    <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-0.5">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
+                <div className="relative z-10" />
 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">Scroll to Discover</span>
