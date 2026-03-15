@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Filter, Minimize2, Sparkles } from "lucide-react";
-import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
@@ -77,13 +76,6 @@ const GALLERY_FEATURES = [
 export function C20Page() {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
-    const [showVideo, setShowVideo] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setShowVideo(true), 3000);
-        return () => clearTimeout(timer);
-    }, []);
-
     const heroRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
     const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
@@ -115,19 +107,16 @@ export function C20Page() {
             {/* ── Hero ── */}
             <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
                 <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0">
-                    {!showVideo && (
-                        <ImageWithFallback src={IMG_HERO} alt="KEENON C20" className="w-full h-full object-cover" />
-                    )}
-                    {showVideo && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden scale-110">
-                            <iframe
-                                className="absolute top-1/2 left-1/2 w-[115%] h-[115%] -translate-x-1/2 -translate-y-1/2 aspect-video"
-                                src="https://www.youtube.com/embed/JAEnvexMePw?autoplay=1&mute=1&controls=0&loop=1&playlist=JAEnvexMePw&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1"
-                                title="KEENON C20 Hero Video"
-                                allow="autoplay; fullscreen"
-                            />
-                        </motion.div>
-                    )}
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster={IMG_HERO}
+                        className="absolute inset-0 w-full h-full object-cover"
+                    >
+                        <source src="/videos/c20-hero.mp4" type="video/mp4" />
+                    </video>
                     <div className="absolute inset-0 bg-transparent z-10" />
                 </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-transparent to-transparent" />
