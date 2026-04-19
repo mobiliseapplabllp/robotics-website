@@ -1,0 +1,68 @@
+# Render Blueprint — Mobilise Robotics website
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Deploy by linking this repo in the Render dashboard:
+#   1. Go to https://dashboard.render.com/select-repo?type=blueprint
+#   2. Select this repo → Render will detect render.yaml and create the service
+#   3. Set custom domain in the service settings once ready
+#
+# Or deploy imperatively: create a new Static Site in the dashboard, point it at
+# this repo, set build command = `npm ci && npm run build`, publish directory =
+# `./dist`, and add the rewrite rule below.
+
+services:
+  - type: web
+    name: mobilise-robotics
+    runtime: static
+    # Use npm ci for reproducible installs from package-lock.json
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    # Preview environments for PRs — great for reviewing marketing copy/design changes
+    pullRequestPreviewsEnabled: true
+
+    # SPA fallback — every unknown path serves index.html, React Router handles it
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+    # Security headers + long-cache for hashed assets
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()
+      # Vite fingerprints hashed assets — safe to cache forever
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # Images & video — cache a week (URLs can change, so don't be aggressive)
+      - path: /*.jpg
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.jpeg
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.png
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.webp
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.svg
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.mp4
+        name: Cache-Control
+        value: public, max-age=604800
+      - path: /*.ico
+        name: Cache-Control
+        value: public, max-age=604800
