@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    Monitor, Eye, Globe, Users, MessageSquare,
+    Eye, MessageSquare,
     MapPin, HandMetal, ScanFace,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
@@ -13,10 +13,10 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/10/10/b8a2c1d4e5f6a7b8c9d0e1f2a3b4c5d6.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/g1/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/10/10/f1e2d3c4b5a6978869504132a7b8c9d0.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/10/10/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d7.jpg?x-oss-process=image/format,webp",
+    "/images/products/g1/gallery-1.webp",
+    "/images/products/g1/gallery-2.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */

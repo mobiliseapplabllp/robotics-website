@@ -17,10 +17,8 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Relaxed: existing Figma-generated product pages have many unused imports.
-       Re-enable after cleaning them up — tracked as a future cleanup task. */
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
     "types": ["node"],
 

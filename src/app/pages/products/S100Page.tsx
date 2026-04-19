@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    Weight, Battery, Route, Shield, Clock,
-    Package, Truck, WifiOff, Zap, Navigation, Gauge,
+    Weight, Battery, Route,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
@@ -13,11 +12,12 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/10/10/c2f2f2bff40b48718b70e8b2f8a1ae44.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/s100/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/10/10/3a5fd78d1c4b4ce78a8bb4b43c1c5d4f.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/10/10/a9d49a2aff6e44b496f8f5001b3ef14c.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/10/10/d1e65db5cd994f2cb2b91a0f59e8f1a7.jpg?x-oss-process=image/format,webp",
+    "/images/products/s100/gallery-1.webp",
+    "/images/products/s100/gallery-2.webp",
+    "/images/products/s100/gallery-3.webp",
+    "/images/products/s100/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */

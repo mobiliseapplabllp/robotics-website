@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Building2, Package, Wifi, Battery, DoorClosed, Layers } from "lucide-react";
+import { Building2, Package, Wifi, DoorClosed } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
@@ -10,20 +10,15 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/66c020578366481596e71cfedc10aa25.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/w3/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/a8179615751d47d587d41b6301deb648.webp",
-    "https://static.keenon.com/uploads/images/10becb8073c94840b6bb9e3b03535780.webp",
+    "/images/products/w3/gallery-1.webp",
+    "/images/products/w3/gallery-2.webp",
+    "/images/products/w3/gallery-3.webp",
+    "/images/products/w3/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const GAUGE_STATS = [
-    { value: "120+", unit: "per day", label: "Deliveries", icon: Package },
-    { value: "4", unit: "cabins", label: "Compartments", icon: Layers },
-    { value: "12 hr", unit: "shift", label: "Battery Life", icon: Battery },
-    { value: "90 L", unit: "total", label: "Internal Volume", icon: DoorClosed },
-];
-
 const PIPELINE_STEPS = [
     { step: "01", title: "Guest Orders", desc: "Room service request is placed via hotel system or reception desk, automatically dispatched to W3.", icon: Building2 },
     { step: "02", title: "Secure Loading", desc: "Staff loads items into enclosed compartments with automatic doors. Ventilation keeps items fresh.", icon: Package },

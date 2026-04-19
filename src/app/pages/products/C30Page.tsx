@@ -9,9 +9,12 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/5bc901fd4a6a4f8d925eee15d5282b28.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/c30/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/de67edd2fbee407aaadd617ded3e9fdf.jpg?x-oss-process=image/format,webp"
+    "/images/products/c30/gallery-1.webp",
+    "/images/products/c30/gallery-2.webp",
+    "/images/products/c30/gallery-3.webp",
+    "/images/products/c30/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
@@ -70,7 +73,6 @@ const FEATURES = [
 /* ─── main component ────────────────────────────────────── */
 export function C30Page() {
     useProductPageSetup("c30");
-    const [activeSpecCat, setActiveSpecCat] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [showVideo, setShowVideo] = useState(false);

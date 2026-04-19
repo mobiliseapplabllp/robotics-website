@@ -9,7 +9,7 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── local image assets ────────────────────────────────── */
-const IMG_HERO = "/images/products/c40/c40_hero.webp";
+const IMG_HERO = "/images/products/c40/hero.webp";
 const IMG_FEATURES = [
     "/images/products/c40/c40_feature_5.webp",
     "/images/products/c40/c40_feature_6.webp",

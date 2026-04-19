@@ -107,13 +107,13 @@ const VIDEOS: VideoItem[] = [
   {
     id: "w3",
     robotName: "W3",
-    tagline: "Intelligent Commercial Scrubbing Robot",
-    category: "cleaning",
+    tagline: "Autonomous Hotel Delivery Butler",
+    category: "delivery",
     videoId: "IhBv7JIJQ5M",
-    accentColor: "teal",
-    accentClass: "text-teal-400",
-    borderClass: "border-teal-400/40",
-    bgClass: "bg-teal-500/10",
+    accentColor: "cyan",
+    accentClass: "text-cyan-400",
+    borderClass: "border-cyan-400/40",
+    bgClass: "bg-cyan-500/10",
   },
 ];
 

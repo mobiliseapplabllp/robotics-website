@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { DoorOpen, Layers, ShieldCheck, Route, Footprints, Lock, Thermometer, Box } from "lucide-react";
+import { DoorOpen, ShieldCheck, Route, Footprints, Lock } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
@@ -10,19 +10,15 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/0a4ae5b928164780870b214d28ce872e.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/t3/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/2f6e0938cdf14d17ae050fdee9d9b42c.webp",
-    "https://static.keenon.com/uploads/2024/12/30/3913f366f6bd405fa392f50f011c88bd.webp",
+    "/images/products/t3/gallery-1.webp",
+    "/images/products/t3/gallery-2.webp",
+    "/images/products/t3/gallery-3.webp",
+    "/images/products/t3/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "180L", label: "Cabin Volume", icon: Box },
-    { value: "40 kg", label: "Load Capacity", icon: Layers },
-    { value: "12 hr", label: "Battery Life", icon: Thermometer },
-];
-
 const HYGIENE_FEATURES = [
     {
         icon: Footprints,

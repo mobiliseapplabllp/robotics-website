@@ -9,12 +9,12 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/05/30/3c032df429624ffa92ac6637b5dabe04.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/c20/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/05/30/92729e51aaa74750b1d077c75c631a2b.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/05/30/cecf06ebc4bb492688f605e2412e4052.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/05/30/be9a556dec134c0ca696adad0952edd3.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/04/10/bffedda3ed8a49fb9d48db0731dafa3b.png?x-oss-process=image/format,webp",
+    "/images/products/c20/gallery-1.webp",
+    "/images/products/c20/gallery-2.webp",
+    "/images/products/c20/gallery-3.webp",
+    "/images/products/c20/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */

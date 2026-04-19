@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    Compass, Zap, Eye, Battery, Clock,
-    Building2, Gauge, Scan, Hand,
+    Compass, Eye, Battery,
+    Building2, Scan, Hand,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
@@ -13,10 +13,12 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/t8/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/3f1030d1ed7f419e8d1fe25536af2051.webp",
-    "https://static.keenon.com/uploads/2024/12/30/1e6802e656064293af36c6feb0ab7e2b.webp",
+    "/images/products/t8/gallery-1.webp",
+    "/images/products/t8/gallery-2.webp",
+    "/images/products/t8/gallery-3.webp",
+    "/images/products/t8/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */

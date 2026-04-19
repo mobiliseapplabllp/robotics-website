@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    Layers, Gauge, Battery, Navigation,
-    Maximize2, Utensils, Building2, PartyPopper,
+    Layers, Navigation,
+    Maximize2,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
@@ -13,19 +13,13 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/70b4d698984f428ca5d4238f03cbe183.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/t5/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/3f1030d1ed7f419e8d1fe25536af2051.webp",
+    "/images/products/t5/gallery-1.webp",
+    "/images/products/t5/gallery-2.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "4", unit: "trays", label: "Adjustable", icon: Layers },
-    { value: "40 kg", unit: "total", label: "Payload", icon: Gauge },
-    { value: "12+ hr", unit: "shift", label: "Battery", icon: Battery },
-    { value: "1.2 m/s", unit: "speed", label: "Max Speed", icon: Navigation },
-];
-
 const WHY_CARDS = [
     {
         icon: Maximize2,

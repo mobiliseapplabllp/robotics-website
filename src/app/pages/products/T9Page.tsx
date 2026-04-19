@@ -1,34 +1,27 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Layers, Gauge, Battery, Navigation,
-    Eye, Cog, ShieldCheck, Sparkles, MonitorSmartphone,
+    Battery,
+    Eye, Cog,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection,
-    ProductCTA, RobotFace, Breadcrumbs,
+    ProductCTA, Breadcrumbs,
 } from "../../components/product";
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/a63282db51454ced97f2d5174e7eaff3.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/t9/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/61d69fea4ef04a3991fba968f23fdf31.webp",
-    "https://static.keenon.com/uploads/2025/01/07/4f9b22c3ec3e4e9790a29e0b4e14fc87.webp",
-    "https://static.keenon.com/uploads/2025/01/07/9e53bbaec4874a1ab28b4312b0a9b543.webp",
+    "/images/products/t9/gallery-1.webp",
+    "/images/products/t9/gallery-2.webp",
+    "/images/products/t9/gallery-3.webp",
+    "/images/products/t9/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "40 kg", unit: "total", label: "Payload", icon: Gauge },
-    { value: "18 hr", unit: "shift", label: "Battery", icon: Battery },
-    { value: "VSLAM", unit: "fusion", label: "Navigation", icon: Navigation },
-    { value: "3", unit: "trays", label: "Delivery", icon: Layers },
-];
-
 const FEATURE_CARDS = [
     {
         icon: Cog,

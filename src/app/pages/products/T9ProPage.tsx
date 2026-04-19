@@ -1,33 +1,26 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Layers, Gauge, Battery, Navigation,
-    Eye, Cog, Crown, Sparkles, ShieldCheck, Zap,
+    Eye, Cog, Crown, ShieldCheck,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection,
-    ProductCTA, RobotFace, Breadcrumbs,
+    ProductCTA, Breadcrumbs,
 } from "../../components/product";
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/6d44b8bf2d9c4e5f8f19ec05b4ebcc83.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/t9-pro/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/01/07/8c99c69ee7074d0ba63e8a5e13b96cee.webp",
-    "https://static.keenon.com/uploads/2025/01/07/2e8ead20e5334ed6812197a6a3f3e2ea.webp",
+    "/images/products/t9-pro/gallery-1.webp",
+    "/images/products/t9-pro/gallery-2.webp",
+    "/images/products/t9-pro/gallery-3.webp",
+    "/images/products/t9-pro/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "40 kg", unit: "total", label: "Payload", icon: Gauge },
-    { value: "15 hr", unit: "shift", label: "Battery", icon: Battery },
-    { value: "Stereo", unit: "vision", label: "Navigation", icon: Eye },
-    { value: "3", unit: "trays", label: "Delivery", icon: Layers },
-];
-
 const PRO_UPGRADES = [
     {
         aspect: "Vision System",

@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
-    ArrowRight, Droplets, Zap, Eye, Battery, Gauge,
-    RotateCcw, Waves, ScanLine, Timer,
+    Droplets, Zap, Battery, Gauge,
+    RotateCcw, Waves, Timer,
 } from "lucide-react";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
@@ -14,21 +13,15 @@ import {
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "https://static.keenon.com/uploads/2025/11/06/a3d819df7793438f972564c14317a30a.jpg?x-oss-process=image/format,webp";
+const IMG_HERO = "/images/products/c55/hero.webp";
 const IMG_GALLERY = [
-    "https://static.keenon.com/uploads/2025/11/06/f48c34667e804421b3adad48fd4a5554.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/11/06/81b0e062e21641709871839ebd0e51f5.jpg?x-oss-process=image/format,webp",
-    "https://static.keenon.com/uploads/2025/11/06/c59144d457384c979a929e1ebd75ed66.jpg?x-oss-process=image/format,webp",
+    "/images/products/c55/gallery-1.webp",
+    "/images/products/c55/gallery-2.webp",
+    "/images/products/c55/gallery-3.webp",
+    "/images/products/c55/gallery-4.webp",
 ];
 
 /* ─── data ──────────────────────────────────────────────── */
-const HERO_STATS = [
-    { value: "2,376", unit: "m²/h", label: "Efficiency" },
-    { value: "5s", unit: "swap", label: "Battery" },
-    { value: "550", unit: "mm", label: "Scrub Width" },
-    { value: "360°", unit: "view", label: "Perception" },
-];
-
 const TRIPLE_VS_DUAL = [
     { aspect: "Debris Capture", triple: "Sweeps & scrubs in one pass", dual: "Requires separate sweep pass", icon: Droplets },
     { aspect: "Water Usage", triple: "Doubled efficiency per liter", dual: "Standard water consumption", icon: Waves },

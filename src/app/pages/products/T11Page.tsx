@@ -6,13 +6,13 @@ import {
 } from "lucide-react";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
-    MobiliseAuthoritySection, IndustryGrid, ProductCTA,
+    MobiliseAuthoritySection, IndustryGrid,
     Breadcrumbs,
 } from "../../components/product";
 import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
-const IMG_HERO = "/images/products/t11/t11_hero.webp";
+const IMG_HERO = "/images/products/t11/hero.webp";
 const IMG_GALLERY = [
     "/images/products/t11/t11_feature_1.webp",
     "/images/products/t11/t11_feature_2.webp",
