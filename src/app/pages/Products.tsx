@@ -4,20 +4,31 @@ import { motion } from "motion/react";
 import { ArrowRight, Filter } from "lucide-react";
 import { PRODUCTS, PRODUCT_CATEGORIES } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const ACCENT_BORDER: Record<string, string> = {
   delivery: "hover:border-cyan-500/50 hover:shadow-cyan-500/10",
-  cleaning: "hover:border-green-500/50 hover:shadow-green-500/10",
-  service: "hover:border-pink-500/50 hover:shadow-pink-500/10",
+  cleaning: "hover:border-emerald-500/50 hover:shadow-emerald-500/10",
+  service: "hover:border-amber-500/50 hover:shadow-amber-500/10",
 };
 
 const CAT_BADGE: Record<string, string> = {
   delivery: "text-cyan-400 bg-cyan-500/10 border-cyan-400/30",
-  cleaning: "text-green-400 bg-green-500/10 border-green-400/30",
-  service: "text-pink-400 bg-pink-500/10 border-pink-400/30",
+  cleaning: "text-emerald-400 bg-emerald-500/10 border-emerald-400/30",
+  service: "text-amber-400 bg-amber-500/10 border-amber-400/30",
+};
+
+const TAGLINE_COLOR: Record<string, string> = {
+  delivery: "text-cyan-400",
+  cleaning: "text-emerald-400",
+  service: "text-amber-400",
 };
 
 export function Products() {
+  useDocumentTitle(
+    "All Robots",
+    "Browse all 15 KEENON robots — delivery, cleaning, and service robots for hospitality, healthcare, retail, and enterprise in India."
+  );
   const [active, setActive] = useState("all");
 
   const filtered = active === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === active);
@@ -87,12 +98,13 @@ export function Products() {
                   <ImageWithFallback
                     src={product.image}
                     alt={`KEENON ${product.name}`}
-                    className="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-700"
+                    loading="lazy"
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-110 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/80 to-transparent" aria-hidden="true" />
 
                   {/* Model name large bg text */}
-                  <div className="absolute bottom-0 right-0 text-8xl font-black text-white/10 leading-none pr-4 pb-2 select-none">
+                  <div className="absolute bottom-0 right-0 text-8xl font-black text-white/25 leading-none pr-4 pb-2 select-none pointer-events-none" aria-hidden="true">
                     {product.name}
                   </div>
 
@@ -114,10 +126,9 @@ export function Products() {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h2 className="text-2xl font-black text-white">KEENON {product.name}</h2>
-                      <p className={`text-sm font-semibold mt-0.5 ${
-                        product.category === "delivery" ? "text-cyan-400" :
-                        product.category === "cleaning" ? "text-green-400" : "text-pink-400"
-                      }`}>{product.tagline}</p>
+                      <p className={`text-sm font-semibold mt-0.5 ${TAGLINE_COLOR[product.category]}`}>
+                        {product.tagline}
+                      </p>
                     </div>
                     <ArrowRight className="w-5 h-5 text-white/20 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all mt-2 shrink-0" />
                   </div>

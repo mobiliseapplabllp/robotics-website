@@ -125,8 +125,8 @@ const CATEGORY_LABEL: Record<string, string> = {
 
 const CATEGORY_STYLE: Record<string, string> = {
   delivery: "text-cyan-400 border-cyan-400/30 bg-cyan-500/10",
-  cleaning: "text-green-400 border-green-400/30 bg-green-500/10",
-  service: "text-pink-400 border-pink-400/30 bg-pink-500/10",
+  cleaning: "text-emerald-400 border-emerald-400/30 bg-emerald-500/10",
+  service: "text-amber-400 border-amber-400/30 bg-amber-500/10",
 };
 
 function ytThumb(videoId: string) {
@@ -201,8 +201,8 @@ export function VideoCarousel() {
               In Action
             </span>
           </h2>
-          <p className="text-white/50 max-w-2xl mx-auto">
-            Official product videos for all 9 KEENON robot models — click any thumbnail to switch, or press play to watch.
+          <p className="text-white/70 max-w-2xl mx-auto">
+            Official product videos across KEENON's delivery, cleaning, and service robot range — click any thumbnail to switch, or press play to watch.
           </p>
         </motion.div>
 
@@ -233,10 +233,15 @@ export function VideoCarousel() {
                 >
                   {!playing ? (
                     /* Thumbnail + play overlay */
-                    <div className="relative aspect-video bg-[#0d1525] cursor-pointer group" onClick={() => setPlaying(true)}>
+                    <button
+                      type="button"
+                      onClick={() => setPlaying(true)}
+                      aria-label={`Play KEENON ${active.robotName} video`}
+                      className="relative aspect-video w-full bg-[#0d1525] cursor-pointer group block focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]"
+                    >
                       <img
                         src={ytThumb(active.videoId)}
-                        alt={`KEENON ${active.robotName} video`}
+                        alt=""
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           // fallback to hq thumbnail
@@ -254,15 +259,15 @@ export function VideoCarousel() {
                       </div>
 
                       {/* Robot name watermark */}
-                      <div className="absolute bottom-4 left-5">
+                      <div className="absolute bottom-4 left-5" aria-hidden="true">
                         <div className="text-white/30 text-6xl font-black leading-none select-none">{active.robotName}</div>
                       </div>
 
                       {/* Duration badge */}
-                      <div className="absolute top-3 right-3 px-2.5 py-1 bg-black/60 backdrop-blur-sm rounded-lg text-white/80 text-xs font-semibold flex items-center gap-1.5">
+                      <div className="absolute top-3 right-3 px-2.5 py-1 bg-black/60 backdrop-blur-sm rounded-lg text-white/80 text-xs font-semibold flex items-center gap-1.5" aria-hidden="true">
                         <Play className="w-3 h-3" fill="currentColor" /> Official Video
                       </div>
-                    </div>
+                    </button>
                   ) : (
                     /* Live YouTube embed */
                     <div className="aspect-video bg-[#0d1525]">
@@ -270,7 +275,7 @@ export function VideoCarousel() {
                         key={active.videoId}
                         width="100%"
                         height="100%"
-                        src={`https://www.youtube.com/embed/${active.videoId}?autoplay=1&rel=0&modestbranding=1`}
+                        src={`https://www.youtube.com/embed/${active.videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&cc_load_policy=1`}
                         title={`KEENON ${active.robotName} Official Video`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -284,18 +289,22 @@ export function VideoCarousel() {
                 <div className="flex items-center justify-between mt-3 px-1">
                   <div className="flex items-center gap-3">
                     <button
+                      type="button"
                       onClick={prev}
-                      className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                      aria-label="Previous video"
+                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-5 h-5" aria-hidden="true" />
                     </button>
                     <button
+                      type="button"
                       onClick={next}
-                      className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+                      aria-label="Next video"
+                      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-5 h-5" aria-hidden="true" />
                     </button>
-                    <span className="text-white/30 text-sm">
+                    <span className="text-white/60 text-sm" aria-live="polite" aria-atomic="true">
                       {activeIdx + 1} / {VIDEOS.length}
                     </span>
                   </div>
@@ -303,14 +312,16 @@ export function VideoCarousel() {
                   <div className="flex items-center gap-3">
                     {/* Auto-play toggle */}
                     <button
+                      type="button"
                       onClick={() => setAutoPlay((a) => !a)}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${
+                      aria-pressed={autoPlay}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                         autoPlay
                           ? "border-cyan-400/40 bg-cyan-500/10 text-cyan-400"
-                          : "border-white/10 bg-white/5 text-white/40"
+                          : "border-white/10 bg-white/5 text-white/60"
                       }`}
                     >
-                      {autoPlay ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                      {autoPlay ? <Pause className="w-3 h-3" aria-hidden="true" /> : <Play className="w-3 h-3" aria-hidden="true" />}
                       {autoPlay ? "Auto-playing" : "Auto-play off"}
                     </button>
 

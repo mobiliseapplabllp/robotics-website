@@ -8,7 +8,9 @@ import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/10/10/6c16f280020b4a258e0a1235ee5da218.jpg?x-oss-process=image/format,webp";
@@ -87,6 +89,7 @@ const FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function S300Page() {
+    useProductPageSetup("s300");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [showVideo, setShowVideo] = useState(false);
@@ -152,6 +155,13 @@ export function S300Page() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-indigo-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON S300" },
+                ]}
+            />
 
             {/* ── Mobilise Authority ── */}
             <MobiliseAuthoritySection

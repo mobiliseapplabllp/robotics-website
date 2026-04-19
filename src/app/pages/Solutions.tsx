@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ArrowRight, CheckCircle, TrendingUp, Users, Clock, IndianRupee } from "lucide-react";
 import { SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const INDIA_STATS = [
   { icon: TrendingUp, value: "₹8,500 Cr", label: "Indian Robotics Market by 2030" },
@@ -13,6 +14,10 @@ const INDIA_STATS = [
 ];
 
 export function Solutions() {
+  useDocumentTitle(
+    "Industry Solutions",
+    "KEENON robot solutions for hospitality, healthcare, retail, corporate, and aviation industries across India."
+  );
   const location = useLocation();
 
   useEffect(() => {

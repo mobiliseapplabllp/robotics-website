@@ -4,7 +4,9 @@ import { Filter, Minimize2, Sparkles } from "lucide-react";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/05/30/3c032df429624ffa92ac6637b5dabe04.jpg?x-oss-process=image/format,webp";
@@ -74,6 +76,7 @@ const GALLERY_FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function C20Page() {
+    useProductPageSetup("c20");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -126,6 +129,13 @@ export function C20Page() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-lime-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON C20" },
+                ]}
+            />
 
             {/* ── Mobilise Authority ── */}
             <MobiliseAuthoritySection

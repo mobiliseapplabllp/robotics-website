@@ -7,7 +7,9 @@ import {
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "/images/products/t11/t11_hero.webp";
@@ -46,6 +48,7 @@ const FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function T11Page() {
+    useProductPageSetup("t11");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -96,6 +99,13 @@ export function T11Page() {
                     </div>
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON T11" },
+                ]}
+            />
 
             {/* Mobilise Authority Section */}
             <MobiliseAuthoritySection

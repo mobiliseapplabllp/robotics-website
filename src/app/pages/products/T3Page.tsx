@@ -5,7 +5,9 @@ import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, ParallaxGalleryItem, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/0a4ae5b928164780870b214d28ce872e.jpg?x-oss-process=image/format,webp";
@@ -69,6 +71,7 @@ const GALLERY_FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function T3Page() {
+    useProductPageSetup("t3");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [showVideo, setShowVideo] = useState(false);
@@ -134,6 +137,13 @@ export function T3Page() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-teal-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON T3" },
+                ]}
+            />
 
             {/* ── Mobilise Authority ── */}
             <MobiliseAuthoritySection

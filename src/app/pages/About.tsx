@@ -2,6 +2,8 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { Award, Globe, Users, Zap, ArrowRight, CheckCircle } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { MonogramAvatar } from "../components/MonogramAvatar";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const TIMELINE = [
   { year: "2010", event: "KEENON Robotics founded in Hangzhou, China" },
@@ -19,23 +21,24 @@ const TEAM = [
     name: "Arjun Mehta",
     role: "CEO & Co-Founder",
     bio: "15+ years in robotics and automation across APAC. Former head of automation at Reliance Industries.",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
   },
   {
     name: "Priya Sharma",
     role: "CTO",
     bio: "IIT Bombay alumna. Expert in AI, SLAM navigation, and IoT integration for service robotics.",
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
   },
   {
     name: "Rohan Kapoor",
     role: "VP Sales — India",
     bio: "Built distribution networks across 200+ Indian cities. Expert in hospitality and healthcare sectors.",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
   },
 ];
 
 export function About() {
+  useDocumentTitle(
+    "About Mobilise",
+    "Mobilise App Lab Limited is India's authorized KEENON Robotics partner — bringing world-class autonomous service robots to Indian businesses."
+  );
   return (
     <div className="min-h-screen bg-[#050a14] pt-20">
       {/* Hero */}
@@ -186,17 +189,13 @@ export function About() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-colors"
               >
-                <div className="h-48 overflow-hidden">
-                  <ImageWithFallback
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="h-48 overflow-hidden flex items-center justify-center bg-[#0a101f]">
+                  <MonogramAvatar name={member.name} className="w-32 h-32 rounded-full text-5xl" />
                 </div>
                 <div className="p-5">
                   <h3 className="text-white font-black text-lg">{member.name}</h3>
                   <p className="text-cyan-400 text-sm font-semibold mb-3">{member.role}</p>
-                  <p className="text-white/50 text-sm">{member.bio}</p>
+                  <p className="text-white/70 text-sm">{member.bio}</p>
                 </div>
               </motion.div>
             ))}

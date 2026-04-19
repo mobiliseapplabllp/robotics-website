@@ -1,9 +1,10 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { ArrowRight, Zap, Shield, Globe, Award, ChevronRight, Star } from "lucide-react";
+import { ArrowRight, Zap, Shield, Globe, Award, ChevronRight, CheckCircle2 } from "lucide-react";
 import { PRODUCTS, SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { VideoCarousel } from "../components/VideoCarousel";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const STATS = [
   { value: "60,000+", label: "Businesses Served Globally" },
@@ -14,17 +15,21 @@ const STATS = [
 
 const CATEGORY_COLORS: Record<string, string> = {
   delivery: "cyan",
-  cleaning: "green",
-  service: "pink",
+  cleaning: "emerald",
+  service: "amber",
 };
 
 const ACCENT_CLASS: Record<string, string> = {
   cyan: "text-cyan-400 border-cyan-400/30 bg-cyan-500/10",
-  green: "text-green-400 border-green-400/30 bg-green-500/10",
-  pink: "text-pink-400 border-pink-400/30 bg-pink-500/10",
+  emerald: "text-emerald-400 border-emerald-400/30 bg-emerald-500/10",
+  amber: "text-amber-400 border-amber-400/30 bg-amber-500/10",
 };
 
 export function Home() {
+  useDocumentTitle(
+    "Autonomous Service Robots for India",
+    "Mobilise is India's authorized KEENON Robotics partner — autonomous delivery, cleaning, and service robots deployed across hospitality, healthcare, retail, and enterprise."
+  );
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -57,19 +62,16 @@ export function Home() {
               <span className="text-cyan-400 text-sm font-semibold">Official KEENON Robotics Partner — India</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-none mb-6">
-              <span className="text-white">The Future of</span>
-              <br />
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.95] mb-6 tracking-tight">
+              <span className="text-white">Robots that</span>{" "}
               <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Service Robotics
+                deliver, clean, and serve
               </span>
-              <br />
-              <span className="text-white">is Here</span>
+              <span className="text-white"> — 24/7.</span>
             </h1>
 
-            <p className="text-white/60 text-lg sm:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
-              Mobilise brings KEENON's world-leading autonomous robots to India — transforming hospitality, healthcare,
-              retail, and beyond with intelligent automation that delivers, cleans, and serves 24/7.
+            <p className="text-white/70 text-lg sm:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
+              Mobilise is India's authorized KEENON Robotics partner. From hotel room service to hospital corridors to retail floors, our autonomous robots work the hours your team can't — reliably, safely, and without breaks.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -120,11 +122,11 @@ export function Home() {
               Our Product Range
             </div>
             <h2 className="text-4xl lg:text-5xl font-black text-white mb-4">
-              9 Intelligent Robots.
+              {PRODUCTS.length} Intelligent Robots.
               <br />
               <span className="text-cyan-400">Infinite Possibilities.</span>
             </h2>
-            <p className="text-white/50 max-w-2xl mx-auto">
+            <p className="text-white/70 max-w-2xl mx-auto">
               From compact delivery robots to industrial cleaning machines and sophisticated reception robots — KEENON's lineup covers every automation need.
             </p>
           </motion.div>
@@ -143,20 +145,22 @@ export function Home() {
                 >
                   <Link
                     to={`/products/${product.id}`}
-                    className="group block bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/40 hover:bg-white/8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10"
+                    className="group block bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/40 hover:bg-white/8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                   >
-                    <div className={`relative h-48 bg-gradient-to-br ${product.thumbnailBg} overflow-hidden`}>
+                    <div className={`relative h-60 bg-gradient-to-br ${product.thumbnailBg} overflow-hidden`}>
                       <ImageWithFallback
                         src={product.image}
                         alt={`KEENON ${product.name}`}
-                        className="w-full h-full object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500"
+                        loading="lazy"
+                        className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/70 via-transparent to-transparent" aria-hidden="true" />
                       <div className="absolute inset-0 flex flex-col justify-between p-5">
                         <div className={`self-start px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider ${accentClass}`}>
                           {product.categoryLabel}
                         </div>
                         <div>
-                          <div className="text-5xl font-black text-white/20 leading-none">{product.name}</div>
+                          <div className="text-5xl font-black text-white/30 leading-none" aria-hidden="true">{product.name}</div>
                         </div>
                       </div>
                     </div>
@@ -296,26 +300,34 @@ export function Home() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="space-y-4"
+              className="bg-white/5 border border-white/10 rounded-3xl p-8"
             >
-              {[
-                { name: "The Oberoi Hotels", review: "KEENON T9 robots have transformed our room service. Guest satisfaction scores are at an all-time high.", rating: 5, role: "Director of Operations" },
-                { name: "Fortis Healthcare", review: "The T11 robots handle our hospital logistics with zero errors. A game-changer for patient care.", rating: 5, role: "Hospital Administrator" },
-                { name: "Phoenix Palladium Mall", review: "C40 cleaning robots keep our 1 million sq ft facility spotless. ROI achieved in 6 months.", rating: 5, role: "Facilities Manager" },
-              ].map((t, i) => (
-                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex gap-1 mb-3">
-                    {Array(t.rating).fill(0).map((_, j) => (
-                      <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-white/70 text-sm italic mb-4">"{t.review}"</p>
-                  <div>
-                    <div className="text-white font-bold text-sm">{t.name}</div>
-                    <div className="text-white/40 text-xs">{t.role}</div>
-                  </div>
-                </div>
-              ))}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-6">
+                What every customer gets
+              </div>
+              <h3 className="text-2xl font-black text-white mb-6">
+                A full partnership, not just a purchase
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  { title: "On-site setup & operator training", desc: "Engineers come to your facility to install, calibrate, and train your staff to run the robot confidently on day one." },
+                  { title: "Spare parts stocked in India", desc: "No waiting on international shipping — common replacement parts are warehoused locally for same-week turnaround." },
+                  { title: "24/7 support in IST business hours", desc: "A dedicated account manager and technical support line, staffed during Indian business hours and on-call after." },
+                  { title: "Warranty + AMC maintenance plans", desc: "Standard manufacturer warranty plus optional annual maintenance contracts for long-term peace of mind." },
+                  { title: "Pilot deployments available", desc: "Not sure where to start? Run a scoped pilot in one facility before committing to a broader rollout." },
+                ].map((item) => (
+                  <li key={item.title} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                      <div className="text-white font-semibold text-sm">{item.title}</div>
+                      <div className="text-white/60 text-sm mt-0.5 leading-relaxed">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 pt-6 border-t border-white/10 text-white/50 text-xs">
+                Customer case studies and named references available on request during demo calls.
+              </p>
             </motion.div>
           </div>
         </div>

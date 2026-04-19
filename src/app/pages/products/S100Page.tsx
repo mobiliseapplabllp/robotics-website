@@ -8,7 +8,9 @@ import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/10/10/c2f2f2bff40b48718b70e8b2f8a1ae44.jpg?x-oss-process=image/format,webp";
@@ -86,6 +88,7 @@ const FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function S100Page() {
+    useProductPageSetup("s100");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [showVideo, setShowVideo] = useState(false);
@@ -137,6 +140,13 @@ export function S100Page() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-pink-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON S100" },
+                ]}
+            />
 
             {/* ── Mobilise Authority ── */}
             <MobiliseAuthoritySection variant="glow" accentColor="pink" />

@@ -9,8 +9,9 @@ import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, VideoSection,
-    ProductCTA, RobotFace,
+    ProductCTA, RobotFace, Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── image assets ─────────────────────────────────────── */
 const IMG_HERO = "https://static.keenon.com/uploads/2025/01/07/6d44b8bf2d9c4e5f8f19ec05b4ebcc83.jpg?x-oss-process=image/format,webp";
@@ -88,6 +89,7 @@ const FEATURES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function T9ProPage() {
+    useProductPageSetup("t9-pro");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [showVideo, setShowVideo] = useState(false);
@@ -137,6 +139,13 @@ export function T9ProPage() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-yellow-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON T9 Pro" },
+                ]}
+            />
 
             {/* ── Mobilise Authority ── */}
             <MobiliseAuthoritySection variant="glow" accentColor="yellow" />

@@ -1,28 +1,33 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./pages/Home";
 import { Products } from "./pages/Products";
-import { ProductDetail } from "./pages/ProductDetail";
 import { Solutions } from "./pages/Solutions";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 
-// Individual Product Pages
-import { T10Page } from "./pages/products/T10Page";
-import { T11Page } from "./pages/products/T11Page";
-import { T8Page } from "./pages/products/T8Page";
-import { T3Page } from "./pages/products/T3Page";
-import { T9Page } from "./pages/products/T9Page";
-import { T9ProPage } from "./pages/products/T9ProPage";
-import { W3Page } from "./pages/products/W3Page";
-import { C20Page } from "./pages/products/C20Page";
-import { G1Page } from "./pages/products/G1Page";
-import { C40Page } from "./pages/products/C40Page";
-import { S100Page } from "./pages/products/S100Page";
-import { S300Page } from "./pages/products/S300Page";
-import { T5Page } from "./pages/products/T5Page";
-import { C30Page } from "./pages/products/C30Page";
-import { C55Page } from "./pages/products/C55Page";
+// Rarely-visited pages → code-split
+const Privacy = lazy(() => import("./pages/Privacy").then((m) => ({ default: m.Privacy })));
+const Terms = lazy(() => import("./pages/Terms").then((m) => ({ default: m.Terms })));
+const NotFound = lazy(() => import("./pages/NotFound").then((m) => ({ default: m.NotFound })));
+
+// Individual product pages — each is a separate chunk loaded on demand
+const T10Page = lazy(() => import("./pages/products/T10Page").then((m) => ({ default: m.T10Page })));
+const T11Page = lazy(() => import("./pages/products/T11Page").then((m) => ({ default: m.T11Page })));
+const T8Page = lazy(() => import("./pages/products/T8Page").then((m) => ({ default: m.T8Page })));
+const T3Page = lazy(() => import("./pages/products/T3Page").then((m) => ({ default: m.T3Page })));
+const T9Page = lazy(() => import("./pages/products/T9Page").then((m) => ({ default: m.T9Page })));
+const T9ProPage = lazy(() => import("./pages/products/T9ProPage").then((m) => ({ default: m.T9ProPage })));
+const W3Page = lazy(() => import("./pages/products/W3Page").then((m) => ({ default: m.W3Page })));
+const C20Page = lazy(() => import("./pages/products/C20Page").then((m) => ({ default: m.C20Page })));
+const G1Page = lazy(() => import("./pages/products/G1Page").then((m) => ({ default: m.G1Page })));
+const C40Page = lazy(() => import("./pages/products/C40Page").then((m) => ({ default: m.C40Page })));
+const S100Page = lazy(() => import("./pages/products/S100Page").then((m) => ({ default: m.S100Page })));
+const S300Page = lazy(() => import("./pages/products/S300Page").then((m) => ({ default: m.S300Page })));
+const T5Page = lazy(() => import("./pages/products/T5Page").then((m) => ({ default: m.T5Page })));
+const C30Page = lazy(() => import("./pages/products/C30Page").then((m) => ({ default: m.C30Page })));
+const C55Page = lazy(() => import("./pages/products/C55Page").then((m) => ({ default: m.C55Page })));
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +37,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "products", Component: Products },
 
-      // Individual Product Routes
+      // Individual Product Routes (lazy-loaded)
       { path: "products/t10", Component: T10Page },
       { path: "products/t11", Component: T11Page },
       { path: "products/t8", Component: T8Page },
@@ -49,12 +54,14 @@ export const router = createBrowserRouter([
       { path: "products/c30", Component: C30Page },
       { path: "products/c55", Component: C55Page },
 
-      // Fallback for any other product IDs
-      { path: "products/:id", Component: ProductDetail },
-
       { path: "solutions", Component: Solutions },
       { path: "about", Component: About },
       { path: "contact", Component: Contact },
+      { path: "privacy", Component: Privacy },
+      { path: "terms", Component: Terms },
+
+      // 404 catch-all — must be last
+      { path: "*", Component: NotFound },
     ],
   },
 ]);

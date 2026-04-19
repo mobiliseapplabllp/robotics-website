@@ -4,7 +4,9 @@ import { Bot, Navigation, Zap, Shield } from "lucide-react";
 import {
     ProductLightbox, StickyFeatureSection, FloatingCTA,
     MobiliseAuthoritySection, IndustryGrid, ProductCTA,
+    Breadcrumbs,
 } from "../../components/product";
+import { useProductPageSetup } from "../../hooks/useProductPageSetup";
 
 /* ─── local image assets ────────────────────────────────── */
 const IMG_HERO = "/images/products/c40/c40_hero.webp";
@@ -63,6 +65,7 @@ const INDUSTRIES = [
 
 /* ─── main component ────────────────────────────────────── */
 export function C40Page() {
+    useProductPageSetup("c40");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -118,6 +121,13 @@ export function C40Page() {
                     <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="w-1 h-12 bg-gradient-to-b from-orange-500 to-transparent rounded-full" />
                 </div>
             </section>
+
+            <Breadcrumbs
+                items={[
+                    { label: "Products", href: "/products" },
+                    { label: "KEENON C40" },
+                ]}
+            />
 
             {/* Mobilise Authority Section */}
             <MobiliseAuthoritySection

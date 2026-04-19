@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 dist/
+*.tsbuildinfo
 
 # Environment
 .env
@@ -23,6 +24,10 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Deploy
+.vercel/
+.netlify/
 
 # Claude worktrees
 .claude/worktrees/
