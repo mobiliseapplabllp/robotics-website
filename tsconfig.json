@@ -20,7 +20,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
 
-    "types": ["node"],
+    "types": ["node", "vite/client"],
 
     "baseUrl": ".",
     "paths": {

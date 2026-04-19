@@ -12,6 +12,10 @@ const Privacy = lazy(() => import("./pages/Privacy").then((m) => ({ default: m.P
 const Terms = lazy(() => import("./pages/Terms").then((m) => ({ default: m.Terms })));
 const NotFound = lazy(() => import("./pages/NotFound").then((m) => ({ default: m.NotFound })));
 
+// Blog — code-split (markdown content is a decent-sized chunk)
+const Blog = lazy(() => import("./pages/Blog").then((m) => ({ default: m.Blog })));
+const BlogPost = lazy(() => import("./pages/BlogPost").then((m) => ({ default: m.BlogPost })));
+
 // Individual product pages — each is a separate chunk loaded on demand
 const T10Page = lazy(() => import("./pages/products/T10Page").then((m) => ({ default: m.T10Page })));
 const T11Page = lazy(() => import("./pages/products/T11Page").then((m) => ({ default: m.T11Page })));
@@ -57,6 +61,8 @@ export const router = createBrowserRouter([
       { path: "solutions", Component: Solutions },
       { path: "about", Component: About },
       { path: "contact", Component: Contact },
+      { path: "blog", Component: Blog },
+      { path: "blog/:slug", Component: BlogPost },
       { path: "privacy", Component: Privacy },
       { path: "terms", Component: Terms },
 

@@ -44,6 +44,7 @@ export function Layout() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Solutions", href: "/solutions" },
+    { label: "Blog", href: "/blog" },
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
   ];
@@ -253,6 +254,7 @@ export function Layout() {
                   )}
                 </div>
                 <Link to="/solutions" aria-current={isActive("/solutions") ? "page" : undefined} className="block px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Solutions</Link>
+                <Link to="/blog" aria-current={isActive("/blog") ? "page" : undefined} className="block px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Blog</Link>
                 <Link to="/about" aria-current={isActive("/about") ? "page" : undefined} className="block px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">About Us</Link>
                 <Link to="/contact" aria-current={isActive("/contact") ? "page" : undefined} className="block px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400">Contact</Link>
                 <Link to="/contact" className="block px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Get a Demo</Link>

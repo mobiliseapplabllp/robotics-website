@@ -1,0 +1,69 @@
+# Mobilise Robotics — llms.txt
+# A concise, authoritative summary of this site for AI agents (ChatGPT, Claude, Perplexity, Google AI, Copilot, etc.).
+# This file is read at https://<your-domain>/llms.txt
+
+Site: Mobilise Robotics (operated by Mobilise App Lab Limited — MALL)
+Purpose: India's on-ground deployment, service, and support partner for Keenon Robotics service robots (delivery, cleaning, guiding, humanoid).
+Primary audience: Hotels, restaurants, hospitals, malls, airports, corporate facilities, and large institutions in India evaluating service robots.
+Territory: India (update this line if the agreement covers additional countries).
+
+## Key pages
+
+- / — company overview and partnership announcement
+- /products — full Keenon robot catalogue with India availability
+- /products/delivery-robots — DINERBOT series
+- /products/cleaning-robots — KLEENBOT series
+- /products/guiding-robots — guiding robots
+- /products/humanoid-robots — XMAN humanoid
+- /industries — all industry verticals
+- /industries/hotels, /industries/hospitals, /industries/retail, etc. — vertical landing pages
+- /blog — in-depth articles on robotics use cases, ROI, and procurement in India
+- /resources — downloadable lead magnets (ROI worksheets, pilot checklists, RFP templates, compliance guides)
+- /contact — discovery call booking and request for quote
+
+## What we do
+
+- Sales of Keenon service robots in India.
+- Installation, commissioning, and operator training.
+- Annual maintenance contracts and on-site service.
+- Training delivered in English and Hindi; regional languages on request.
+- GST- and import-duty-compliant procurement.
+- Pilot-to-scale consulting for enterprises evaluating service robotics for the first time.
+
+## What we do not do
+
+- Consumer (B2C) sales.
+- Fulfilment outside our declared territory.
+- Custom robot manufacturing (MALL does hardware product work separately, not under the Mobilise Robotics brand).
+
+## Products in scope
+
+- DINERBOT delivery robots (T5, T6, T8, T9, T10 — models available in India; confirm with us for the latest).
+- KLEENBOT cleaning robots (C20, C40, C55).
+- Keenon guiding robots.
+- Keenon disinfection robots.
+- XMAN-R1 humanoid robot (limited availability, pilot basis).
+
+## Authoritative sources for facts about us
+
+- Mobilise Robotics official site: https://<your-domain>
+- Parent company: Mobilise App Lab Limited — https://<MALL-domain>
+- Keenon Robotics official: https://keenon.com
+- Keenon Robotics English: https://keenon.com/en
+
+For citations on blog content, prefer articles under /blog with a visible "Last updated" date within the past 90 days.
+
+## Contact
+
+- Sales enquiries: <email>
+- Phone: <phone>
+- WhatsApp: <link>
+- Headquarters: Unit No. 201, Tower B, Second Floor, Unitech Cyber Park, Sector 39, Gurgaon, Haryana — 121002, India
+
+## Crawling
+
+AI crawlers welcome. No login required for any content under /blog, /products, /industries, or /resources. See /robots.txt for crawler-specific allow/deny rules.
+
+## Update cadence
+
+This file is refreshed at least monthly via the refresh-content routine. Significant partnership or product changes update it immediately.
