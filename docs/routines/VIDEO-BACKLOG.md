@@ -9,6 +9,8 @@ This is the queue the content team picks from when planning an original video sh
 | Date flagged | Topic | Blog post that needs it | Priority | Status | Assigned | Target publish |
 |--------------|-------|-------------------------|----------|--------|----------|-----------------|
 | _example 2026-04-20_ | _DINERBOT T10 in a Mumbai five-star hotel room service cycle_ | _hotels / room service robot india_ | _high_ | _planned_ | _—_ | _TBD_ |
+| 2026-04-19 | DINERBOT T10 delivering to a guest corridor in an Indian 5-star hotel | /blog/room-service-robot-india | high | planned | — | TBD |
+| 2026-04-19 | W3 ButlerBot lift integration in an Indian high-rise hotel | /blog/room-service-robot-india | medium | planned | — | TBD |
 
 ---
 
