@@ -342,8 +342,11 @@ export function VideoCarousel() {
             {VIDEOS.map((v, i) => (
               <button
                 key={v.id}
+                type="button"
                 onClick={() => { goTo(i); setAutoPlay(false); }}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left group ${
+                aria-label={`Play KEENON ${v.robotName} — ${v.tagline}`}
+                aria-current={i === activeIdx ? "true" : undefined}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   i === activeIdx
                     ? `${v.borderClass} ${v.bgClass}`
                     : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8"
@@ -390,7 +393,7 @@ export function VideoCarousel() {
                   <div className={`font-black text-sm ${i === activeIdx ? v.accentClass : "text-white"}`}>
                     KEENON {v.robotName}
                   </div>
-                  <div className="text-white/40 text-xs truncate">{v.tagline}</div>
+                  <div className="text-white/70 text-xs truncate">{v.tagline}</div>
                 </div>
 
                 {/* Active indicator */}
@@ -408,8 +411,11 @@ export function VideoCarousel() {
             {VIDEOS.map((v, i) => (
               <button
                 key={v.id}
+                type="button"
                 onClick={() => { goTo(i); setAutoPlay(false); }}
-                className={`shrink-0 relative rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                aria-label={`Jump to KEENON ${v.robotName}`}
+                aria-current={i === activeIdx ? "true" : undefined}
+                className={`shrink-0 relative rounded-xl overflow-hidden border-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   i === activeIdx
                     ? `${v.borderClass} scale-105 shadow-lg`
                     : "border-white/10 opacity-50 hover:opacity-80"

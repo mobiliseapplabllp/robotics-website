@@ -59,8 +59,8 @@ export function Products() {
       {/* Filter */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 text-white/40 text-sm mr-2">
-            <Filter className="w-4 h-4" /> Filter:
+          <div className="flex items-center gap-2 text-white/70 text-sm mr-2">
+            <Filter className="w-4 h-4" aria-hidden="true" /> Filter:
           </div>
           {PRODUCT_CATEGORIES.map((cat) => (
             <button
@@ -75,7 +75,7 @@ export function Products() {
               {cat.label}
             </button>
           ))}
-          <span className="ml-auto text-white/30 text-sm">{filtered.length} robots</span>
+          <span className="ml-auto text-white/70 text-sm">{filtered.length} robots</span>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export function Products() {
                   <div className="grid grid-cols-2 gap-2 mb-4">
                     {product.specs.slice(0, 4).map((spec) => (
                       <div key={spec.label} className="bg-white/5 rounded-lg p-2">
-                        <div className="text-white/30 text-[10px] uppercase tracking-wider">{spec.label}</div>
+                        <div className="text-white/70 text-[10px] uppercase tracking-wider">{spec.label}</div>
                         <div className="text-white text-xs font-semibold mt-0.5 truncate">{spec.value}</div>
                       </div>
                     ))}
@@ -150,7 +150,7 @@ export function Products() {
                   {/* Industries */}
                   <div className="flex flex-wrap gap-1.5">
                     {product.industries.map((ind) => (
-                      <span key={ind} className="px-2 py-0.5 rounded-md bg-white/8 text-white/40 text-xs">{ind}</span>
+                      <span key={ind} className="px-2 py-0.5 rounded-md bg-white/8 text-white/70 text-xs">{ind}</span>
                     ))}
                   </div>
                 </div>

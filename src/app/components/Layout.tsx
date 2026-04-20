@@ -288,21 +288,21 @@ export function Layout() {
               <p className="text-white/60 text-sm leading-relaxed mb-5">
                 India's premier partner for KEENON Robotics — bringing world-class autonomous service robots to hospitality, healthcare, retail, and beyond.
               </p>
-              <ul className="flex gap-3" aria-label="Social media">
+              <ul className="flex gap-3" aria-label="Social media (coming soon)">
                 {[
-                  { Icon: Linkedin, label: "LinkedIn", href: "#" },
-                  { Icon: Twitter, label: "Twitter / X", href: "#" },
-                  { Icon: Youtube, label: "YouTube", href: "#" },
-                  { Icon: Instagram, label: "Instagram", href: "#" },
-                ].map(({ Icon, label, href }) => (
+                  { Icon: Linkedin, label: "LinkedIn" },
+                  { Icon: Twitter, label: "Twitter / X" },
+                  { Icon: Youtube, label: "YouTube" },
+                  { Icon: Instagram, label: "Instagram" },
+                ].map(({ Icon, label }) => (
                   <li key={label}>
-                    <a
-                      href={href}
-                      aria-label={`Mobilise on ${label}`}
-                      className="w-11 h-11 rounded-lg bg-white/10 hover:bg-cyan-500/30 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                    <span
+                      role="img"
+                      aria-label={`${label} — coming soon`}
+                      className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center opacity-60 cursor-not-allowed"
                     >
                       <Icon className="w-4 h-4 text-white/80" aria-hidden="true" />
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul>

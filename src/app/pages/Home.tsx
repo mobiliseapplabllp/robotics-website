@@ -290,7 +290,7 @@ export function Home() {
                       <Icon className="w-5 h-5 text-cyan-400" />
                     </div>
                     <div className="text-white font-bold text-sm">{title}</div>
-                    <div className="text-white/40 text-xs mt-0.5">{desc}</div>
+                    <div className="text-white/70 text-xs mt-0.5">{desc}</div>
                   </div>
                 ))}
               </div>

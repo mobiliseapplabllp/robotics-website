@@ -69,7 +69,7 @@ export function Solutions() {
                   <Icon className="w-6 h-6 text-cyan-400" />
                 </div>
                 <div className="text-3xl font-black text-cyan-400 mb-1">{value}</div>
-                <div className="text-white/40 text-sm">{label}</div>
+                <div className="text-white/70 text-sm">{label}</div>
               </motion.div>
             ))}
           </div>
@@ -125,7 +125,7 @@ export function Solutions() {
 
               {/* Robots used */}
               <div className="mb-8">
-                <div className="text-white/40 text-xs uppercase tracking-wider mb-3">Recommended Robots</div>
+                <div className="text-white/70 text-xs uppercase tracking-wider mb-3">Recommended Robots</div>
                 <div className="flex flex-wrap gap-3">
                   {sol.robots.map((r) => (
                     <Link
@@ -179,9 +179,9 @@ export function Solutions() {
                 className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center hover:border-cyan-500/30 transition-colors"
               >
                 <div className="text-2xl font-black text-cyan-400 mb-1">{city.count.split(" ")[0]}</div>
-                <div className="text-xs text-white/30 mb-2">Deployments</div>
+                <div className="text-xs text-white/70 mb-2">Deployments</div>
                 <div className="text-white font-bold text-sm">{city.city}</div>
-                <div className="text-white/40 text-xs mt-1">{city.sector}</div>
+                <div className="text-white/70 text-xs mt-1">{city.sector}</div>
               </motion.div>
             ))}
           </div>
