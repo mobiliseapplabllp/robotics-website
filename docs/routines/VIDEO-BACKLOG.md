@@ -9,6 +9,7 @@ This is the queue the content team picks from when planning an original video sh
 | Date flagged | Topic | Blog post that needs it | Priority | Status | Assigned | Target publish |
 |--------------|-------|-------------------------|----------|--------|----------|-----------------|
 | _example 2026-04-20_ | _DINERBOT T10 in a Mumbai five-star hotel room service cycle_ | _hotels / room service robot india_ | _high_ | _planned_ | _—_ | _TBD_ |
+| 2026-04-20 | DINERBOT T10 corridor-to-door delivery cycle shot inside an Indian 5-star property (replaces the global Keenon walkthrough currently linked from the post) | hotels / room service robot india | high | queued | — | TBD |
 
 ---
 
