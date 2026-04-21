@@ -27,6 +27,9 @@ services:
         destination: /index.html
 
     # Security headers + long-cache for hashed assets
+    # CSP is in Report-Only mode for a soft rollout — violations surface in DevTools
+    # without breaking the site. Promote to `Content-Security-Policy` (enforcing)
+    # after ~1 week with no unexpected reports. Mirror any change in vercel.json.
     headers:
       - path: /*
         name: X-Content-Type-Options
@@ -39,7 +42,19 @@ services:
         value: strict-origin-when-cross-origin
       - path: /*
         name: Permissions-Policy
-        value: camera=(), microphone=(), geolocation=()
+        value: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /*
+        name: Cross-Origin-Resource-Policy
+        value: same-origin
+      - path: /*
+        name: Content-Security-Policy-Report-Only
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https:; media-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
       # Vite fingerprints hashed assets — safe to cache forever
       - path: /assets/*
         name: Cache-Control
