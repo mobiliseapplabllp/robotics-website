@@ -168,7 +168,11 @@ export function S300Page() {
             <MobiliseAuthoritySection
                 variant="lines"
                 accentColor="indigo"
-                description='While Keenon builds the hardware, <span class="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We deploy and manage heavy-load autonomous logistics for India&apos;s largest hospitals, factories, and infrastructure projects.'
+                description={
+                    <>
+                        While Keenon builds the hardware, <span className="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We deploy and manage heavy-load autonomous logistics for India&apos;s largest hospitals, factories, and infrastructure projects.
+                    </>
+                }
             />
 
             {/* ── Triple Role: Z-Pattern Cards ── */}

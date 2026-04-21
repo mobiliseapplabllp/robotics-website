@@ -112,7 +112,11 @@ export function T11Page() {
                 variant="glow"
                 accentColor="blue"
                 showBorder
-                description='While <span class="text-white font-semibold">Keenon</span> builds the hardware, <span class="text-white font-semibold italic">Mobilise App Lab Limited</span> delivers the mastery. We don&apos;t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.'
+                description={
+                    <>
+                        While <span className="text-white font-semibold">Keenon</span> builds the hardware, <span className="text-white font-semibold italic">Mobilise App Lab Limited</span> delivers the mastery. We don&apos;t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.
+                    </>
+                }
             />
 
             {/* Technical Superiority Cards */}

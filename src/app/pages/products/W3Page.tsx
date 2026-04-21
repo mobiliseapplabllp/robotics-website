@@ -135,7 +135,11 @@ export function W3Page() {
             <MobiliseAuthoritySection
                 variant="minimal"
                 accentColor="green"
-                description='While Keenon builds the hardware, <strong class="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We deploy and manage autonomous hotel delivery fleets across India&apos;s premium hospitality and healthcare properties.'
+                description={
+                    <>
+                        While Keenon builds the hardware, <strong className="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We deploy and manage autonomous hotel delivery fleets across India&apos;s premium hospitality and healthcare properties.
+                    </>
+                }
             />
 
             {/* ── Delivery Pipeline: 4-Step Process ── */}

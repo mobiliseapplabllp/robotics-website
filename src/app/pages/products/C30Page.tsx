@@ -146,7 +146,11 @@ export function C30Page() {
             <MobiliseAuthoritySection
                 variant="lines"
                 accentColor="cyan"
-                description='While Keenon builds the hardware, <span class="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We specialize in deploying high-precision dry-cleaning solutions for India&apos;s premier commercial and retail spaces.'
+                description={
+                    <>
+                        While Keenon builds the hardware, <span className="text-white font-bold">Mobilise App Lab Limited</span> delivers the mastery. We specialize in deploying high-precision dry-cleaning solutions for India&apos;s premier commercial and retail spaces.
+                    </>
+                }
             />
 
             {/* Feature Parallax */}
