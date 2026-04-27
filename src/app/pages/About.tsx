@@ -2,42 +2,20 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { Award, Globe, Users, Zap, ArrowRight, CheckCircle } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { MonogramAvatar } from "../components/MonogramAvatar";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const TIMELINE = [
-  { year: "2010", event: "KEENON Robotics founded in Hangzhou, China" },
-  { year: "2015", event: "First commercial deployment in Chinese restaurant chains" },
-  { year: "2018", event: "Global expansion begins — 30+ countries" },
-  { year: "2020", event: "COVID-19 accelerates contactless robot adoption worldwide" },
-  { year: "2022", event: "60,000+ business deployments achieved globally" },
-  { year: "2024", event: "Mobilise becomes KEENON's official India partner" },
-  { year: "2025", event: "400+ deployments across India in 12 months" },
-  { year: "2026", event: "Pan-India network — all major cities covered" },
-];
-
-const TEAM = [
-  {
-    name: "Arjun Mehta",
-    role: "CEO & Co-Founder",
-    bio: "15+ years in robotics and automation across APAC. Former head of automation at Reliance Industries.",
-  },
-  {
-    name: "Priya Sharma",
-    role: "CTO",
-    bio: "IIT Bombay alumna. Expert in AI, SLAM navigation, and IoT integration for service robotics.",
-  },
-  {
-    name: "Rohan Kapoor",
-    role: "VP Sales — India",
-    bio: "Built distribution networks across 200+ Indian cities. Expert in hospitality and healthcare sectors.",
-  },
+  { year: "2010", event: "KEENON Robotics founded in Shanghai, China" },
+  { year: "2021", event: "$200M Series D led by SoftBank Vision Fund 2 — largest round to date for a service robot company" },
+  { year: "2024", event: "100,000+ KEENON service robots shipped cumulatively, ranked #1 in catering delivery robot exports" },
+  { year: "2025", event: "DINERBOT T10 wins iF Design Award 2025; KEENON present in 60+ countries and 600+ cities" },
+  { year: "2026", event: "Mobilise scales KEENON deployments across Indian hospitality, healthcare, retail, and facility management" },
 ];
 
 export function About() {
   useDocumentTitle(
     "About Mobilise",
-    "Mobilise App Lab Limited is India's authorized KEENON Robotics partner — bringing world-class autonomous service robots to Indian businesses."
+    "Mobilise App Lab Limited is an authorized KEENON Robotics partner in India — bringing autonomous service robots to Indian hospitality, healthcare, retail, and facility management."
   );
   return (
     <div className="min-h-screen bg-[#050a14] pt-20">
@@ -53,17 +31,17 @@ export function About() {
                 <span className="text-cyan-400 text-sm font-semibold">About Mobilise App Lab Limited</span>
               </div>
               <h1 className="text-5xl lg:text-6xl font-black text-white mb-6">
-                Bringing the <span className="text-cyan-400">Robot Revolution</span> to India
+                Service Robots for <span className="text-cyan-400">Indian Operations</span>
               </h1>
               <p className="text-white/60 text-xl leading-relaxed mb-8">
-                Mobilise App Lab Limited is India's exclusive authorized partner for KEENON Robotics — the world's leading manufacturer of service robots. We bridge the gap between cutting-edge Chinese robotics innovation and India's rapidly growing automation market.
+                Mobilise App Lab Limited is an authorized KEENON Robotics partner in India. We handle sales, installation, operator training, AMC, and on-ground service for KEENON's delivery, cleaning, and reception robots — the same platform deployed in 60+ countries and 600+ cities worldwide.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { value: "400+", label: "India Deployments" },
-                  { value: "₹200 Cr+", label: "Client ROI Generated" },
-                  { value: "15+", label: "Cities Covered" },
-                  { value: "24/7", label: "Support Available" },
+                  { value: "60+", label: "Countries KEENON Operates In" },
+                  { value: "600+", label: "Cities Globally" },
+                  { value: "100K+", label: "KEENON Robots Shipped Worldwide" },
+                  { value: "24/7", label: "MALL Support in IST Hours" },
                 ].map((s, i) => (
                   <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4">
                     <div className="text-2xl font-black text-cyan-400">{s.value}</div>
@@ -83,8 +61,8 @@ export function About() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <div className="bg-[#050a14]/80 backdrop-blur-md border border-white/20 rounded-2xl p-4">
-                    <div className="text-cyan-400 font-bold text-sm mb-1">Official Partnership</div>
-                    <div className="text-white/70 text-sm">Mobilise × KEENON Robotics — Authorized Indian Distributor & Service Partner</div>
+                    <div className="text-cyan-400 font-bold text-sm mb-1">Authorized Partnership</div>
+                    <div className="text-white/70 text-sm">Mobilise × KEENON Robotics — sales, installation, training, and AMC support in India.</div>
                   </div>
                 </div>
               </div>
@@ -100,18 +78,18 @@ export function About() {
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
               <h2 className="text-4xl font-black text-white mb-6">About <span className="text-cyan-400">KEENON Robotics</span></h2>
               <p className="text-white/60 leading-relaxed mb-6">
-                Founded in 2010 and headquartered in Hangzhou, China, KEENON Robotics is the world's largest manufacturer of commercial service robots. With a team of 3,000+ engineers and a portfolio spanning delivery, cleaning, and service robots, KEENON has deployed over 60,000 robots in 60+ countries.
+                Founded in 2010 and headquartered in Shanghai, KEENON Robotics builds autonomous service robots across delivery (DINERBOT), cleaning (KLEENBOT), guiding, disinfection, and humanoid (XMAN) categories. The platform is in service across more than 60 countries and 600 cities.
               </p>
               <p className="text-white/60 leading-relaxed mb-8">
-                KEENON's robots are powered by proprietary AI algorithms, advanced SLAM navigation, and deep machine learning — making them the most reliable and intelligent service robots available today. Their manufacturing facility in Hangzhou produces 50,000 robots annually, ensuring consistent quality and timely delivery.
+                In 2024, KEENON crossed 100,000 service robots shipped cumulatively and was ranked #1 in catering delivery robot exports. The company raised a $200M Series D from SoftBank Vision Fund 2 in 2021 — the largest funding round to date for a service robot manufacturer.
               </p>
               <div className="space-y-3">
                 {[
-                  "World's #1 commercial delivery robot manufacturer",
-                  "ISO 9001:2015 quality certified",
-                  "CE, FCC, RoHS compliant for global markets",
-                  "100+ patents in robotics & AI navigation",
-                  "Trusted by Fortune 500 companies globally",
+                  "Founded 2010, headquartered in Shanghai",
+                  "Present in 60+ countries and 600+ cities (per keenon.com)",
+                  "100,000+ service robots shipped cumulatively (KEENON, 2024)",
+                  "DINERBOT T10 — iF Design Award 2025 winner",
+                  "Keenon Cloud holds GDPR certification (since 2023)",
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-cyan-400 shrink-0" />
@@ -123,10 +101,10 @@ export function About() {
 
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="space-y-4">
               {[
-                { icon: Award, title: "World Leader", desc: "#1 commercial service robot manufacturer globally with the largest robot fleet deployed across 60+ countries." },
-                { icon: Globe, title: "Global Presence", desc: "Operating in USA, UK, UAE, Singapore, Japan, South Korea, and now rapidly expanding across India." },
-                { icon: Users, title: "Innovation Driven", desc: "3,000+ R&D engineers continuously advancing AI navigation, NLP, and robot intelligence." },
-                { icon: Zap, title: "Proven ROI", desc: "Average client achieves full ROI within 18 months, with 3x service efficiency improvements documented." },
+                { icon: Award, title: "Award-Recognised Design", desc: "DINERBOT T10 named an iF Design Award 2025 winner — selected from nearly 11,000 entries across 66 countries." },
+                { icon: Globe, title: "Proven Global Footprint", desc: "Deployed across the U.S., Germany, France, U.A.E., Japan, South Korea, Thailand, and Vietnam, among 60+ countries." },
+                { icon: Users, title: "Service Robotics Specialist", desc: "Fifteen years focused on autonomous positioning, perception, and multi-robot dispatch for commercial environments." },
+                { icon: Zap, title: "Authorized India Support", desc: "Mobilise handles installation, operator training, spare parts, and AMC for KEENON deployments in India." },
               ].map(({ icon: Icon, title, desc }, i) => (
                 <div key={i} className="flex gap-4 p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center shrink-0">
@@ -174,32 +152,17 @@ export function About() {
 
       {/* Team */}
       <section className="py-20 bg-[#030710] border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-4xl font-black text-white text-center mb-4">Leadership <span className="text-cyan-400">Team</span></h2>
-          <p className="text-white/50 text-center mb-12 max-w-2xl mx-auto">
-            Mobilise's leadership team combines deep expertise in robotics, technology, and Indian market dynamics.
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-4xl font-black text-white mb-4">Leadership <span className="text-cyan-400">Team</span></h2>
+          <p className="text-white/50 mb-8">
+            Mobilise is operated by Mobilise App Lab Limited (MALL). Named leadership profiles will appear here once approved by the marketing team.
           </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {TEAM.map((member, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-colors"
-              >
-                <div className="h-48 overflow-hidden flex items-center justify-center bg-[#0a101f]">
-                  <MonogramAvatar name={member.name} className="w-32 h-32 rounded-full text-5xl" />
-                </div>
-                <div className="p-5">
-                  <h3 className="text-white font-black text-lg">{member.name}</h3>
-                  <p className="text-cyan-400 text-sm font-semibold mb-3">{member.role}</p>
-                  <p className="text-white/70 text-sm">{member.bio}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/10 transition-colors"
+          >
+            Meet the team on a demo call <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 
@@ -208,7 +171,7 @@ export function About() {
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 to-blue-900/20" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-black text-white mb-6">Partner with <span className="text-cyan-400">Mobilise</span></h2>
-          <p className="text-white/50 text-xl mb-10">Join 400+ businesses across India that trust Mobilise for their robotics needs.</p>
+          <p className="text-white/50 text-xl mb-10">Talk to our team about a scoped pilot or full deployment of KEENON robots in your facility.</p>
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl text-white font-black text-lg shadow-2xl shadow-cyan-500/30"

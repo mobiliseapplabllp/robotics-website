@@ -1,17 +1,10 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { ArrowRight, CheckCircle, TrendingUp, Users, Clock, IndianRupee } from "lucide-react";
+import { ArrowRight, CheckCircle, TrendingUp } from "lucide-react";
 import { SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
-
-const INDIA_STATS = [
-  { icon: TrendingUp, value: "₹8,500 Cr", label: "Indian Robotics Market by 2030" },
-  { icon: Users, value: "2.5M+", label: "Jobs Supported by Automation" },
-  { icon: Clock, value: "40%", label: "Average Efficiency Gain" },
-  { icon: IndianRupee, value: "18 Months", label: "Average ROI Period" },
-];
 
 export function Solutions() {
   useDocumentTitle(
@@ -46,33 +39,9 @@ export function Solutions() {
               Robots for <span className="text-cyan-400">Every Industry</span>
             </h1>
             <p className="text-white/50 text-xl max-w-3xl mx-auto">
-              KEENON's robots are deployed across 6 major industry verticals in India, delivering measurable ROI and transforming service delivery in the world's fastest-growing economy.
+              KEENON robots run across hospitality, healthcare, retail, corporate, and aviation environments. Mobilise scopes the right model for your floor plan, integrates it with your existing operations, and supports it on the ground in India.
             </p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* India stats */}
-      <section className="py-12 bg-[#030710] border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {INDIA_STATS.map(({ icon: Icon, value, label }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-3">
-                  <Icon className="w-6 h-6 text-cyan-400" />
-                </div>
-                <div className="text-3xl font-black text-cyan-400 mb-1">{value}</div>
-                <div className="text-white/40 text-sm">{label}</div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -151,40 +120,44 @@ export function Solutions() {
         ))}
       </div>
 
-      {/* India deployment map section */}
+      {/* India coverage section */}
       <section className="py-20 bg-[#030710] border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-4xl font-black text-white mb-4">KEENON Robots Across <span className="text-cyan-400">India</span></h2>
             <p className="text-white/50 max-w-2xl mx-auto">
-              Mobilise is deploying KEENON robots across India's major cities, with installations in hospitality, healthcare, and retail sectors.
+              Mobilise supports KEENON deployments in India's major metros. Pilot installations are scoped per facility — request a site survey to plan yours.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
-              { city: "Mumbai", count: "85+ Deployments", sector: "Hospitality & Retail" },
-              { city: "Delhi NCR", count: "72+ Deployments", sector: "Healthcare & Corporate" },
-              { city: "Bengaluru", count: "91+ Deployments", sector: "Tech Parks & Hotels" },
-              { city: "Hyderabad", count: "54+ Deployments", sector: "Pharma & Hospitality" },
-              { city: "Chennai", count: "43+ Deployments", sector: "Manufacturing & F&B" },
-              { city: "Kolkata", count: "38+ Deployments", sector: "Retail & Healthcare" },
+              { city: "Mumbai", sector: "Hospitality & retail" },
+              { city: "Delhi NCR", sector: "Healthcare & corporate" },
+              { city: "Bengaluru", sector: "Tech parks & hotels" },
+              { city: "Hyderabad", sector: "Pharma & hospitality" },
+              { city: "Chennai", sector: "Manufacturing & F&B" },
+              { city: "Kolkata", sector: "Retail & healthcare" },
+              { city: "Pune", sector: "Hospitality & corporate" },
+              { city: "Ahmedabad", sector: "Hospitality & retail" },
             ].map((city, i) => (
               <motion.div
                 key={city.city}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.05 }}
                 className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center hover:border-cyan-500/30 transition-colors"
               >
-                <div className="text-2xl font-black text-cyan-400 mb-1">{city.count.split(" ")[0]}</div>
-                <div className="text-xs text-white/30 mb-2">Deployments</div>
-                <div className="text-white font-bold text-sm">{city.city}</div>
+                <div className="text-white font-bold text-base">{city.city}</div>
                 <div className="text-white/40 text-xs mt-1">{city.sector}</div>
               </motion.div>
             ))}
           </div>
+
+          <p className="text-center text-white/30 text-xs mt-8 max-w-2xl mx-auto">
+            City-level deployment counts will appear here once verified with our sales team. Talk to us for case-study references under NDA.
+          </p>
         </div>
       </section>
 
