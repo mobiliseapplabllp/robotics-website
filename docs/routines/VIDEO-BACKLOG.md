@@ -9,6 +9,10 @@ This is the queue the content team picks from when planning an original video sh
 | Date flagged | Topic | Blog post that needs it | Priority | Status | Assigned | Target publish |
 |--------------|-------|-------------------------|----------|--------|----------|-----------------|
 | _example 2026-04-20_ | _DINERBOT T10 in a Mumbai five-star hotel room service cycle_ | _hotels / room service robot india_ | _high_ | _planned_ | _—_ | _TBD_ |
+| 2026-04-27 | Indian-property cross-floor cycle (kitchen → lift → guest room → return) on KEENON ButlerBot W3 — 60–90s | hotels / room-service-robot-india | high | planned | — | TBD |
+| 2026-04-27 | DINERBOT T10 in an Indian all-day-dining run (kitchen-to-table loop, 60s) | hotels / room-service-robot-india | medium | planned | — | TBD |
+
+Component gap (separate from this backlog): `BlogPost.tsx` does not yet support a YouTube embed shortcode or `VideoObject` JSON-LD output. Until it does, posts link to videos inline rather than embedding them. Open issue to add `react-markdown` rehype-raw + a `<YouTube>` shortcode component so these embeds render and emit `VideoObject` schema.
 
 ---
 
