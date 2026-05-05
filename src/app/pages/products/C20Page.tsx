@@ -141,7 +141,11 @@ export function C20Page() {
             <MobiliseAuthoritySection
                 variant="minimal"
                 accentColor="lime"
-                description='While Keenon builds the hardware, <strong class="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We deploy ultra-compact cleaning solutions for India&apos;s most space-constrained and noise-sensitive commercial environments.'
+                description={
+                    <>
+                        While Keenon builds the hardware, <strong className="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We deploy ultra-compact cleaning solutions for India&apos;s most space-constrained and noise-sensitive commercial environments.
+                    </>
+                }
             />
 
             {/* ── Noise Comparison Visualization ── */}

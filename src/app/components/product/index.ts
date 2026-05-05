@@ -2,7 +2,7 @@ export { ProductLightbox } from "./ProductLightbox";
 export { StickyFeatureSection } from "./StickyFeatureSection";
 export { ParallaxGalleryItem } from "./ParallaxGalleryItem";
 export { FloatingCTA } from "./FloatingCTA";
-export { MobiliseAuthoritySection } from "./MobiliseAuthoritySection";
+export { MobiliseAuthoritySection, AuthorityHighlight } from "./MobiliseAuthoritySection";
 export { IndustryGrid } from "./IndustryGrid";
 export type { IndustryItem } from "./IndustryGrid";
 export { VideoSection } from "./VideoSection";

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { type AccentColor, getAccentClasses } from "./colors";
 
 const HIGHLIGHT_COLORS: Record<AccentColor, { bg: string; text: string }> = {
@@ -20,6 +21,33 @@ const HIGHLIGHT_COLORS: Record<AccentColor, { bg: string; text: string }> = {
     sky: { bg: "rgba(14,165,233,0.2)", text: "rgb(125,211,252)" },
 };
 
+/**
+ * Accent-colored inline highlight used inside authority descriptions.
+ * Renders a <strong> with a tinted background/text derived from the accent color.
+ */
+export function AuthorityHighlight({
+    accentColor,
+    children,
+}: {
+    accentColor: AccentColor;
+    children: ReactNode;
+}) {
+    const hl = HIGHLIGHT_COLORS[accentColor];
+    return (
+        <strong
+            style={{
+                background: hl.bg,
+                color: hl.text,
+                padding: "2px 8px",
+                borderRadius: 4,
+                fontWeight: 700,
+            }}
+        >
+            {children}
+        </strong>
+    );
+}
+
 interface MobiliseAuthoritySectionProps {
     /**
      * Visual variant:
@@ -30,8 +58,12 @@ interface MobiliseAuthoritySectionProps {
     variant?: "glow" | "lines" | "minimal";
     /** Accent color key. Default: "blue" */
     accentColor?: AccentColor;
-    /** Optional custom description paragraph (supports HTML). */
-    description?: string;
+    /**
+     * Description paragraph content. Pass JSX so emphasized phrases can use
+     * `<AuthorityHighlight>` or plain styled spans — never raw HTML strings.
+     * If omitted, renders the default Mobilise pitch with an accent highlight.
+     */
+    description?: ReactNode;
     /** Whether to show bottom border. Default: false */
     showBorder?: boolean;
 }
@@ -43,17 +75,20 @@ interface MobiliseAuthoritySectionProps {
 export function MobiliseAuthoritySection({
     variant = "glow",
     accentColor = "blue",
-    description = 'While Keenon builds the hardware, <strong>Mobilise App Lab Limited</strong> delivers the mastery. We don\'t just sell robots; we architect end-to-end autonomous solutions that redefine facility management for the Indian market.',
+    description,
     showBorder = false,
 }: MobiliseAuthoritySectionProps) {
     const c = getAccentClasses(accentColor);
-    const hl = HIGHLIGHT_COLORS[accentColor];
 
-    // Replace <strong> tags with highlighted versions
-    const highlightedDesc = description.replace(
-        /<strong>(.*?)<\/strong>/g,
-        `<strong style="background:${hl.bg};color:${hl.text};padding:2px 8px;border-radius:4px;font-weight:700">$1</strong>`
-    );
+    const descriptionNode: ReactNode =
+        description ?? (
+            <>
+                While Keenon builds the hardware,{" "}
+                <AuthorityHighlight accentColor={accentColor}>Mobilise App Lab Limited</AuthorityHighlight>{" "}
+                delivers the mastery. We don&apos;t just sell robots; we architect end-to-end autonomous
+                solutions that redefine facility management for the Indian market.
+            </>
+        );
 
     return (
         <section className={`py-32 bg-[#050a14] relative overflow-hidden ${showBorder ? "border-b border-white/5" : ""}`}>
@@ -117,8 +152,9 @@ export function MobiliseAuthoritySection({
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.2 }}
                     className="max-w-4xl mx-auto text-white/50 text-lg md:text-xl leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: highlightedDesc }}
-                />
+                >
+                    {descriptionNode}
+                </motion.p>
             </div>
         </section>
     );

@@ -145,7 +145,11 @@ export function T3Page() {
             <MobiliseAuthoritySection
                 variant="minimal"
                 accentColor="teal"
-                description='While Keenon builds the hardware, <strong class="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We architect end-to-end hygienic delivery solutions for India&apos;s leading hospitals, hotels, and premium F&B establishments.'
+                description={
+                    <>
+                        While Keenon builds the hardware, <strong className="text-white">Mobilise App Lab Limited</strong> delivers the mastery. We architect end-to-end hygienic delivery solutions for India&apos;s leading hospitals, hotels, and premium F&amp;B establishments.
+                    </>
+                }
             />
 
             {/* ── Hygiene Architecture: 3-Column Blueprint Cards ── */}
