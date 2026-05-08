@@ -31,3 +31,6 @@ npm-debug.log*
 
 # Claude worktrees
 .claude/worktrees/
+
+# Routine research scratchpads
+routine-scratch/
