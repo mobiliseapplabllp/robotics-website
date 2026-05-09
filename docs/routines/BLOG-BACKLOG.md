@@ -11,7 +11,7 @@ Prioritized queue of blog topics for the `publish-industry-blog` routine. The ro
 | # | Status | Industry | Robot type | Angle | Primary keyword (India) | Target word count | Lead magnet ref |
 |---|--------|----------|------------|-------|-------------------------|-------------------|-----------------|
 | 1 | queued | Hotels (5-star) | Delivery (DINERBOT) | Room service automation | room service robot india | 2000 | hotel-roi |
-| 2 | queued | Hotels (business/mid) | Guiding | Check-in concierge | hotel concierge robot india | 1800 | hotel-roi |
+| 2 | pr-open | Hotels (business/mid) | Guiding | Check-in concierge | hotel concierge robot india | 1800 | hotel-roi |
 | 3 | queued | Restaurants (QSR chains) | Delivery | Labor shortage ROI | restaurant server robot india | 2200 | qsr-roi |
 | 4 | queued | Restaurants (fine dining) | Delivery | Guest experience framing | fine dining robot waiter | 1800 | qsr-roi |
 | 5 | queued | Cloud kitchens | Delivery | Throughput at peak hours | cloud kitchen robot | 1800 | qsr-roi |
