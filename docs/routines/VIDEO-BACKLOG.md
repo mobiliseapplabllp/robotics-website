@@ -9,6 +9,7 @@ This is the queue the content team picks from when planning an original video sh
 | Date flagged | Topic | Blog post that needs it | Priority | Status | Assigned | Target publish |
 |--------------|-------|-------------------------|----------|--------|----------|-----------------|
 | _example 2026-04-20_ | _DINERBOT T10 in a Mumbai five-star hotel room service cycle_ | _hotels / room service robot india_ | _high_ | _planned_ | _—_ | _TBD_ |
+| 2026-05-19 | 60s back-of-house clip — DINERBOT T10 doing kitchen-pass-to-station hops in an Indian fine-dining kitchen (Mumbai BKC / Khan Market / MG Road Bengaluru) | restaurants / fine-dining-robot-waiter-india | high | flagged | — | TBD |
 
 ---
 
