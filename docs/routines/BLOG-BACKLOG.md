@@ -14,7 +14,7 @@ Prioritized queue of blog topics for the `publish-industry-blog` routine. The ro
 | 2 | queued | Hotels (business/mid) | Guiding | Check-in concierge | hotel concierge robot india | 1800 | hotel-roi |
 | 3 | queued | Restaurants (QSR chains) | Delivery | Labor shortage ROI | restaurant server robot india | 2200 | qsr-roi |
 | 4 | queued | Restaurants (fine dining) | Delivery | Guest experience framing | fine dining robot waiter | 1800 | qsr-roi |
-| 5 | queued | Cloud kitchens | Delivery | Throughput at peak hours | cloud kitchen robot | 1800 | qsr-roi |
+| 5 | pr-open | Cloud kitchens | Delivery | Throughput at peak hours | cloud kitchen robot | 1800 | qsr-roi |
 | 6 | queued | Hospitals (multi-specialty) | Delivery | Pharmacy-to-ward supply chain | hospital delivery robot india | 2500 | hospital-pilot |
 | 7 | queued | Hospitals (infection control) | Disinfection/UV | Post-COVID ICU protocols | hospital disinfection robot | 2200 | hospital-pilot |
 | 8 | queued | Elder care homes | Guiding + delivery | Staff augmentation, dignity | elder care robot india | 2000 | — |
