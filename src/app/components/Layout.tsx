@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ChevronDown, Bot, Phone, Mail, MapPin, ArrowRight, Linkedin, Twitter, Youtube, Instagram } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 import { PageLoader } from "./PageLoader";
+import { NewsletterSignup } from "./NewsletterSignup";
 
 export function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -273,6 +274,21 @@ export function Layout() {
 
       {/* Footer */}
       <footer className="bg-[#030710] border-t border-white/10">
+        {/* Newsletter band — full-width, sits above the column grid */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-10 border-b border-white/10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <div className="inline-block px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-3">
+                Stay in the loop
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed max-w-md">
+                Get one short email a month about service robotics in India — economics, customer stories, product news. Written by our team, not a marketing bot.
+              </p>
+            </div>
+            <NewsletterSignup />
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2">

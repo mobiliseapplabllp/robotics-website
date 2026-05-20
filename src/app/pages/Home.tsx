@@ -1,6 +1,22 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { ArrowRight, Zap, Shield, Globe, Award, ChevronRight, CheckCircle2 } from "lucide-react";
+import {
+  ArrowRight,
+  Zap,
+  Shield,
+  Globe,
+  Award,
+  ChevronRight,
+  CheckCircle2,
+  Bot,
+  Headphones,
+  Hotel,
+  Heart,
+  Utensils,
+  ShoppingBag,
+  Plane,
+  Briefcase,
+} from "lucide-react";
 import { PRODUCTS, SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { VideoCarousel } from "../components/VideoCarousel";
@@ -11,15 +27,15 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 /**
  * Stats shown under the hero.
  *
- * Honest about origin: the first three are KEENON's global record (clearly
- * attributed), the fourth is a Mobilise India commitment. We deliberately do
- * NOT claim KEENON's 60K/100M as Mobilise's — that would mislead visitors.
+ * Honest about origin: KEENON globals are explicitly attributed; Mobilise
+ * commitments are clearly the operator's promise. Icons make the cards read
+ * as objects rather than flat boxes against the dark hero.
  */
 const STATS = [
-  { value: `${PRODUCTS.length}`, label: "KEENON robots in catalog" },
-  { value: "60,000+", label: "KEENON robots deployed worldwide" },
-  { value: "<48 hrs", label: "Setup at your facility" },
-  { value: "24/7", label: "India support in IST" },
+  { icon: Bot, value: `${PRODUCTS.length}`, label: "KEENON robots in catalog" },
+  { icon: Globe, value: "60,000+", label: "KEENON robots deployed worldwide" },
+  { icon: Zap, value: "<48 hrs", label: "Setup at your facility" },
+  { icon: Headphones, value: "24/7", label: "India support in IST" },
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -40,6 +56,21 @@ const ACCENT_CLASS: Record<string, string> = {
  */
 const FEATURED_IDS = ["t9", "c40", "s100"];
 
+/**
+ * Industry self-segmentation chips shown directly in the hero.
+ * Lets visitors who already know their industry jump to the right answer
+ * without scrolling through the full catalog. Maps to SOLUTIONS ids so the
+ * /solutions#{id} anchor lands on their section.
+ */
+const INDUSTRY_CHIPS = [
+  { id: "hospitality", label: "Hospitality", icon: Hotel },
+  { id: "healthcare", label: "Healthcare", icon: Heart },
+  { id: "foodbev", label: "F&B", icon: Utensils },
+  { id: "retail", label: "Retail", icon: ShoppingBag },
+  { id: "aviation", label: "Aviation", icon: Plane },
+  { id: "corporate", label: "Corporate", icon: Briefcase },
+];
+
 export function Home() {
   useDocumentTitle(
     "Autonomous Service Robots for India",
@@ -55,16 +86,13 @@ export function Home() {
   return (
     <div className="overflow-hidden">
       {/* ───────── Hero ───────── */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20">
-        {/* BG gradient + ambient orbs */}
+      <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12">
         <div className="absolute inset-0 bg-gradient-to-br from-[#050a14] via-[#071628] to-[#050a14]" aria-hidden="true" />
         <div className="absolute inset-0" aria-hidden="true">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-900/5 rounded-full blur-3xl" />
         </div>
-
-        {/* Grid overlay */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -96,11 +124,10 @@ export function Home() {
             <p className="text-white/80 text-lg sm:text-xl max-w-3xl mx-auto mb-6 leading-relaxed">
               Mobilise is India's authorized KEENON Robotics partner. From hotel room service to hospital corridors to retail floors, our autonomous robots work the hours your team can't — reliably, safely, and without breaks.
             </p>
-            <p className="text-white/60 text-base max-w-2xl mx-auto mb-10">
+            <p className="text-white/70 text-base max-w-2xl mx-auto mb-10">
               Most clients start with a <span className="text-cyan-400 font-semibold">60-day paid pilot</span>. Most decide to scale within 6 weeks.
             </p>
 
-            {/* Primary + secondary CTAs — primary is now conversion (Book Demo), not exploration */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
@@ -117,24 +144,58 @@ export function Home() {
             </div>
           </motion.div>
 
-          {/* Stats */}
+          {/* Industry self-segmentation chips */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-14"
+          >
+            <div className="text-white/50 text-xs uppercase tracking-[0.2em] font-bold mb-4">
+              I'm from
+            </div>
+            <nav aria-label="Browse by industry" className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              {INDUSTRY_CHIPS.map(({ id, label, icon: Icon }) => (
+                <Link
+                  key={id}
+                  to={`/solutions#${id}`}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm font-semibold hover:bg-cyan-500/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+                >
+                  <Icon className="w-4 h-4 text-cyan-400/80 group-hover:text-cyan-300 transition-colors" aria-hidden="true" />
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </motion.div>
+
+          {/* Stats with icons + accent border for visual weight */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-6"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
-            {STATS.map((s, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                <div className="text-3xl sm:text-4xl font-black text-cyan-400 mb-1">{s.value}</div>
-                <div className="text-white/70 text-sm leading-snug">{s.label}</div>
+            {STATS.map(({ icon: Icon, value, label }, i) => (
+              <div
+                key={i}
+                className="relative bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 rounded-2xl p-5 sm:p-6 backdrop-blur-sm overflow-hidden group hover:border-cyan-400/30 transition-colors"
+              >
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" aria-hidden="true" />
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/20 flex items-center justify-center mb-3">
+                  <Icon className="w-5 h-5 text-cyan-400" aria-hidden="true" />
+                </div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-1">{value}</div>
+                <div className="text-white/70 text-xs sm:text-sm leading-snug">{label}</div>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ───────── Why Mobilise (moved to position 2 — trust before product) ───────── */}
+      {/* ───────── See it in action (VideoCarousel moved up to front-load visual proof) ───────── */}
+      <VideoCarousel />
+
+      {/* ───────── Why Mobilise — trust before product ───────── */}
       <section className="py-24 bg-[#030710]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -295,9 +356,6 @@ export function Home() {
           </div>
         </div>
       </section>
-
-      {/* ───────── Video carousel ───────── */}
-      <VideoCarousel />
 
       {/* ───────── Solutions ───────── */}
       <section className="py-24 relative">
