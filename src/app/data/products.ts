@@ -68,7 +68,7 @@ export const PRODUCTS: Product[] = [
       "Catering & banquet service"
     ],
     industries: ["Hospitality", "Healthcare", "F&B", "Catering"],
-    videoId: "y4R8lJ3R2Gg",
+    videoId: "cN2EAXcqVL4",
     image: "/images/products/t3/hero.webp",
     images: [
       "/images/products/t3/hero.webp",
@@ -130,7 +130,7 @@ export const PRODUCTS: Product[] = [
       "Event & catering service",
     ],
     industries: ["Hospitality", "F&B", "Corporate", "Events"],
-    videoId: "7PaZSanCbHI",
+    videoId: "iFTF2N5QnMI",
     image: "/images/products/t5/hero.webp",
     images: [
       "/images/products/t5/hero.webp",
@@ -186,7 +186,7 @@ export const PRODUCTS: Product[] = [
       "Banquet hall assistance",
     ],
     industries: ["Hospitality", "Healthcare", "F&B", "Corporate"],
-    videoId: "n_MpADYaGN0",
+    videoId: "t5YIz65Kjr0",
     image: "/images/products/t8/hero.webp",
     images: [
       "/images/products/t8/hero.webp",
@@ -246,7 +246,7 @@ export const PRODUCTS: Product[] = [
       "Club & lounge service",
     ],
     industries: ["Luxury Hospitality", "Healthcare", "F&B", "Senior Care"],
-    videoId: "n_MpADYaGN0",
+    videoId: "5TP6MokvFnQ",
     image: "/images/products/t9/hero.webp",
     images: [
       "/images/products/t9/hero.webp",
@@ -306,7 +306,7 @@ export const PRODUCTS: Product[] = [
       "High-end corporate lounges",
     ],
     industries: ["Luxury Hospitality", "Healthcare", "F&B", "Corporate"],
-    videoId: "0nPaHJVqO8k",
+    videoId: "J7llt1bN5vk",
     image: "/images/products/t9-pro/hero.webp",
     images: [
       "/images/products/t9-pro/hero.webp",
@@ -365,7 +365,7 @@ export const PRODUCTS: Product[] = [
       "Premium retail assistance",
     ],
     industries: ["Luxury Hotels", "Resorts", "Healthcare", "Corporate"],
-    videoId: "XVh7BkgMhuk",
+    videoId: "khnZ4v-5Lqg",
     image: "/images/products/t10/hero.webp",
     images: [
       "/images/products/t10/hero.webp",
@@ -422,7 +422,7 @@ export const PRODUCTS: Product[] = [
       "Corporate mailroom automation",
     ],
     industries: ["Healthcare", "Hospitality", "Pharmaceutical", "Corporate"],
-    videoId: "XVh7BkgMhuk",
+    videoId: "9xLvVsv86KA",
     image: "/images/products/t11/hero.webp",
     images: [
       "/images/products/t11/hero.webp",
@@ -483,7 +483,7 @@ export const PRODUCTS: Product[] = [
       "Cross-floor multi-stop logistics",
     ],
     industries: ["Hospitality", "Healthcare", "Corporate", "Residential"],
-    videoId: "IhBv7JIJQ5M",
+    videoId: "Oalou9LvHHE",
     image: "/images/products/w3/hero.webp",
     images: [
       "/images/products/w3/hero.webp",
@@ -538,7 +538,7 @@ export const PRODUCTS: Product[] = [
       "Small office spaces",
     ],
     industries: ["F&B", "Hospitality", "Healthcare", "Retail", "Corporate"],
-    videoId: "EW4Td73DFEI",
+    videoId: "JAEnvexMePw",
     image: "/images/products/c20/hero.webp",
     images: [
       "/images/products/c20/hero.webp",
@@ -595,7 +595,7 @@ export const PRODUCTS: Product[] = [
       "Convention center cleanup",
     ],
     industries: ["Commercial Real Estate", "Retail", "Corporate", "Hospitality"],
-    videoId: "Bv9XN3S_DkI",
+    videoId: "nHcg64XRxks",
     image: "/images/products/c30/hero.webp",
     images: [
       "/images/products/c30/hero.webp",
@@ -653,7 +653,7 @@ export const PRODUCTS: Product[] = [
       "Healthcare facilities",
     ],
     industries: ["Hospitality", "Retail", "Corporate", "Healthcare"],
-    videoId: "mZv4UEyFGQg",
+    videoId: "Gd4mC4TcF6s",
     image: "/images/products/c40/hero.webp",
     images: [
       "/images/products/c40/hero.webp",
@@ -717,7 +717,7 @@ export const PRODUCTS: Product[] = [
       "Convention centers and warehouses",
     ],
     industries: ["Infrastructure", "Retail", "Aviation", "Manufacturing", "Hospitality"],
-    videoId: "Bv9XN3S_DkI",
+    videoId: "WBlkoDMBsZI",
     image: "/images/products/c55/hero.webp",
     images: [
       "/images/products/c55/hero.webp",
@@ -774,7 +774,7 @@ export const PRODUCTS: Product[] = [
       "Hotel back-of-house logistics",
     ],
     industries: ["Healthcare", "Manufacturing", "Logistics", "Corporate"],
-    videoId: "nWFOEiiLzTc",
+    videoId: "KGtbV6l5aJQ",
     image: "/images/products/s100/hero.webp",
     images: [
       "/images/products/s100/hero.webp",
@@ -832,7 +832,7 @@ export const PRODUCTS: Product[] = [
       "Large campus logistics automation",
     ],
     industries: ["Healthcare", "Manufacturing", "Logistics", "Aviation", "Infrastructure"],
-    videoId: "GST1_KOT54Q",
+    videoId: "rbSBAt1Hlvk",
     image: "/images/products/s300/hero.webp",
     images: [
       "/images/products/s300/hero.webp",
@@ -891,7 +891,7 @@ export const PRODUCTS: Product[] = [
       "Government office reception",
     ],
     industries: ["Hospitality", "Corporate", "Museums", "Healthcare", "Government"],
-    videoId: "mZv4UEyFGQg",
+    videoId: "eqOReEjlZSk",
     image: "/images/products/g1/hero.webp",
     images: [
       "/images/products/g1/hero.webp",
