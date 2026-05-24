@@ -1,7 +1,7 @@
 import { Suspense, useState, useEffect, useRef } from "react";
 import { Link, useLocation, Outlet } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, ChevronDown, Bot, Phone, Mail, MapPin, ArrowRight, Linkedin, Twitter, Youtube, Instagram } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, Mail, MapPin, ArrowRight, Linkedin, Twitter, Youtube, Instagram } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 import { PageLoader } from "./PageLoader";
 import { NewsletterSignup } from "./NewsletterSignup";
@@ -73,15 +73,25 @@ export function Layout() {
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-18 py-4">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-lg" aria-label="Mobilise Robotics home">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/50 transition-all">
-              <Bot className="w-6 h-6 text-white" aria-hidden="true" />
-            </div>
-            <div>
-              <div className="text-white font-black tracking-tight text-lg leading-none">Mobilise</div>
-              <div className="text-cyan-400 text-[10px] font-semibold tracking-[0.2em] uppercase leading-none">For Robotics</div>
-            </div>
+          {/* Logo — Mobilise wordmark from the parent brand (mobilise.co.in) + a
+              "ROBOTICS" tag so the fmrobots.in arm is clearly differentiated.
+              The PNG is the white wordmark on transparent — designed for dark
+              backgrounds. */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14] rounded-lg"
+            aria-label="Mobilise Robotics home"
+          >
+            <img
+              src="/images/brand/mobilise-logo.png"
+              alt="Mobilise"
+              width={144}
+              height={34}
+              className="h-8 sm:h-9 w-auto"
+            />
+            <span className="hidden sm:inline-block text-cyan-400 text-[10px] font-bold tracking-[0.3em] uppercase pl-3 border-l border-white/15 leading-none py-1">
+              Robotics
+            </span>
           </Link>
 
           {/* Desktop Nav */}
@@ -293,13 +303,16 @@ export function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-white" aria-hidden="true" />
-                </div>
-                <div>
-                  <div className="text-white font-black text-lg leading-none">Mobilise App Lab</div>
-                  <div className="text-cyan-400 text-[10px] font-semibold tracking-[0.2em] uppercase">Limited</div>
-                </div>
+                <img
+                  src="/images/brand/mobilise-logo.png"
+                  alt="Mobilise"
+                  width={144}
+                  height={34}
+                  className="h-9 w-auto"
+                />
+                <span className="text-cyan-400 text-[10px] font-bold tracking-[0.3em] uppercase pl-3 border-l border-white/15 leading-none py-1">
+                  Robotics
+                </span>
               </div>
               <p className="text-white/60 text-sm leading-relaxed mb-5">
                 India's premier partner for KEENON Robotics — bringing world-class autonomous service robots to hospitality, healthcare, retail, and beyond.
