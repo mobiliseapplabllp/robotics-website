@@ -1,16 +1,22 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { ArrowRight, CheckCircle, TrendingUp, Users, Clock, IndianRupee, ExternalLink } from "lucide-react";
+import { ArrowRight, CheckCircle, Globe, MapPin, Building2, Calendar, TrendingUp, ExternalLink } from "lucide-react";
 import { SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
+/**
+ * Global KEENON deployment context. Per BRAND.md, factual claims must be on
+ * the approved whitelist — these are: 60+ countries, 600+ cities, six verticals
+ * supported, and Mobilise's 30-day pilot offer. No India-specific deployment
+ * counts are claimed (we haven't shipped to a named Indian customer yet).
+ */
 const INDIA_STATS = [
-  { icon: TrendingUp, value: "₹8,500 Cr", label: "Indian Robotics Market by 2030" },
-  { icon: Users, value: "2.5M+", label: "Jobs Supported by Automation" },
-  { icon: Clock, value: "40%", label: "Average Efficiency Gain" },
-  { icon: IndianRupee, value: "18 Months", label: "Average ROI Period" },
+  { icon: Globe, value: "60+", label: "Countries with KEENON robots" },
+  { icon: MapPin, value: "600+", label: "Cities served globally" },
+  { icon: Building2, value: "6", label: "Verticals supported in India" },
+  { icon: Calendar, value: "30-day", label: "Paid pilot window" },
 ];
 
 /**
@@ -29,7 +35,7 @@ const DETAIL_SLUG: Record<string, string> = {
 export function Solutions() {
   useDocumentTitle(
     "Industry Solutions for Facility Management Automation",
-    "Per-industry robotic automation solutions from Mobilise — hospitality, healthcare, food & beverage, retail, aviation, and corporate. KEENON robots deployed across India.",
+    "Per-industry robotic automation solutions from Mobilise — hospitality, healthcare, food & beverage, retail, aviation, and corporate. KEENON robots proven across 60+ countries, now launching in India.",
   );
   const location = useLocation();
 
@@ -59,7 +65,7 @@ export function Solutions() {
               Robots for <span className="text-cyan-400">Every Industry</span>
             </h1>
             <p className="text-white/50 text-xl max-w-3xl mx-auto">
-              KEENON's robots are deployed across 6 major industry verticals in India, delivering measurable ROI and transforming service delivery in the world's fastest-growing economy.
+              KEENON's robots are deployed across 60+ countries in six verticals — hospitality, healthcare, food &amp; beverage, retail, aviation, and corporate. Mobilise brings that global deployment expertise to Indian facility-management operations.
             </p>
           </motion.div>
         </div>
@@ -175,24 +181,26 @@ export function Solutions() {
         ))}
       </div>
 
-      {/* India deployment map section */}
+      {/* India launch geography — cities we're actively in conversations across */}
       <section className="py-20 bg-[#030710] border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-white mb-4">KEENON Robots Across <span className="text-cyan-400">India</span></h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Launching KEENON Robots Across <span className="text-cyan-400">India</span>
+            </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
-              Mobilise is deploying KEENON robots across India's major cities, with installations in hospitality, healthcare, and retail sectors.
+              Pilot conversations underway across India's tier-1 metros. Spare-parts inventory and engineering response are scoped city-by-city as the first deployments go live.
             </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { city: "Mumbai", count: "85+ Deployments", sector: "Hospitality & Retail" },
-              { city: "Delhi NCR", count: "72+ Deployments", sector: "Healthcare & Corporate" },
-              { city: "Bengaluru", count: "91+ Deployments", sector: "Tech Parks & Hotels" },
-              { city: "Hyderabad", count: "54+ Deployments", sector: "Pharma & Hospitality" },
-              { city: "Chennai", count: "43+ Deployments", sector: "Manufacturing & F&B" },
-              { city: "Kolkata", count: "38+ Deployments", sector: "Retail & Healthcare" },
+              { city: "Mumbai", focus: "Hospitality & Retail" },
+              { city: "Delhi NCR", focus: "Healthcare & Corporate" },
+              { city: "Bengaluru", focus: "Tech Parks & Hotels" },
+              { city: "Hyderabad", focus: "Pharma & Hospitality" },
+              { city: "Chennai", focus: "Manufacturing & F&B" },
+              { city: "Kolkata", focus: "Retail & Healthcare" },
             ].map((city, i) => (
               <motion.div
                 key={city.city}
@@ -202,10 +210,9 @@ export function Solutions() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center hover:border-cyan-500/30 transition-colors"
               >
-                <div className="text-2xl font-black text-cyan-400 mb-1">{city.count.split(" ")[0]}</div>
-                <div className="text-xs text-white/30 mb-2">Deployments</div>
-                <div className="text-white font-bold text-sm">{city.city}</div>
-                <div className="text-white/40 text-xs mt-1">{city.sector}</div>
+                <div className="text-white font-bold text-base mb-1">{city.city}</div>
+                <div className="text-cyan-400/80 text-[10px] uppercase tracking-wider font-bold mb-2">Pilot focus</div>
+                <div className="text-white/50 text-xs">{city.focus}</div>
               </motion.div>
             ))}
           </div>

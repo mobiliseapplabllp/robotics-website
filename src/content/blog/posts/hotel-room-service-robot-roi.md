@@ -3,14 +3,15 @@ title: "The actual ROI math on a hotel room-service robot"
 slug: "hotel-room-service-robot-roi"
 date: "2026-04-10"
 author:
-  name: "Rohan Kapoor"
-  role: "VP Sales — India"
+  name: "Mobilise Team"
+  role: "Robotics vertical, Mobilise App Lab Limited"
 category: "Industry"
 tags:
   - "ROI"
   - "Hospitality"
   - "Economics"
-excerpt: "Every hotel GM asks us the same question: 'What's the payback?' Here's an unvarnished breakdown with real 2026 Indian numbers — the kind your CFO will actually accept."
+excerpt: "Every hotel GM asks us the same question: 'What's the payback?' Here's an unvarnished breakdown with realistic 2026 Indian numbers — the kind your CFO will actually accept."
+heroImage: "/images/products/w3/hero.webp"
 readMinutes: 8
 ---
 
@@ -116,4 +117,4 @@ The math is the math. What's left is whether your property is ready to be operat
 
 *Want the spreadsheet? [Contact our India team](/contact) and mention "ROI model — hotel room service." It'll land in your inbox within one business day.*
 
-— Rohan
+— The Mobilise Team

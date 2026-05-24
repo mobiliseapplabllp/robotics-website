@@ -3,8 +3,8 @@ title: "Why India is hitting a service-robotics tipping point"
 slug: "service-robots-india-tipping-point"
 date: "2026-04-15"
 author:
-  name: "Priya Sharma"
-  role: "CTO"
+  name: "Mobilise Team"
+  role: "Robotics vertical, Mobilise App Lab Limited"
 category: "Industry"
 tags:
   - "India"
@@ -12,6 +12,7 @@ tags:
   - "Hospitality"
   - "Healthcare"
 excerpt: "The economics shifted in 2024. The technology matured in 2023. The labour market cracked in 2022. Here's why Indian service robotics is no longer a 'one day' story — it's a this-year story."
+heroImage: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1600&auto=format&fit=crop&q=80"
 readMinutes: 7
 ---
 
@@ -105,4 +106,4 @@ If you're reading this as a VP Ops, COO, or GM:
 
 The tipping point has happened. What's left is execution.
 
-— Priya
+— The Mobilise Team

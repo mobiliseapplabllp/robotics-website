@@ -3,20 +3,21 @@ title: "Welcome to Mobilise Robotics"
 slug: "welcome-to-mobilise-robotics"
 date: "2026-04-19"
 author:
-  name: "Arjun Mehta"
-  role: "CEO & Co-Founder"
+  name: "Mobilise Team"
+  role: "Robotics vertical, Mobilise App Lab Limited"
 category: "Company"
 tags:
   - "Launch"
   - "India"
   - "KEENON"
-excerpt: "We've signed with KEENON Robotics to bring the world's most deployed service robots to India. Here's why we're betting the company on this moment."
+excerpt: "We've partnered with KEENON Robotics — present in 60+ countries and 600+ cities globally — to bring service-robot deployments to Indian facilities. Here's why we're committing to this moment."
+heroImage: "/images/products/t9/hero.webp"
 readMinutes: 4
 ---
 
-The first time I saw a KEENON T9 navigate a hotel corridor in Shenzhen in 2023, I thought two things simultaneously. *This is obviously the future.* And: *This is going to India slowly, badly, or not at all — unless someone does it right.*
+The first time our founding team saw a KEENON T9 navigate a hotel corridor abroad, two thoughts landed simultaneously. *This is obviously the future of service operations.* And: *This is going to reach India slowly, badly, or not at all — unless someone deploys it properly.*
 
-Two years later, Mobilise App Lab Limited is that someone. We're now KEENON Robotics' authorized partner for India.
+Mobilise App Lab Limited is that someone. We are KEENON Robotics' authorised partner for India — bringing the global expertise that's delivered KEENON robots across **60+ countries and 600+ cities** to the Indian market.
 
 ## Why now
 
@@ -38,18 +39,18 @@ We're not a reseller. We don't want to be. Reselling a robot to a 5-star hotel a
 
 What we're building is a **deployment-and-service company** that happens to sell KEENON hardware. Our commitments:
 
-1. **Spare parts warehoused in India.** Day-one, in Faridabad. Regional hubs within six months.
+1. **Spare parts warehoused in India.** Domestic stock from day one, with regional hubs to follow as the deployment footprint expands.
 2. **Setup and training on-site.** Every deployment ships with an engineer on the ground until the customer's team can run the robot solo.
-3. **24-hour response on critical issues.** A hotel doesn't care that it's 2 AM on Diwali — their guest is waiting.
-4. **Pilot before purchase.** Don't take our word for it. Run a 60–90 day paid pilot at one property, then scale.
-5. **Local product roadmap input.** If Indian hospitals need barcode-scanning medication delivery and KEENON doesn't ship it yet, we make the case.
+3. **Response targets that match operations reality.** A hotel doesn't care that it's 2 AM on Diwali — their guest is waiting. Service-level commitments will be agreed property-by-property and written into the AMC.
+4. **Pilot before purchase.** Don't take our word for it. Run a 30-day paid pilot at one property, then scale.
+5. **Local product roadmap input.** If Indian hospitals need barcode-scanning medication delivery and KEENON doesn't ship it yet, we make the case to KEENON HQ on our customers' behalf.
 
 ## What's next
 
-We're onboarding our first named customers across hospitality, healthcare, and corporate campuses. The first case studies will be published here when they're ready — names, metrics, photos, the real thing. No stock imagery.
+We're in conversations with our first prospective customers across hospitality, healthcare, and corporate campuses. The first case studies will be published here when they're real — named properties, real metrics, real photos. No stock imagery, no recycled global numbers passed off as Indian validation.
 
-If you're running operations at a hotel, hospital, mall, restaurant chain, airport, or corporate campus in India — and you've been curious about robots but skeptical of the pitch — [we'd like to talk](/contact). Bring your hardest logistics problem. We'll bring a robot and a realistic answer.
+If you're running operations at a hotel, hospital, mall, restaurant chain, airport, or corporate campus in India — and you've been curious about robots but skeptical of the pitch — [we'd like to talk](/contact). Bring your hardest logistics problem. We'll bring a robot and an honest answer about whether it fits.
 
-The future of service in India isn't staffless. It's **staff augmented by autonomous systems that show up on time, every time, without complaint.** That future has already arrived in Singapore, Tokyo, Dubai, and Shenzhen. Our job is to make sure India isn't late to it.
+The future of service in India isn't staffless. It's **staff augmented by autonomous systems that show up on time, every time, without complaint.** That future is already operational in Singapore, Tokyo, Dubai, and Shanghai. Our job is to make sure India isn't late to it.
 
-— Arjun
+— The Mobilise Team
