@@ -196,7 +196,7 @@ export function VideoCarousel() {
             See It In Action
           </div>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-4">
-            Watch KEENON Robots{" "}
+            Watch Robots{" "}
             <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               In Action
             </span>
