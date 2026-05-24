@@ -249,7 +249,7 @@ function ParallaxImage({
 export function Home() {
   useDocumentTitle(
     "Facility Management Automation for India",
-    "Mobilise Robotics deploys KEENON autonomous cleaning, internal-logistics, reception, and delivery robots into India's largest offices, malls, hospitals, and hotels. Risk-free 60-day pilots.",
+    "Mobilise Robotics deploys KEENON autonomous cleaning, internal-logistics, reception, and delivery robots into India's largest offices, malls, hospitals, and hotels. Risk-free 30-day pilots.",
   );
 
   const featuredProducts = FEATURED_IDS
@@ -300,7 +300,7 @@ export function Home() {
               Mobilise Robotics is India's authorized KEENON partner — deploying autonomous <strong className="text-white">cleaning</strong>, <strong className="text-white">internal logistics</strong>, <strong className="text-white">reception</strong>, and <strong className="text-white">delivery robots</strong> into India's largest offices, malls, hospitals, and hotels. Reduce SLA breaches. Cut night-shift dependency. Audit every shift.
             </p>
             <p className="text-white/70 text-base max-w-2xl mx-auto mb-10">
-              Most FM teams start with a <span className="text-cyan-400 font-semibold">60-day paid pilot</span> at one facility. Most decide to scale within 6 weeks.
+              Most FM teams start with a <span className="text-cyan-400 font-semibold">30-day paid pilot</span> at one facility. Most decide to scale within 6 weeks.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -682,7 +682,7 @@ export function Home() {
               From first call to <span className="text-cyan-400">operational robot</span> in three steps
             </h2>
             <p className="text-white/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-              Our engagement model is short, paid, and reversible. Most FM teams start with a free audit and a 60-day pilot — and decide to scale within six weeks.
+              Our engagement model is short, paid, and reversible. Most FM teams start with a free audit and a 30-day pilot — and decide to scale within six weeks.
             </p>
           </motion.div>
 
@@ -798,7 +798,7 @@ export function Home() {
                   { title: "Spare parts stocked in India", desc: "Common replacement parts warehoused in Faridabad. Same-week turnaround anywhere in India." },
                   { title: "24/7 SLA-aligned support", desc: "Dedicated account manager + technical support line. After-hours on-call for critical-facility customers." },
                   { title: "Warranty + AMC maintenance plans", desc: "Standard manufacturer warranty plus optional annual maintenance contracts for predictable opex." },
-                  { title: "60-day pilot programme", desc: "Run the robot at one facility for 60 days. If it doesn't earn its cost, we pull it out — no charge for the deployment." },
+                  { title: "30-day pilot programme", desc: "Run the robot at one facility for 30 days. If it doesn't earn its cost, we pull it out — no charge for the deployment." },
                 ].map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" aria-hidden="true" />
@@ -955,7 +955,7 @@ export function Home() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-6xl font-black text-white mb-6">
-              See it run in your facility — <span className="text-cyan-400">risk-free for 60 days.</span>
+              See it run in your facility — <span className="text-cyan-400">risk-free for 30 days.</span>
             </h2>
             <p className="text-white/80 text-xl mb-10 leading-relaxed">
               Pilot one robot at one location. No commitment beyond the trial. If it doesn't earn its cost back, we pull it out — no charge for deployment, training, or service. You owe us the rental, that's it.

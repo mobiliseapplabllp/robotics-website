@@ -105,7 +105,7 @@ Our honest answer — and the reason we can say this with a straight face — is
 If you're a GM or VP Ops thinking about this, the three-step decision framework we recommend:
 
 1. **Model your own numbers.** We'll send you the spreadsheet with your delivery volumes, wage structure, and property layout plugged in. It's free. We don't need a purchase commitment to share it.
-2. **Run a 60-day pilot at your flagship.** One robot, one floor. Your team sees it in operation. We measure delivery time, guest NPS, staff feedback.
+2. **Run a 30-day pilot at your flagship.** One robot, one floor. Your team sees it in operation. We measure delivery time, guest NPS, staff feedback.
 3. **Decide based on the pilot data, not the sales pitch.** If the numbers don't hit, we pull the robot out. If they do, scale to additional robots or properties.
 
 No hotel GM has ever regretted running the pilot. Some have decided afterward that it's not right for them *yet* — that's a valid outcome. What hasn't happened is anyone piloting a W3 and being surprised by its limitations.
