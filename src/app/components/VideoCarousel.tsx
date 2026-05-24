@@ -178,7 +178,7 @@ export function VideoCarousel() {
   }, [autoPlay, playing, activeIdx]);
 
   return (
-    <section className="py-24 bg-[#030710] relative overflow-hidden">
+    <section className="pt-24 pb-16 lg:pb-12 bg-[#030710] relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-900/10 rounded-full blur-3xl`} />
@@ -337,8 +337,11 @@ export function VideoCarousel() {
             </AnimatePresence>
           </div>
 
-          {/* Playlist panel — 1/3 width */}
-          <div className="space-y-2 lg:max-h-[calc(9/16*100%+56px)] lg:overflow-y-auto pr-1 scrollbar-hide">
+          {/* Playlist panel — 1/3 width.
+              Capped to roughly the player column's height so the right side
+              doesn't extend far below the player and create a visual gap.
+              Scrolls internally if items overflow. */}
+          <div className="space-y-2 lg:max-h-[520px] lg:overflow-y-auto pr-1 scrollbar-hide">
             {VIDEOS.map((v, i) => (
               <button
                 key={v.id}
