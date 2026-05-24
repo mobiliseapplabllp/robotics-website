@@ -16,6 +16,11 @@ const NotFound = lazy(() => import("./pages/NotFound").then((m) => ({ default: m
 const Blog = lazy(() => import("./pages/Blog").then((m) => ({ default: m.Blog })));
 const BlogPost = lazy(() => import("./pages/BlogPost").then((m) => ({ default: m.BlogPost })));
 
+// Per-industry solution landing pages — code-split (each loads industry data)
+const SolutionDetailPage = lazy(() =>
+  import("./pages/SolutionDetailPage").then((m) => ({ default: m.SolutionDetailPage })),
+);
+
 // Individual product pages — each is a separate chunk loaded on demand
 const T10Page = lazy(() => import("./pages/products/T10Page").then((m) => ({ default: m.T10Page })));
 const T11Page = lazy(() => import("./pages/products/T11Page").then((m) => ({ default: m.T11Page })));
@@ -59,6 +64,7 @@ export const router = createBrowserRouter([
       { path: "products/c55", Component: C55Page },
 
       { path: "solutions", Component: Solutions },
+      { path: "solutions/:slug", Component: SolutionDetailPage },
       { path: "about", Component: About },
       { path: "contact", Component: Contact },
       { path: "blog", Component: Blog },

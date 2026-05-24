@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { ArrowRight, CheckCircle, TrendingUp, Users, Clock, IndianRupee } from "lucide-react";
+import { ArrowRight, CheckCircle, TrendingUp, Users, Clock, IndianRupee, ExternalLink } from "lucide-react";
 import { SOLUTIONS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -13,10 +13,23 @@ const INDIA_STATS = [
   { icon: IndianRupee, value: "18 Months", label: "Average ROI Period" },
 ];
 
+/**
+ * Maps products.ts SOLUTIONS id → /solutions/{slug} for the per-industry
+ * landing pages. "foodbev" gets a cleaner SEO slug; others match 1:1.
+ */
+const DETAIL_SLUG: Record<string, string> = {
+  hospitality: "hospitality",
+  healthcare: "healthcare",
+  foodbev: "food-beverage",
+  retail: "retail",
+  aviation: "aviation",
+  corporate: "corporate",
+};
+
 export function Solutions() {
   useDocumentTitle(
-    "Industry Solutions",
-    "KEENON robot solutions for hospitality, healthcare, retail, corporate, and aviation industries across India."
+    "Industry Solutions for Facility Management Automation",
+    "Per-industry robotic automation solutions from Mobilise — hospitality, healthcare, food & beverage, retail, aviation, and corporate. KEENON robots deployed across India.",
   );
   const location = useLocation();
 
@@ -140,12 +153,23 @@ export function Solutions() {
                 </div>
               </div>
 
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-bold hover:opacity-90 transition-opacity shadow-lg shadow-cyan-500/20"
-              >
-                Get a Solution Demo <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-col sm:flex-row items-start gap-3">
+                {DETAIL_SLUG[sol.id] && (
+                  <Link
+                    to={`/solutions/${DETAIL_SLUG[sol.id]}`}
+                    className="inline-flex items-center gap-2 px-6 py-3 min-h-11 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-bold hover:opacity-90 transition-opacity shadow-lg shadow-cyan-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]"
+                    aria-label={`Read the full ${sol.title} solution guide`}
+                  >
+                    Explore the {sol.title.split(" ")[0]} guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                )}
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-11 rounded-xl border border-white/20 text-white font-bold hover:bg-white/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                >
+                  Book an audit <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
           </motion.div>
         ))}

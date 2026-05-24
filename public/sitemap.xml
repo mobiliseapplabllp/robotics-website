@@ -20,6 +20,14 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Per-industry solution landing pages — high SEO value, target FM long-tail -->
+  <url><loc>https://mobilise-robotics.com/solutions/hospitality</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://mobilise-robotics.com/solutions/healthcare</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://mobilise-robotics.com/solutions/food-beverage</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://mobilise-robotics.com/solutions/retail</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://mobilise-robotics.com/solutions/aviation</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://mobilise-robotics.com/solutions/corporate</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url>
     <loc>https://mobilise-robotics.com/about</loc>
     <changefreq>monthly</changefreq>
