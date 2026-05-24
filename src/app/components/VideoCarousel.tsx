@@ -402,40 +402,56 @@ export function VideoCarousel() {
           </div>
         </div>
 
-        {/* Bottom thumbnail strip (mobile / visual) */}
-        <div className="mt-8 relative">
-          <div ref={stripRef} className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        {/* Bottom thumbnail strip — mobile-only secondary nav.
+            Hidden on lg+ because the right-side playlist already covers desktop nav. */}
+        <div className="mt-8 relative lg:hidden">
+          <nav
+            ref={stripRef}
+            aria-label="Switch to a different robot video"
+            className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
+          >
             {VIDEOS.map((v, i) => (
               <button
                 key={v.id}
+                type="button"
                 onClick={() => { goTo(i); setAutoPlay(false); }}
-                className={`shrink-0 relative rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                aria-label={`Show KEENON ${v.robotName} video`}
+                aria-current={i === activeIdx ? "true" : undefined}
+                className={`shrink-0 relative rounded-xl overflow-hidden border-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
                   i === activeIdx
                     ? `${v.borderClass} scale-105 shadow-lg`
-                    : "border-white/10 opacity-50 hover:opacity-80"
+                    : "border-white/10 opacity-60 hover:opacity-90"
                 }`}
-                style={{ width: 96, height: 64 }}
+                style={{ width: 112, height: 72 }}
               >
                 <img
                   src={ytThumb(v.videoId)}
-                  alt={`KEENON ${v.robotName}`}
+                  alt=""
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg`;
                   }}
                 />
-                <div className={`absolute bottom-0 left-0 right-0 py-0.5 text-center text-[10px] font-black ${
-                  i === activeIdx ? v.accentClass : "text-white/60"
-                } bg-black/60`}>
+                <div
+                  className={`absolute bottom-0 left-0 right-0 py-1 text-center text-xs font-black ${
+                    i === activeIdx ? v.accentClass : "text-white/80"
+                  } bg-black/70`}
+                  aria-hidden="true"
+                >
                   {v.robotName}
                 </div>
               </button>
             ))}
-          </div>
+          </nav>
 
-          {/* Progress bar */}
+          {/* Auto-advance progress bar (mobile only — desktop uses the auto-play toggle in player controls) */}
           {autoPlay && !playing && (
-            <div className="mt-3 h-0.5 bg-white/10 rounded-full overflow-hidden">
+            <div
+              role="progressbar"
+              aria-label="Time until the next video auto-plays"
+              aria-valuemin={0}
+              aria-valuemax={8}
+              className="mt-3 h-0.5 bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 key={activeIdx}
                 initial={{ width: "0%" }}
