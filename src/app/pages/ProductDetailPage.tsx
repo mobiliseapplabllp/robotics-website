@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link, Navigate } from "react-router";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform, useInView } from "motion/react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -45,6 +45,7 @@ import {
   PlayCircle,
   ChevronDown,
   FileText,
+  CalendarClock,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PRODUCTS } from "../data/products";
@@ -58,9 +59,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { SITE } from "../../config/site";
 
 /* ────────────────────────────────────────────────────────────
- *  Static maps — kept at module scope so they're shared across
- *  every render. The icon map exists because data files store
- *  icons as string names (pure data, no React coupling).
+ *  Static maps — module-scoped, shared across renders.
  * ────────────────────────────────────────────────────────── */
 
 const ICON_MAP: Record<ProductIconName, LucideIcon> = {
@@ -71,11 +70,6 @@ const ICON_MAP: Record<ProductIconName, LucideIcon> = {
   MapPin, BadgeCheck, Headphones, Wallet, Layers,
 };
 
-/**
- * Single accent per product family. Reduces visual noise across 15 pages while
- * still differentiating delivery / cleaning / service at a glance. All classes
- * are fully spelled out so Tailwind picks them up in the safelist scan.
- */
 type AccentTheme = {
   text: string;
   textBright: string;
@@ -128,24 +122,29 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
   },
 };
 
+/** Returns absolute URLs for product images — for JSON-LD / OG tags. */
+function absoluteImageUrls(product: Product): string[] {
+  const list = product.images && product.images.length > 0 ? product.images : [product.image];
+  return list.map((src) => (src.startsWith("http") ? src : `${SITE.url}${src}`));
+}
+
 /* ────────────────────────────────────────────────────────────
- *  JSON-LD — Product, BreadcrumbList, FAQPage emitted from
- *  the SAME page for SEO rich-result density. Cleanup on unmount.
+ *  JSON-LD — Product (now multi-image), BreadcrumbList, FAQPage.
  * ────────────────────────────────────────────────────────── */
 
 function useProductJsonLd(product: Product, detail: ProductDetail) {
   useEffect(() => {
     const url = `${SITE.url}/products/${product.id}`;
-    const image = product.image.startsWith("http") ? product.image : `${SITE.url}${product.image}`;
+    const images = absoluteImageUrls(product);
 
     const productLd = {
       "@context": "https://schema.org",
       "@type": "Product",
       name: `KEENON ${product.name}`,
-      description: detail.positioning,
+      description: detail.seoDescription ?? detail.positioning,
       brand: { "@type": "Brand", name: "KEENON Robotics" },
       category: product.categoryLabel,
-      image,
+      image: images,
       manufacturer: { "@type": "Organization", name: "KEENON Robotics", url: "https://www.keenon.com/" },
       offers: {
         "@type": "Offer",
@@ -166,17 +165,20 @@ function useProductJsonLd(product: Product, detail: ProductDetail) {
       ],
     };
 
-    const faqLd = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: detail.faqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    };
+    const faqLd = detail.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: detail.faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : null;
 
-    const scripts = [productLd, breadcrumbLd, faqLd].map((ld, i) => {
+    const lds = [productLd, breadcrumbLd, faqLd].filter(Boolean);
+    const scripts = lds.map((ld, i) => {
       const s = document.createElement("script");
       s.type = "application/ld+json";
       s.dataset.productPageLd = `${product.id}-${i}`;
@@ -196,10 +198,16 @@ function useProductJsonLd(product: Product, detail: ProductDetail) {
  * ────────────────────────────────────────────────────────── */
 
 function Hero({ product, detail, accent }: { product: Product; detail: ProductDetail; accent: AccentTheme }) {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   return (
-    <section className="relative overflow-hidden">
+    <section ref={heroRef} className="relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className={`absolute top-0 right-0 w-[600px] h-[600px] ${accent.bg10} rounded-full blur-3xl`} />
+        <div className={`absolute bottom-0 left-0 w-[400px] h-[400px] ${accent.bg10} rounded-full blur-3xl opacity-50`} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
@@ -252,16 +260,18 @@ function Hero({ product, detail, accent }: { product: Product; detail: ProductDe
             </div>
           </motion.div>
 
-          {/* Right: hero image */}
+          {/* Right: hero image with subtle parallax */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
-            <div className={`relative rounded-3xl overflow-hidden border ${accent.border20}`}>
-              <ImageWithFallback
-                src={product.image}
-                alt={`KEENON ${product.name} — ${product.tagline}`}
-                className="w-full aspect-[4/3] object-cover"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/40 via-transparent to-transparent" aria-hidden="true" />
+            <div className={`relative rounded-3xl overflow-hidden border ${accent.border20} shadow-2xl ${accent.glow}`}>
+              <motion.div style={{ y: imageY, scale: imageScale }} className="will-change-transform">
+                <ImageWithFallback
+                  src={product.image}
+                  alt={`KEENON ${product.name} — ${product.tagline} for Indian facility management`}
+                  className="w-full aspect-[4/3] object-cover"
+                  loading="eager"
+                />
+              </motion.div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/40 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
             </div>
           </motion.div>
         </div>
@@ -270,15 +280,17 @@ function Hero({ product, detail, accent }: { product: Product; detail: ProductDe
   );
 }
 
-function AtAGlance({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+function AtAGlance({ detail, accent, productName }: { detail: ProductDetail; accent: AccentTheme; productName: string }) {
   return (
     <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            Why operators choose <span className={accent.text}>this robot</span>
+            Why operators choose the <span className={accent.text}>{productName}</span>
           </h2>
-          <p className="text-white/50 max-w-2xl mx-auto">Three concrete differentiators — each tied to a real spec, not a slogan.</p>
+          <p className="text-white/50 max-w-2xl mx-auto">
+            Three concrete differentiators — each tied to a real spec, not a slogan.
+          </p>
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {detail.differentiators.map((d, i) => {
@@ -290,7 +302,7 @@ function AtAGlance({ detail, accent }: { detail: ProductDetail; accent: AccentTh
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className={`bg-white/5 border border-white/10 rounded-2xl p-6 hover:${accent.border40} transition-colors`}
+                className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors"
               >
                 <div className={`w-12 h-12 rounded-xl ${accent.bg10} border ${accent.border20} flex items-center justify-center mb-4`}>
                   <Icon className={`w-6 h-6 ${accent.text}`} aria-hidden="true" />
@@ -309,9 +321,105 @@ function AtAGlance({ detail, accent }: { detail: ProductDetail; accent: AccentTh
   );
 }
 
-function HowItWorks({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+/**
+ * "In context" — full-bleed parallax gallery section. Each image row shows a
+ * gallery photo with a caption; the image itself translates Y at a slower
+ * rate than the page scroll, creating the parallax depth effect.
+ */
+function InContextGallery({ product, detail, accent }: { product: Product; detail: ProductDetail; accent: AccentTheme }) {
+  // Skip the hero image — use gallery shots only (up to 4).
+  const galleryImages = (product.images ?? [product.image]).slice(1, 5);
+  if (galleryImages.length === 0) return null;
+
   return (
     <section className="py-16 sm:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
+        <div className="text-center">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border ${accent.border20} ${accent.bg10} mb-4`}>
+            <span className={`${accent.text} text-xs font-bold uppercase tracking-wider`}>In context</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-white">
+            The <span className={accent.text}>{product.name}</span> in action
+          </h2>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-5 sm:space-y-7">
+        {galleryImages.map((src, i) => (
+          <ParallaxImageRow
+            key={src}
+            src={src}
+            caption={detail.galleryCaptions[i] ?? ""}
+            productName={product.name}
+            accent={accent}
+            index={i}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ParallaxImageRow({
+  src,
+  caption,
+  productName,
+  accent,
+  index,
+}: {
+  src: string;
+  caption: string;
+  productName: string;
+  accent: AccentTheme;
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Image translates within an over-tall container — slower than the scroll
+  // movement, producing the parallax effect.
+  const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.6 }}
+      className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 group"
+    >
+      <motion.div
+        style={{ y }}
+        className="absolute -top-[12%] -bottom-[12%] left-0 right-0 will-change-transform"
+      >
+        <ImageWithFallback
+          src={src}
+          alt={`KEENON ${productName} — ${caption}`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/40 to-transparent pointer-events-none" aria-hidden="true" />
+      {caption && (
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
+          <div className={`inline-flex items-center gap-2 px-2 py-0.5 rounded ${accent.bg20} ${accent.text} text-[10px] font-black uppercase tracking-widest mb-3`}>
+            Scene {String(index + 1).padStart(2, "0")}
+          </div>
+          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white max-w-2xl leading-tight">
+            {caption}
+          </p>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+function HowItWorks({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+  return (
+    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
@@ -320,8 +428,7 @@ function HowItWorks({ detail, accent }: { detail: ProductDetail; accent: AccentT
           <p className="text-white/50 max-w-2xl mx-auto">Four steps from order to return — the same workflow every shift, every day.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-          {/* Connecting line on desktop */}
-          <div className={`hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent`} aria-hidden="true" />
+          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" aria-hidden="true" />
           {detail.workflow.map((step, i) => {
             const Icon = ICON_MAP[step.icon];
             return (
@@ -333,7 +440,7 @@ function HowItWorks({ detail, accent }: { detail: ProductDetail; accent: AccentT
                 transition={{ delay: i * 0.08 }}
                 className="relative"
               >
-                <div className={`w-12 h-12 mx-auto rounded-full ${accent.bg20} border ${accent.border40} flex items-center justify-center mb-4 relative z-10 bg-[#050a14]`}>
+                <div className={`w-12 h-12 mx-auto rounded-full ${accent.bg20} border ${accent.border40} flex items-center justify-center mb-4 relative z-10 bg-[#030710]`}>
                   <Icon className={`w-6 h-6 ${accent.text}`} aria-hidden="true" />
                 </div>
                 <div className="text-center">
@@ -350,16 +457,35 @@ function HowItWorks({ detail, accent }: { detail: ProductDetail; accent: AccentT
   );
 }
 
-function Specs({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+/**
+ * Specifications — desktop renders a sticky image alongside scrolling spec
+ * groups. As each group scrolls into view, the active gallery image rotates
+ * via Intersection Observer (useInView). Mobile collapses to stacked.
+ */
+function Specs({
+  product,
+  detail,
+  accent,
+}: {
+  product: Product;
+  detail: ProductDetail;
+  accent: AccentTheme;
+}) {
+  const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
+  const [activeIdx, setActiveIdx] = useState(0);
+  const imageForGroup = (i: number) => galleryImages[i % galleryImages.length];
+
   return (
-    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
+    <section className="py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
               <span className={accent.text}>Specifications</span>
             </h2>
-            <p className="text-white/50 max-w-2xl">Grouped by what you'd want to compare. The full PDF spec sheet is available on request.</p>
+            <p className="text-white/50 max-w-2xl">
+              Grouped by what you'd compare. The full PDF spec sheet is available on request.
+            </p>
           </div>
           <Link
             to="/contact"
@@ -370,48 +496,140 @@ function Specs({ detail, accent }: { detail: ProductDetail; accent: AccentTheme 
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5">
-          {detail.specGroups.map((group, gi) => {
-            const Icon = ICON_MAP[group.icon];
-            return (
-              <motion.div
-                key={group.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: gi * 0.05 }}
-                className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden"
-              >
-                <div className={`flex items-center gap-3 p-4 border-b border-white/10 ${accent.bg10}`}>
-                  <Icon className={`w-5 h-5 ${accent.text}`} aria-hidden="true" />
-                  <h3 className="text-white font-bold text-base">{group.title}</h3>
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-8 lg:gap-12">
+          {/* Sticky image (desktop only) */}
+          <div className="hidden lg:block">
+            <div className="lg:sticky lg:top-24">
+              <div className={`relative rounded-3xl overflow-hidden border ${accent.border20} shadow-2xl ${accent.glow}`}>
+                <motion.div
+                  key={activeIdx}
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="will-change-transform"
+                >
+                  <ImageWithFallback
+                    src={imageForGroup(activeIdx)}
+                    alt={`KEENON ${product.name} — ${detail.specGroups[activeIdx]?.title ?? "specifications"}`}
+                    className="w-full aspect-[4/5] object-cover"
+                    loading="lazy"
+                  />
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/60 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className={`inline-flex items-center gap-2 px-2 py-1 rounded ${accent.bg20} ${accent.text} text-[10px] font-black uppercase tracking-widest mb-2`}>
+                    {detail.specGroups[activeIdx]?.title ?? "Spec view"}
+                  </div>
                 </div>
-                <dl className="divide-y divide-white/5">
-                  {group.rows.map((row) => (
-                    <div key={row.label} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3 px-4 py-3 text-sm">
-                      <dt className="text-white/50">{row.label}</dt>
-                      <dd className="text-white font-semibold">{row.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </motion.div>
-            );
-          })}
+              </div>
+              <div className="flex items-center gap-1.5 justify-center mt-4">
+                {detail.specGroups.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveIdx(i)}
+                    aria-label={`Show ${detail.specGroups[i].title} image`}
+                    className={`h-1.5 rounded-full transition-all focus:outline-none focus-visible:ring-2 ${accent.ring} ${
+                      i === activeIdx ? `${accent.bg20} w-8` : "bg-white/10 w-4 hover:bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Spec groups (scrollable column) */}
+          <div className="space-y-5">
+            {detail.specGroups.map((group, gi) => (
+              <SpecGroupCard
+                key={group.title}
+                group={group}
+                accent={accent}
+                isActive={gi === activeIdx}
+                onEnter={() => setActiveIdx(gi)}
+                inlineImage={imageForGroup(gi)}
+                productName={product.name}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function IndustryFits({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+function SpecGroupCard({
+  group,
+  accent,
+  isActive,
+  onEnter,
+  inlineImage,
+  productName,
+}: {
+  group: ProductDetail["specGroups"][number];
+  accent: AccentTheme;
+  isActive: boolean;
+  onEnter: () => void;
+  inlineImage: string;
+  productName: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.4, margin: "-20% 0px -20% 0px" });
+
+  useEffect(() => {
+    if (inView) onEnter();
+  }, [inView, onEnter]);
+
+  const Icon = ICON_MAP[group.icon];
+
   return (
-    <section className="py-16 sm:py-20">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className={`bg-white/5 border rounded-2xl overflow-hidden transition-colors ${
+        isActive ? accent.border40 : "border-white/10"
+      }`}
+    >
+      {/* Inline image on mobile only */}
+      <div className="lg:hidden relative aspect-[16/9] overflow-hidden">
+        <ImageWithFallback
+          src={inlineImage}
+          alt={`KEENON ${productName} — ${group.title}`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/80 via-transparent to-transparent" aria-hidden="true" />
+      </div>
+      <div className={`flex items-center gap-3 p-4 border-b border-white/10 ${accent.bg10}`}>
+        <Icon className={`w-5 h-5 ${accent.text}`} aria-hidden="true" />
+        <h3 className="text-white font-bold text-base">{group.title}</h3>
+      </div>
+      <dl className="divide-y divide-white/5">
+        {group.rows.map((row) => (
+          <div key={row.label} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3 px-4 py-3 text-sm">
+            <dt className="text-white/50">{row.label}</dt>
+            <dd className="text-white font-semibold">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </motion.div>
+  );
+}
+
+function IndustryFits({ detail, accent, productName }: { detail: ProductDetail; accent: AccentTheme; productName: string }) {
+  return (
+    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            Where it <span className={accent.text}>fits</span>
+            Where the <span className={accent.text}>{productName}</span> fits
           </h2>
-          <p className="text-white/50 max-w-2xl mx-auto">Indian use cases by industry, with a recommended pilot scope to get started.</p>
+          <p className="text-white/50 max-w-2xl mx-auto">
+            Indian use cases by industry, with a recommended pilot scope to get started.
+          </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {detail.industryFits.map((fit, i) => (
@@ -444,52 +662,51 @@ function IndustryFits({ detail, accent }: { detail: ProductDetail; accent: Accen
   );
 }
 
-function Commercials({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
+/**
+ * "How to engage" — what was previously the Commercials section, with pricing
+ * fields removed (we don't display cost publicly). Shows pilot offer + lead
+ * time + "Talk to sales for pricing" CTA.
+ */
+function HowToEngage({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
   const c = detail.commercials;
   const items = [
-    { icon: Wallet, label: "Indicative CapEx", value: c.capexBand },
-    { icon: BadgeCheck, label: "AMC structure", value: c.amcStructure },
-    { icon: Sparkles, label: "Pilot offer", value: c.pilotOffer },
-    { icon: Zap, label: "Operating cost", value: c.operatingCost },
-    { icon: Truck, label: "Lead time", value: c.leadTime },
+    { icon: Sparkles, label: "Pilot programme", value: c.pilotOffer },
+    { icon: CalendarClock, label: "Lead time", value: c.leadTime },
   ].filter((i) => i.value);
 
   return (
-    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
+    <section className="py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            Commercials &amp; <span className={accent.text}>ownership</span>
+            How to <span className={accent.text}>engage with us</span>
           </h2>
           <p className="text-white/50 max-w-2xl mx-auto">
-            Indicative bands only — exact quotes depend on property scope, fleet size, and AMC tier. Talk to sales for a property-specific number.
+            Pricing is property-specific — talk to sales for a quote. Below is the engagement framework that's the same for every customer.
           </p>
         </div>
 
-        {items.length === 0 ? (
-          <div className="max-w-2xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-            <p className="text-white/70">Commercials shared on request — they vary by configuration, fleet count, and property requirements.</p>
-            <Link
-              to="/contact"
-              className={`inline-flex items-center gap-2 mt-4 px-5 py-2.5 min-h-11 bg-gradient-to-r ${accent.gradientFrom} ${accent.gradientTo} rounded-xl text-white font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-white`}
-            >
-              Talk to sales
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.map((item) => (
-              <div key={item.label} className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <item.icon className={`w-4 h-4 ${accent.text}`} aria-hidden="true" />
-                  <div className={`${accent.text} text-xs font-black uppercase tracking-wider`}>{item.label}</div>
-                </div>
-                <p className="text-white/80 text-sm leading-relaxed">{item.value}</p>
+        <div className="grid md:grid-cols-2 gap-5 mb-8">
+          {items.map((item) => (
+            <div key={item.label} className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-3">
+                <item.icon className={`w-5 h-5 ${accent.text}`} aria-hidden="true" />
+                <div className={`${accent.text} text-xs font-black uppercase tracking-wider`}>{item.label}</div>
               </div>
-            ))}
-          </div>
-        )}
+              <p className="text-white/80 leading-relaxed">{item.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link
+            to="/contact"
+            className={`inline-flex items-center gap-2 px-6 py-3 min-h-11 bg-gradient-to-r ${accent.gradientFrom} ${accent.gradientTo} rounded-xl text-white font-bold shadow-lg ${accent.glow} hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]`}
+          >
+            Talk to sales for a property-specific quote
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -497,8 +714,15 @@ function Commercials({ detail, accent }: { detail: ProductDetail; accent: Accent
 
 function FamilyCompare({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
   if (detail.familyMembers.length === 0) return null;
+
+  // Look up the sibling's image from the catalog for a thumbnail preview.
+  const enriched = detail.familyMembers.map((m) => {
+    const sibling = PRODUCTS.find((p) => p.id === m.slug);
+    return { ...m, image: sibling?.image };
+  });
+
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
@@ -506,18 +730,30 @@ function FamilyCompare({ detail, accent }: { detail: ProductDetail; accent: Acce
           </h2>
           <p className="text-white/50 max-w-2xl mx-auto">Common siblings to evaluate alongside this one.</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {detail.familyMembers.map((m) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {enriched.map((m) => (
             <Link
               key={m.slug}
               to={`/products/${m.slug}`}
-              className={`group bg-white/5 border border-white/10 rounded-2xl p-5 hover:${accent.border40} transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+              className={`group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:${accent.border40} transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-white font-black text-2xl">KEENON {m.model}</div>
-                <ArrowRight className={`w-5 h-5 text-white/30 group-hover:${accent.text} group-hover:translate-x-0.5 transition-all`} aria-hidden="true" />
+              {m.image && (
+                <div className="aspect-[16/9] overflow-hidden bg-[#0a101f]">
+                  <ImageWithFallback
+                    src={m.image}
+                    alt={`KEENON ${m.model}`}
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-white font-black text-xl">KEENON {m.model}</div>
+                  <ArrowRight className={`w-5 h-5 text-white/30 group-hover:${accent.text} group-hover:translate-x-0.5 transition-all`} aria-hidden="true" />
+                </div>
+                <p className="text-white/60 text-sm leading-relaxed">{m.differentiator}</p>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed">{m.differentiator}</p>
             </Link>
           ))}
         </div>
@@ -526,16 +762,12 @@ function FamilyCompare({ detail, accent }: { detail: ProductDetail; accent: Acce
   );
 }
 
-/**
- * Lazy-loaded YouTube embed. Renders the thumbnail until the user clicks
- * — avoids loading ~700 KB of YouTube iframe JS on every product-page view.
- */
 function VideoSection({ product, accent }: { product: Product; accent: AccentTheme }) {
   const [playing, setPlaying] = useState(false);
   const thumbnail = `https://i.ytimg.com/vi/${product.videoId}/hqdefault.jpg`;
 
   return (
-    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
+    <section className="py-16 sm:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
@@ -581,20 +813,19 @@ function VideoSection({ product, accent }: { product: Product; accent: AccentThe
 
 function FAQ({ detail, accent }: { detail: ProductDetail; accent: AccentTheme }) {
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-16 sm:py-20 bg-[#030710] border-y border-white/10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
             Frequently asked <span className={accent.text}>questions</span>
           </h2>
-          <p className="text-white/50">Common buyer questions. Don't see yours? <Link to="/contact" className={`${accent.text} hover:underline`}>Ask us.</Link></p>
+          <p className="text-white/50">
+            Common buyer questions. Don't see yours? <Link to="/contact" className={`${accent.text} hover:underline`}>Ask us.</Link>
+          </p>
         </div>
         <div className="space-y-3">
           {detail.faqs.map((f) => (
-            <details
-              key={f.q}
-              className="group bg-white/5 border border-white/10 rounded-2xl"
-            >
+            <details key={f.q} className="group bg-white/5 border border-white/10 rounded-2xl">
               <summary className="cursor-pointer flex items-center justify-between gap-4 p-5 list-none">
                 <h3 className="text-white font-bold text-base sm:text-lg pr-2">{f.q}</h3>
                 <ChevronDown className={`w-5 h-5 ${accent.text} shrink-0 transition-transform group-open:rotate-180`} aria-hidden="true" />
@@ -622,7 +853,7 @@ function CtaAndRelated({ product, detail, accent }: { product: Product; detail: 
             Ready to pilot the <span className={accent.text}>{product.name}?</span>
           </h2>
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            A 30-day paid pilot at your property. We bring the robot, the engineer, and the measurement framework. You bring one floor.
+            A 30-day pilot at your property. We bring the robot, the engineer, and the measurement framework. You bring one floor.
           </p>
         </div>
 
@@ -653,7 +884,9 @@ function CtaAndRelated({ product, detail, accent }: { product: Product; detail: 
                   to={`/blog/${p.slug}`}
                   className={`group block bg-white/5 border border-white/10 rounded-2xl p-5 hover:${accent.border40} transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
                 >
-                  <div className={`${accent.text} text-[10px] uppercase tracking-wider font-bold mb-2`}>{p.category} · {p.readMinutes} min read</div>
+                  <div className={`${accent.text} text-[10px] uppercase tracking-wider font-bold mb-2`}>
+                    {p.category} · {p.readMinutes} min read
+                  </div>
                   <h3 className="text-white font-bold text-base sm:text-lg mb-2">{p.title}</h3>
                   <p className="text-white/60 text-sm line-clamp-2">{p.excerpt}</p>
                   <div className={`inline-flex items-center gap-1 ${accent.text} text-sm font-bold mt-3 group-hover:translate-x-0.5 transition-transform`}>
@@ -681,11 +914,12 @@ export function ProductDetailPage() {
   // Hooks must run unconditionally — supply safe fallbacks for the missing case.
   useDocumentTitle(
     product ? `KEENON ${product.name} — ${product.tagline}` : "Product",
-    product ? product.description : undefined,
+    detail?.seoDescription ?? product?.description,
+    product?.image,
   );
   useProductJsonLd(
     product ?? ({ id: "", name: "", categoryLabel: "", description: "", image: "" } as Product),
-    detail ?? ({ slug: "", positioning: "", faqs: [] } as unknown as ProductDetail),
+    detail ?? ({ slug: "", positioning: "", faqs: [], specGroups: [], industryFits: [], commercials: {}, familyMembers: [], differentiators: [], workflow: [], quickFacts: [], galleryCaptions: [] } as unknown as ProductDetail),
   );
 
   if (!product || !detail) return <Navigate to="/products" replace />;
@@ -695,11 +929,12 @@ export function ProductDetailPage() {
   return (
     <div className="min-h-screen bg-[#050a14] text-white pt-20">
       <Hero product={product} detail={detail} accent={accent} />
-      <AtAGlance detail={detail} accent={accent} />
+      <AtAGlance detail={detail} accent={accent} productName={product.name} />
+      <InContextGallery product={product} detail={detail} accent={accent} />
       <HowItWorks detail={detail} accent={accent} />
-      <Specs detail={detail} accent={accent} />
-      <IndustryFits detail={detail} accent={accent} />
-      <Commercials detail={detail} accent={accent} />
+      <Specs product={product} detail={detail} accent={accent} />
+      <IndustryFits detail={detail} accent={accent} productName={product.name} />
+      <HowToEngage detail={detail} accent={accent} />
       <FamilyCompare detail={detail} accent={accent} />
       <VideoSection product={product} accent={accent} />
       <FAQ detail={detail} accent={accent} />

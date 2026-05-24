@@ -8,15 +8,23 @@ import { SITE } from "../../config/site";
  *
  * Usage:
  *   useDocumentTitle("Contact", "Description shown in Google search results and OG cards.")
+ *   useDocumentTitle("KEENON W3", "Per-product description.", "/images/products/w3/hero.webp")
  *
  * @param title  Page-specific title. Site name is appended automatically.
  * @param description  Optional meta description (160 chars max recommended).
+ * @param ogImage  Optional path or full URL for the per-page Open Graph image.
+ *                 If absent the site-wide SITE.ogImage is used.
  */
-export function useDocumentTitle(title: string, description?: string) {
+export function useDocumentTitle(title: string, description?: string, ogImage?: string) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
     const desc = description ?? SITE.description;
     const url = typeof window !== "undefined" ? window.location.href : SITE.url;
+    const imageUrl = (() => {
+      const raw = ogImage ?? SITE.ogImage;
+      if (raw.startsWith("http")) return raw;
+      return `${SITE.url}${raw}`;
+    })();
 
     const previous = {
       title: document.title,
@@ -24,8 +32,10 @@ export function useDocumentTitle(title: string, description?: string) {
       ogTitle: getMetaContent('meta[property="og:title"]'),
       ogDescription: getMetaContent('meta[property="og:description"]'),
       ogUrl: getMetaContent('meta[property="og:url"]'),
+      ogImage: getMetaContent('meta[property="og:image"]'),
       twitterTitle: getMetaContent('meta[name="twitter:title"]'),
       twitterDescription: getMetaContent('meta[name="twitter:description"]'),
+      twitterImage: getMetaContent('meta[name="twitter:image"]'),
       canonical: getLinkHref('link[rel="canonical"]'),
     };
 
@@ -34,8 +44,10 @@ export function useDocumentTitle(title: string, description?: string) {
     setMeta('meta[property="og:title"]', fullTitle);
     setMeta('meta[property="og:description"]', desc);
     setMeta('meta[property="og:url"]', url);
+    setMeta('meta[property="og:image"]', imageUrl);
     setMeta('meta[name="twitter:title"]', fullTitle);
     setMeta('meta[name="twitter:description"]', desc);
+    setMeta('meta[name="twitter:image"]', imageUrl);
     setCanonical(url);
 
     return () => {
@@ -44,11 +56,13 @@ export function useDocumentTitle(title: string, description?: string) {
       if (previous.ogTitle !== null) setMeta('meta[property="og:title"]', previous.ogTitle);
       if (previous.ogDescription !== null) setMeta('meta[property="og:description"]', previous.ogDescription);
       if (previous.ogUrl !== null) setMeta('meta[property="og:url"]', previous.ogUrl);
+      if (previous.ogImage !== null) setMeta('meta[property="og:image"]', previous.ogImage);
       if (previous.twitterTitle !== null) setMeta('meta[name="twitter:title"]', previous.twitterTitle);
       if (previous.twitterDescription !== null) setMeta('meta[name="twitter:description"]', previous.twitterDescription);
+      if (previous.twitterImage !== null) setMeta('meta[name="twitter:image"]', previous.twitterImage);
       if (previous.canonical !== null) setCanonical(previous.canonical);
     };
-  }, [title, description]);
+  }, [title, description, ogImage]);
 }
 
 function getMetaContent(selector: string): string | null {

@@ -14,6 +14,14 @@ const T3: ProductDetail = {
   slug: "t3",
   positioning:
     "Enclosed-cabin delivery robot for secure, hygienic, and private indoor distribution — fine dining, hospital wards, and hotel room service where contents must stay clean and unseen in transit.",
+  seoDescription:
+    "KEENON T3 enclosed-cabin delivery robot for India — secure pharmacy, hotel, and hospital ward delivery with step-activated doors and a 180 L cabin.",
+  galleryCaptions: [
+    "Step-activated automatic doors keep contents secured",
+    "180 L cabin with adjustable shelf heights",
+    "Vehicle-grade suspension protects every dish",
+    "Private delivery for pharmacy, hotel, and fine dining",
+  ],
   quickFacts: [
     { icon: "Boxes", label: "Cabin volume", value: "180 L" },
     { icon: "Package", label: "Payload", value: "40 kg" },
@@ -93,10 +101,7 @@ const T3: ProductDetail = {
     { industry: "Food & Beverage", solutionsSlug: "food-beverage", scenario: "Banquets and catering where dishes must travel covered and unopened.", recommendedPilot: "One catering event-week, two robots paired with manual servers." },
   ],
   commercials: {
-    capexBand: "Indicative ₹11–14 lakhs depending on configuration. Exact quote depends on cabin layout, fleet size, and AMC tier.",
-    amcStructure: "Year 1 AMC included with purchase. Year 2+ ~₹95k–1.2 lakhs/year covering parts, scheduled service, and remote support.",
-    pilotOffer: "30-day paid pilot at one property, one robot. Exit-clean if pilot KPIs aren't met.",
-    operatingCost: "Electricity + consumables (mop pads where relevant, replacement door seals) typically under ₹40k/year per robot.",
+    pilotOffer: "30-day pilot at one property, one robot. Exit-clean if pilot KPIs aren't met.",
     leadTime: "8–12 weeks from PO to commissioning in tier-1 metros.",
   },
   familyMembers: [
@@ -118,6 +123,14 @@ const T5: ProductDetail = {
   slug: "t5",
   positioning:
     "Four-tray workhorse delivery robot for high-volume restaurants, hotels, and canteens — proven KEENON platform optimised for continuous double-shift service with multi-point delivery.",
+  seoDescription:
+    "KEENON T5 four-tray delivery robot for Indian restaurants, hotels, and corporate canteens — 40 kg payload, multi-point delivery, 12+ hour battery.",
+  galleryCaptions: [
+    "Four-tray multi-point delivery across busy dining rooms",
+    "SLAM + LiDAR + 3D cameras for crowded layouts",
+    "Animated 7-inch display with 14+ languages",
+    "12-hour battery for full double-shift service",
+  ],
   quickFacts: [
     { icon: "Layers", label: "Trays", value: "4 adjustable" },
     { icon: "Package", label: "Payload", value: "40 kg (10 kg/tray)" },
@@ -199,10 +212,7 @@ const T5: ProductDetail = {
     { industry: "Corporate", solutionsSlug: "corporate", scenario: "Cafeteria service in IT campuses with 1000+ daily covers across split lunch windows.", recommendedPilot: "Single canteen, peak lunch window, 2-week initial trial." },
   ],
   commercials: {
-    capexBand: "Indicative ₹6–9 lakhs. Volume orders (3+ robots per property) attract floor-rate adjustments.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹65k–85k/year per robot.",
-    pilotOffer: "30-day paid pilot. Two robots paired with manual servers to validate the routing-and-pickup workflow.",
-    operatingCost: "Electricity ~₹15k–25k/year per robot. Consumables minimal (no liquids or filters).",
+    pilotOffer: "30-day pilot. Two robots paired with manual servers to validate the routing-and-pickup workflow.",
     leadTime: "6–10 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -224,6 +234,14 @@ const T8: ProductDetail = {
   slug: "t8",
   positioning:
     "Compact delivery robot for narrow corridors and boutique layouts — navigates passages as tight as 55 cm with smart self-pickup guidance and 204° vision coverage.",
+  seoDescription:
+    "KEENON T8 compact delivery robot for India — 55 cm passages, 204° vision, smart self-pickup. Ideal for boutique hotels and tight restaurant layouts.",
+  galleryCaptions: [
+    "55 cm passages — fits where bigger robots can't",
+    "Three stereo sensors scan 204° for obstacles",
+    "Smart self-pickup with tray-sensor confirmation",
+    "10.1-inch touchscreen with multi-language voice",
+  ],
   quickFacts: [
     { icon: "Ruler", label: "Min passage", value: "55 cm" },
     { icon: "Package", label: "Payload", value: "20 kg" },
@@ -304,10 +322,7 @@ const T8: ProductDetail = {
     { industry: "Healthcare", solutionsSlug: "healthcare", scenario: "Ward-level meal distribution in older hospital buildings with narrower corridors.", recommendedPilot: "Single floor, breakfast + lunch round, 4 weeks." },
   ],
   commercials: {
-    capexBand: "Indicative ₹5–7 lakhs. Among the most cost-effective entry points in the KEENON delivery line.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹55k–75k/year per robot.",
-    pilotOffer: "30-day paid pilot. Recommended start point for first-time operators because of the lower CapEx and quick payback.",
-    operatingCost: "Electricity ~₹15k/year per robot. Negligible consumables.",
+    pilotOffer: "30-day pilot. Recommended start point for first-time operators because of the lower CapEx and quick payback.",
     leadTime: "6–8 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -329,6 +344,14 @@ const T9: ProductDetail = {
   slug: "t9",
   positioning:
     "Premium 3-tray delivery robot with vehicle-grade suspension and 18-hour battery — the longest-running KEENON delivery platform, built for double-shift hospitality and healthcare service.",
+  seoDescription:
+    "KEENON T9 premium delivery robot for India — 18-hour battery, vehicle-grade suspension, marker-free VSLAM. Built for 5-star hotels and tertiary hospitals.",
+  galleryCaptions: [
+    "Vehicle-grade suspension protects every dish",
+    "18-hour battery for full double-shift service",
+    "Marker-free VSLAM through busy corridors",
+    "11.6-inch animated display engages every guest",
+  ],
   quickFacts: [
     { icon: "Battery", label: "Battery life", value: "Up to 18 hr" },
     { icon: "Package", label: "Payload", value: "40 kg" },
@@ -410,10 +433,7 @@ const T9: ProductDetail = {
     { industry: "Food & Beverage", solutionsSlug: "food-beverage", scenario: "Fine-dining chains with curated plating where soup-level stability is a non-negotiable.", recommendedPilot: "Single outlet, dinner only, two robots." },
   ],
   commercials: {
-    capexBand: "Indicative ₹8–11 lakhs. Premium tier within delivery family.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹85k–1.1 lakhs/year per robot.",
-    pilotOffer: "30-day paid pilot. Ideal fit for properties with brand-presentation sensitivity.",
-    operatingCost: "Electricity ~₹20k/year. No consumables of significance.",
+    pilotOffer: "30-day pilot. Ideal fit for properties with brand-presentation sensitivity.",
     leadTime: "6–10 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -436,6 +456,14 @@ const T9_PRO: ProductDetail = {
   slug: "t9-pro",
   positioning:
     "Ultra-premium variant of the T9 platform with enhanced stereo vision — for luxury hotels, fine dining, and high-stakes healthcare environments where service consistency is non-negotiable.",
+  seoDescription:
+    "KEENON T9 Pro ultra-premium delivery robot for India — enhanced stereo vision, vehicle-grade suspension, 4-hour fast charge. Built for luxury hospitality.",
+  galleryCaptions: [
+    "Enhanced stereo vision for luxury hotel corridors",
+    "CAE-simulated suspension protects every plate",
+    "11.6-inch HD animated display with custom livery",
+    "4-hour fast charge for triple-shift premium service",
+  ],
   quickFacts: [
     { icon: "Eye", label: "Vision", value: "Enhanced stereo + 3D depth" },
     { icon: "Package", label: "Payload", value: "40 kg" },
@@ -517,10 +545,7 @@ const T9_PRO: ProductDetail = {
     { industry: "Healthcare", solutionsSlug: "healthcare", scenario: "VIP / executive ward delivery in tertiary-care facilities with premium-stay programmes.", recommendedPilot: "Single ward, all-shifts, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹11–14 lakhs. Premium tier — typically priced 25–35% above standard T9.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹1.1–1.4 lakhs/year per robot.",
-    pilotOffer: "30-day paid pilot. Properties typically scale to 2–4 robots after a successful flagship pilot.",
-    operatingCost: "Electricity ~₹22k/year per robot.",
+    pilotOffer: "30-day pilot. Properties typically scale to 2–4 robots after a successful flagship pilot.",
     leadTime: "8–12 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -541,6 +566,14 @@ const T10: ProductDetail = {
   slug: "t10",
   positioning:
     "Flagship butler robot with 23.8-inch interactive display and adaptive head movements — built for luxury properties where the robot itself is part of the guest experience.",
+  seoDescription:
+    "KEENON T10 flagship butler robot for India — 23.8-inch interactive display, adaptive head movements, 360° vision. iF Design Award 2025 winner.",
+  galleryCaptions: [
+    "23.8-inch interactive display — the robot is the experience",
+    "Adaptive head turns toward approaching guests",
+    "Four stereo sensors deliver true 360° awareness",
+    "Custom branding, skins, voices, and accessories",
+  ],
   quickFacts: [
     { icon: "MonitorSmartphone", label: "Display", value: "23.8\" interactive" },
     { icon: "Eye", label: "Recognition", value: "360°" },
@@ -620,10 +653,7 @@ const T10: ProductDetail = {
     { industry: "Healthcare", solutionsSlug: "healthcare", scenario: "Premium-stay wings in tertiary-care hospitals where guest-experience is positioned alongside medical care.", recommendedPilot: "Single premium-suite floor, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹14–18 lakhs. Flagship tier — typically reserved for one-property deployments where brand impact is the primary driver.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹1.4–1.8 lakhs/year per robot.",
-    pilotOffer: "30-day paid pilot. Most T10 deployments start with a single flagship robot in a guest-facing role.",
-    operatingCost: "Electricity ~₹28k/year per robot.",
+    pilotOffer: "30-day pilot. Most T10 deployments start with a single flagship robot in a guest-facing role.",
     leadTime: "10–14 weeks from PO to commissioning (longer due to branding customisation).",
   },
   familyMembers: [
@@ -645,6 +675,14 @@ const T11: ProductDetail = {
   slug: "t11",
   positioning:
     "Compact open-tray delivery robot with 49 cm passage capability and 5 stereo vision sensors — the tightest-spaces variant in the KEENON family, with an 18.5-inch interactive display.",
+  seoDescription:
+    "KEENON T11 compact open-tray delivery robot for India — 49 cm passages, 5 stereo sensors, 18.5-inch display. For tight hospital and retail corridors.",
+  galleryCaptions: [
+    "49 cm passages for heritage corridors and tight spaces",
+    "Five stereo sensors for confident tight-space routing",
+    "Six-wheel chassis absorbs thresholds and uneven floors",
+    "18.5-inch interactive display for ward and lobby use",
+  ],
   quickFacts: [
     { icon: "Ruler", label: "Min passage", value: "49 cm" },
     { icon: "MonitorSmartphone", label: "Display", value: "18.5\" interactive" },
@@ -725,10 +763,7 @@ const T11: ProductDetail = {
     { industry: "Corporate", solutionsSlug: "corporate", scenario: "Mailroom and document distribution in cubicle-dense office floors.", recommendedPilot: "Single floor, single mailroom route, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹7–10 lakhs.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹70k–95k/year per robot.",
-    pilotOffer: "30-day paid pilot. Recommended for any operator with sub-60 cm passages.",
-    operatingCost: "Electricity ~₹18k/year per robot.",
+    pilotOffer: "30-day pilot. Recommended for any operator with sub-60 cm passages.",
     leadTime: "8–10 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -750,6 +785,14 @@ const W3: ProductDetail = {
   slug: "w3",
   positioning:
     "Enclosed multi-cabin butler robot with IoT lift integration — autonomous cross-floor private delivery for hotels, hospitals, and corporate towers. The closest KEENON has to a true digital concierge.",
+  seoDescription:
+    "KEENON W3 enclosed multi-cabin butler robot for India — IoT lift integration, 4 private cabins, cross-floor delivery. Built for hotel room service.",
+  galleryCaptions: [
+    "Four private cabins for cross-floor room service",
+    "IoT lift integration — autonomous transit between floors",
+    "Dual stereo + 270° LiDAR panoramic sensing",
+    "11.6-inch HD touchscreen in 14+ languages",
+  ],
   quickFacts: [
     { icon: "Boxes", label: "Cabins", value: "Up to 4 modular" },
     { icon: "Wifi", label: "Cross-floor", value: "IoT lift integration" },
@@ -832,10 +875,7 @@ const W3: ProductDetail = {
     { industry: "Corporate", solutionsSlug: "corporate", scenario: "Multi-floor corporate campuses — internal document, parcel, and reception-floor delivery.", recommendedPilot: "Single tower, 30-day mailroom-to-floor pilot." },
   ],
   commercials: {
-    capexBand: "Indicative ₹11–14 lakhs. CAPEX-or-lease both available; 36-month operating lease typically lands around ₹35k–45k/month equivalent.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹95k–1.2 lakhs/year per robot. Lift integration adds ~₹60k one-time.",
-    pilotOffer: "30-day paid pilot at one property. Includes engineer time, training, and weekly performance reviews. Full ROI math on our blog.",
-    operatingCost: "Electricity + parts reserve ~₹35k/year per robot.",
+    pilotOffer: "30-day pilot at one property. Includes engineer time, training, and weekly performance reviews. Full ROI math on our blog.",
     leadTime: "10–14 weeks from PO to commissioning (lift integration scoping adds 2–4 weeks).",
   },
   familyMembers: [
@@ -859,6 +899,14 @@ const C20: ProductDetail = {
   slug: "c20",
   positioning:
     "Ultra-compact 3-in-1 commercial cleaner (sweep + scrub + mop) in a 351 mm low-profile chassis — fits under furniture and into spaces larger cleaners can't reach.",
+  seoDescription:
+    "KEENON C20 compact 3-in-1 commercial cleaner for India — 351 mm low profile fits under furniture. Sweep, scrub, and mop in one pass at 400 m²/hr.",
+  galleryCaptions: [
+    "351 mm low profile cleans under furniture and seating",
+    "Three-in-one: sweep, scrub, and mop in one pass",
+    "22 kg light chassis moves between zones easily",
+    "Map-based routing via LiDAR and visual SLAM",
+  ],
   quickFacts: [
     { icon: "Ruler", label: "Height", value: "351 mm low profile" },
     { icon: "Gauge", label: "Efficiency", value: "400 m²/hr" },
@@ -937,10 +985,7 @@ const C20: ProductDetail = {
     { industry: "Retail", solutionsSlug: "retail", scenario: "Boutique retail and small mall outlets where larger cleaners can't navigate the aisle widths.", recommendedPilot: "Single store, off-peak hours initially." },
   ],
   commercials: {
-    capexBand: "Indicative ₹4–6 lakhs. Lowest-cost entry into autonomous commercial cleaning.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹50k–65k/year per robot.",
-    pilotOffer: "30-day paid pilot. Often paired with C40 in larger properties for floor + lobby coverage.",
-    operatingCost: "Electricity ~₹12k/year. Detergent / mop pads ~₹6k–10k/year.",
+    pilotOffer: "30-day pilot. Often paired with C40 in larger properties for floor + lobby coverage.",
     leadTime: "4–6 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -962,6 +1007,14 @@ const C30: ProductDetail = {
   slug: "c30",
   positioning:
     "Dry 3-in-1 commercial cleaner — sweep, vacuum, dust mop — covering 2,500 m² per charge with 19,000 Pa suction. For hard-floor properties where dry cleaning is the daily routine and wet cleaning happens on schedule.",
+  seoDescription:
+    "KEENON C30 dry 3-in-1 commercial cleaner for India — sweep, vacuum, dust mop. 19,000 Pa suction, 2,500 m² per charge for hotels, malls, and offices.",
+  galleryCaptions: [
+    "19,000 Pa suction handles fine dust to coarse debris",
+    "2,500 m² coverage per charge for large public areas",
+    "Manual mapping handle for fast initial setup",
+    "Sweep, vacuum, and dust mop in one pass",
+  ],
   quickFacts: [
     { icon: "Gauge", label: "Coverage", value: "2,500 m² per charge" },
     { icon: "Zap", label: "Suction", value: "19,000 Pa" },
@@ -1040,10 +1093,7 @@ const C30: ProductDetail = {
     { industry: "Corporate", solutionsSlug: "corporate", scenario: "Large-floor IT campus dust mopping in cubicle and cafeteria zones.", recommendedPilot: "Single floor, after-hours clean, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹6–9 lakhs.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹70k–95k/year per robot.",
-    pilotOffer: "30-day paid pilot. Properties typically deploy C30 for daily dry routes + C40 / C55 for periodic wet scrubs.",
-    operatingCost: "Electricity ~₹18k/year. Vacuum bags / dust mop pads ~₹8k–12k/year.",
+    pilotOffer: "30-day pilot. Properties typically deploy C30 for daily dry routes + C40 / C55 for periodic wet scrubs.",
     leadTime: "6–8 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -1065,6 +1115,14 @@ const C40: ProductDetail = {
   slug: "c40",
   positioning:
     "Professional 4-in-1 cleaner — sweep, vacuum, scrub, mop — with multi-floor autonomy via lift integration. 1,100 m²/hr efficiency for hotels, malls, and corporate campuses.",
+  seoDescription:
+    "KEENON C40 professional 4-in-1 floor cleaner for India — sweep, vacuum, scrub, mop. Multi-floor autonomy via lift integration. 1,100 m²/hr efficiency.",
+  galleryCaptions: [
+    "Four-in-one: sweep, vacuum, scrub, and mop",
+    "IoT lift integration for multi-floor autonomy",
+    "1,100 m² per hour across hotels and malls",
+    "360° blind-spot-free safety with LiDAR and ToF",
+  ],
   quickFacts: [
     { icon: "Gauge", label: "Efficiency", value: "1,100 m²/hr" },
     { icon: "Droplet", label: "Tank", value: "16 L clean / 14 L dirty" },
@@ -1144,10 +1202,7 @@ const C40: ProductDetail = {
     { industry: "Healthcare", solutionsSlug: "healthcare", scenario: "Hospital atriums, OPDs, and main corridors during low-traffic windows.", recommendedPilot: "Atrium + OPD, overnight scrub-mop, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹12–16 lakhs.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹1.2–1.5 lakhs/year per robot. Lift integration adds ~₹60k one-time per building.",
-    pilotOffer: "30-day paid pilot. Recommended start for any multi-floor property with daily cleaning needs.",
-    operatingCost: "Electricity + detergent / replacement pads ~₹35k/year per robot.",
+    pilotOffer: "30-day pilot. Recommended start for any multi-floor property with daily cleaning needs.",
     leadTime: "8–12 weeks from PO to commissioning (longer with lift integration).",
   },
   familyMembers: [
@@ -1169,6 +1224,14 @@ const C55: ProductDetail = {
   slug: "c55",
   positioning:
     "Industrial triple-roller sweep-and-scrub robot — 2,376 m²/hr efficiency with hot-swappable dual battery for 24/7 operation. For malls, airports, parking garages, and convention centres.",
+  seoDescription:
+    "KEENON C55 industrial triple-roller cleaner for India — sweep and scrub at 2,376 m²/hr. Hot-swap battery for 24/7 operation in malls and airports.",
+  galleryCaptions: [
+    "Triple-roller sweep and scrub for industrial floors",
+    "5-second hot-swap battery for true 24/7 operation",
+    "2,376 m² per hour for malls, airports, and parking",
+    "60 L clean water tank with patented 3-second flip",
+  ],
   quickFacts: [
     { icon: "Gauge", label: "Efficiency", value: "2,376 m²/hr" },
     { icon: "Battery", label: "Battery swap", value: "5-second hot-swap" },
@@ -1248,10 +1311,7 @@ const C55: ProductDetail = {
     { industry: "Hospitality", solutionsSlug: "hospitality", scenario: "Convention centre and exhibition hall cleaning between events.", recommendedPilot: "Single event week, post-event nightly cleans." },
   ],
   commercials: {
-    capexBand: "Indicative ₹18–24 lakhs. Heavy-industrial tier — quote scales with workstation infrastructure and fleet count.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹1.6–2.1 lakhs/year per robot. Workstation installation adds ~₹1.5 lakhs one-time.",
-    pilotOffer: "30-day paid pilot. Workstation installation is included in pilot for like-for-like measurement.",
-    operatingCost: "Electricity + detergent + brush replacement ~₹55k/year per robot.",
+    pilotOffer: "30-day pilot. Workstation installation is included in pilot for like-for-like measurement.",
     leadTime: "10–14 weeks from PO to commissioning including workstation install.",
   },
   familyMembers: [
@@ -1272,6 +1332,14 @@ const S100: ProductDetail = {
   slug: "s100",
   positioning:
     "Heavy-load autonomous courier robot — 100+ kg payload with 15-second battery swap for 24/7 operation. For hospital logistics, warehouse internal transport, and manufacturing floor courier runs.",
+  seoDescription:
+    "KEENON S100 heavy-load courier robot for India — 100+ kg payload, 15-second battery swap. Hospital pharmacy, warehouse, and manufacturing logistics.",
+  galleryCaptions: [
+    "100+ kg payload for heavy logistics shifts",
+    "15-second battery swap for zero downtime",
+    "360° anti-collision strip for safe staff zones",
+    "Plug-and-play deployment with pre-installed OS",
+  ],
   quickFacts: [
     { icon: "Package", label: "Payload", value: "100+ kg" },
     { icon: "Battery", label: "Battery swap", value: "15-second swap" },
@@ -1350,10 +1418,7 @@ const S100: ProductDetail = {
     { industry: "Aviation", solutionsSlug: "aviation", scenario: "Airport back-of-house: catering trolley positioning, supply replenishment, baggage logistics support.", recommendedPilot: "Single terminal back-of-house route, off-peak hours, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹14–18 lakhs.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹1.3–1.7 lakhs/year per robot.",
-    pilotOffer: "30-day paid pilot. Heavy-load logistics typically benefit from a 60-day extended pilot to capture full operational rhythm — discuss with sales.",
-    operatingCost: "Electricity ~₹28k/year per robot.",
+    pilotOffer: "30-day pilot. Heavy-load logistics typically benefit from a 60-day extended pilot to capture full operational rhythm — discuss with sales.",
     leadTime: "8–12 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -1374,6 +1439,14 @@ const S300: ProductDetail = {
   slug: "s300",
   positioning:
     "Heavy-load 300 kg payload courier with ultra-low 23 cm chassis — pallet and cage-load logistics for manufacturing, warehouses, and large hospital networks.",
+  seoDescription:
+    "KEENON S300 heavy-load delivery robot for India — 300 kg payload, 23 cm low chassis, offline operation. Pallet and cage logistics for industry.",
+  galleryCaptions: [
+    "300 kg payload for pallet and cage logistics",
+    "23 cm low chassis — forklifts load directly",
+    "Offline operation in network-patchy warehouses",
+    "Triple emergency stops with 360° safety shield",
+  ],
   quickFacts: [
     { icon: "Package", label: "Payload", value: "300 kg" },
     { icon: "Ruler", label: "Chassis height", value: "23 cm (industry-low)" },
@@ -1453,10 +1526,7 @@ const S300: ProductDetail = {
     { industry: "Corporate", solutionsSlug: "corporate", scenario: "Manufacturing campus material handling — parts bins, assembly kits, finished goods movement.", recommendedPilot: "Single assembly line → warehouse loop, 30 days." },
   ],
   commercials: {
-    capexBand: "Indicative ₹22–28 lakhs. Heavy-industrial tier.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹2.0–2.5 lakhs/year per robot.",
-    pilotOffer: "30-day paid pilot. Heavy-logistics deployments often benefit from extended 60-day pilots — discuss with sales.",
-    operatingCost: "Electricity ~₹40k/year per robot.",
+    pilotOffer: "30-day pilot. Heavy-logistics deployments often benefit from extended 60-day pilots — discuss with sales.",
     leadTime: "10–14 weeks from PO to commissioning.",
   },
   familyMembers: [
@@ -1477,6 +1547,14 @@ const G1: ProductDetail = {
   slug: "g1",
   positioning:
     "Reception and guiding robot with dual-sided advertising display and face recognition — for hotel lobbies, corporate receptions, exhibition halls, and museum wayfinding.",
+  seoDescription:
+    "KEENON G1 reception and guiding robot for India — dual-sided HD displays, face recognition, multi-language voice. For hotel lobbies and corporate receptions.",
+  galleryCaptions: [
+    "Dual-sided HD displays greet and advertise",
+    "Face recognition for VIP and returning guests",
+    "Five sensors for safe lobby navigation",
+    "Wayfinding, concierge, and promotion in one robot",
+  ],
   quickFacts: [
     { icon: "MonitorSmartphone", label: "Display", value: "Dual-sided HD screens" },
     { icon: "Users", label: "Face recognition", value: "VIP identification" },
@@ -1556,10 +1634,7 @@ const G1: ProductDetail = {
     { industry: "Healthcare", solutionsSlug: "healthcare", scenario: "Hospital reception wayfinding — directing patients to OPDs, labs, pharmacies.", recommendedPilot: "Main hospital lobby, 4 weeks." },
   ],
   commercials: {
-    capexBand: "Indicative ₹6–9 lakhs.",
-    amcStructure: "Year 1 AMC included. Year 2+ ~₹70k–95k/year per robot. CRM integration is one-time scope-based (₹50k–1 lakh).",
-    pilotOffer: "30-day paid pilot. Strongest results when paired with CRM integration during the pilot window.",
-    operatingCost: "Electricity ~₹15k/year. Content management ~₹10k/year if delegated to Mobilise.",
+    pilotOffer: "30-day pilot. Strongest results when paired with CRM integration during the pilot window.",
     leadTime: "6–10 weeks from PO to commissioning.",
   },
   familyMembers: [

@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Update the Sitemap URL to match the deployed domain.
-Sitemap: https://mobilise-robotics.com/sitemap.xml
+Sitemap: https://fmrobots.in/sitemap.xml

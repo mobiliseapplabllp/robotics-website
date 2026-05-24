@@ -102,15 +102,13 @@ export interface ProductIndustryFit {
 }
 
 /**
- * Commercials & ownership — all fields optional. When absent, the section
- * still renders but with a "Talk to sales for current pricing" placeholder.
- * Per BRAND.md we never display exact quotes — only indicative bands.
+ * How to engage — pricing is deliberately not displayed (handled offline by
+ * sales). What we *do* surface publicly is the pilot offer and lead-time
+ * commitments. All fields optional; if both are absent the section still
+ * renders with a single "Talk to sales" card.
  */
 export interface ProductCommercials {
-  capexBand?: string;
-  amcStructure?: string;
   pilotOffer?: string;
-  operatingCost?: string;
   leadTime?: string;
 }
 
@@ -132,6 +130,18 @@ export interface ProductDetail {
   slug: string;
   /** 1-line under hero — what the robot is for, in plain English. */
   positioning: string;
+  /**
+   * Keyword-rich SEO meta description (~155 chars). Overrides the catalog
+   * description for the per-page `<meta name="description">`. Should include
+   * the robot model, primary use case, and "India" if natural.
+   */
+  seoDescription?: string;
+  /**
+   * 3–5 concise captions used in the "In context" parallax gallery, one per
+   * gallery image. Each caption is overlaid on the image (5–10 words, scene-
+   * evoking, no slogans).
+   */
+  galleryCaptions: string[];
   quickFacts: ProductQuickFact[]; // exactly 4
   differentiators: ProductDifferentiator[]; // exactly 3
   workflow: ProductWorkflowStep[]; // exactly 4

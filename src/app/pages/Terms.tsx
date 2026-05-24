@@ -17,7 +17,7 @@ export function Terms() {
 
           <div className="prose prose-invert max-w-none text-white/80 space-y-6 leading-relaxed">
             <p>
-              By accessing mobilise-robotics.com (the "Site"), you agree to these Terms of Service. If you disagree with any part of these terms, do not use the Site.
+              By accessing fmrobots.in (the "Site"), you agree to these Terms of Service. If you disagree with any part of these terms, do not use the Site.
             </p>
 
             <h2 className="text-xl font-bold text-white mt-8">Website content</h2>

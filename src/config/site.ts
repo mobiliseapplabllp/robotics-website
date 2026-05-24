@@ -11,8 +11,7 @@ export const SITE = {
   tagline: "Authorized KEENON Robotics Partner in India",
   description:
     "Mobilise Robotics is India's authorized KEENON Robotics partner. Autonomous delivery, cleaning, and service robots for hospitality, healthcare, retail, and enterprise.",
-  // TODO: replace with final production URL before deploy
-  url: "https://mobilise-robotics.com",
+  url: "https://fmrobots.in",
   ogImage: "/og-image.jpg", // TODO: add a 1200x630 PNG/JPG at public/og-image.jpg
   email: "sales@mobilise.co.in",
   phone: "+91-9599194330",
