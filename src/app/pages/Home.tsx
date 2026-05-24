@@ -488,8 +488,8 @@ export function Home() {
               </motion.div>
               <div className="lg:order-2">
                 <ParallaxImage
-                  src="/images/products/c55/hero.webp"
-                  alt="KEENON C55 commercial-grade autonomous floor scrubber on duty — a flagship industrial cleaning robot used by Indian facility management teams to convert variable cleaning-crew labour into predictable AMC opex"
+                  src="/images/products/c40/hero.webp"
+                  alt="KEENON C40 autonomous 4-in-1 floor cleaner on duty — a workhorse industrial cleaning robot used by Indian facility management teams to convert variable cleaning-crew labour into predictable monthly opex"
                   width={1200}
                   height={900}
                 />
