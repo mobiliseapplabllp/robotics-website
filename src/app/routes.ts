@@ -21,22 +21,11 @@ const SolutionDetailPage = lazy(() =>
   import("./pages/SolutionDetailPage").then((m) => ({ default: m.SolutionDetailPage })),
 );
 
-// Individual product pages — each is a separate chunk loaded on demand
-const T10Page = lazy(() => import("./pages/products/T10Page").then((m) => ({ default: m.T10Page })));
-const T11Page = lazy(() => import("./pages/products/T11Page").then((m) => ({ default: m.T11Page })));
-const T8Page = lazy(() => import("./pages/products/T8Page").then((m) => ({ default: m.T8Page })));
-const T3Page = lazy(() => import("./pages/products/T3Page").then((m) => ({ default: m.T3Page })));
-const T9Page = lazy(() => import("./pages/products/T9Page").then((m) => ({ default: m.T9Page })));
-const T9ProPage = lazy(() => import("./pages/products/T9ProPage").then((m) => ({ default: m.T9ProPage })));
-const W3Page = lazy(() => import("./pages/products/W3Page").then((m) => ({ default: m.W3Page })));
-const C20Page = lazy(() => import("./pages/products/C20Page").then((m) => ({ default: m.C20Page })));
-const G1Page = lazy(() => import("./pages/products/G1Page").then((m) => ({ default: m.G1Page })));
-const C40Page = lazy(() => import("./pages/products/C40Page").then((m) => ({ default: m.C40Page })));
-const S100Page = lazy(() => import("./pages/products/S100Page").then((m) => ({ default: m.S100Page })));
-const S300Page = lazy(() => import("./pages/products/S300Page").then((m) => ({ default: m.S300Page })));
-const T5Page = lazy(() => import("./pages/products/T5Page").then((m) => ({ default: m.T5Page })));
-const C30Page = lazy(() => import("./pages/products/C30Page").then((m) => ({ default: m.C30Page })));
-const C55Page = lazy(() => import("./pages/products/C55Page").then((m) => ({ default: m.C55Page })));
+// Single per-product detail template — replaces 15 individual product pages.
+// Driven by `src/content/products/detail.ts` + `src/app/data/products.ts`.
+const ProductDetailPage = lazy(() =>
+  import("./pages/ProductDetailPage").then((m) => ({ default: m.ProductDetailPage })),
+);
 
 export const router = createBrowserRouter([
   {
@@ -46,22 +35,8 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "products", Component: Products },
 
-      // Individual Product Routes (lazy-loaded)
-      { path: "products/t10", Component: T10Page },
-      { path: "products/t11", Component: T11Page },
-      { path: "products/t8", Component: T8Page },
-      { path: "products/t3", Component: T3Page },
-      { path: "products/t9", Component: T9Page },
-      { path: "products/t9-pro", Component: T9ProPage },
-      { path: "products/w3", Component: W3Page },
-      { path: "products/c20", Component: C20Page },
-      { path: "products/g1", Component: G1Page },
-      { path: "products/c40", Component: C40Page },
-      { path: "products/s100", Component: S100Page },
-      { path: "products/s300", Component: S300Page },
-      { path: "products/t5", Component: T5Page },
-      { path: "products/c30", Component: C30Page },
-      { path: "products/c55", Component: C55Page },
+      // Single dynamic route for all 15 KEENON product detail pages
+      { path: "products/:slug", Component: ProductDetailPage },
 
       { path: "solutions", Component: Solutions },
       { path: "solutions/:slug", Component: SolutionDetailPage },

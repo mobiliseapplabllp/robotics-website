@@ -31,9 +31,8 @@ const TIMELINE = [
   { year: "2018", event: "KEENON enters European, Middle Eastern, and Southeast Asian markets" },
   { year: "2020", event: "Pandemic accelerates demand for contactless service robots worldwide" },
   { year: "2023", event: "KEENON Cloud achieves GDPR certification — global data-residency posture" },
-  { year: "2024", event: "Mobilise App Lab Limited (MALL) becomes KEENON's authorised India partner" },
   { year: "2025", event: "DINERBOT T10 wins the iF Design Award 2025" },
-  { year: "2026", event: "Mobilise opens pilots across Indian hospitality, healthcare, and corporate facilities" },
+  { year: "2026", event: "Mobilise App Lab Limited (MALL) becomes KEENON's authorised India partner — pilots opening across Indian hospitality, healthcare, and corporate facilities" },
 ];
 
 /**
@@ -112,7 +111,7 @@ export function About() {
                   { value: "60+", label: "Countries with KEENON robots" },
                   { value: "600+", label: "Cities served globally" },
                   { value: "Since 2010", label: "KEENON Robotics established" },
-                  { value: "2024", label: "Mobilise × KEENON partnership" },
+                  { value: "2026", label: "Mobilise × KEENON partnership" },
                 ].map((s, i) => (
                   <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-4">
                     <div className="text-2xl font-black text-cyan-400">{s.value}</div>
@@ -220,7 +219,7 @@ export function About() {
             Mobilise App Lab Limited (MALL) is an India-headquartered technology firm operating across enterprise SaaS and connected hardware. Our core platforms — OPSuit, SCM Pro, iDo Pro, and HREVO — serve operations, supply-chain, and workforce management across Indian enterprises. Our hardware portfolio spans biometrics, RFID, thermal printers, 4G CCTV with computer vision, IoT monitoring, and GPS tracking.
           </p>
           <p className="text-white/60 leading-relaxed text-center max-w-3xl mx-auto">
-            Mobilise Robotics is our newest vertical — launched in 2024 to bring KEENON's commercial service robots to Indian facilities. We chose KEENON because their hardware is mature, their installed base is large, and their roadmap is grounded in operational realities — not lab demos.
+            Mobilise Robotics is our newest vertical — launched in 2026 to bring KEENON's commercial service robots to Indian facilities. We chose KEENON because their hardware is mature, their installed base is large, and their roadmap is grounded in operational realities — not lab demos.
           </p>
           <div className="mt-10 flex justify-center">
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white/70 text-sm">
