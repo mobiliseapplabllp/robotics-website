@@ -31,3 +31,6 @@ npm-debug.log*
 
 # Claude worktrees
 .claude/worktrees/
+
+# Routine scratch — local working notes per routine run; never tracked
+routine-scratch/
