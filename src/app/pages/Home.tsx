@@ -416,7 +416,7 @@ export function Home() {
                   01 — Reliability
                 </div>
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
-                  Hit every SLA — <span className="text-cyan-400">even at 2 AM. Even on Diwali.</span>
+                  Hit every SLA — <span className="text-cyan-400">even at 2 AM. Even on holidays.</span>
                 </h3>
                 <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-6">
                   Night-shift crews don't always show. Festival shifts get skipped. Sick days turn into SLA breaches you end up explaining to the client. KEENON robots don't have those problems — they run autonomous 22-hour duty cycles, park themselves to recharge, and start the next round on schedule. Cleaning happens. Mailroom runs happen. Reception covers Tier-2 hours. Your SLA score stops being a calendar lottery.
@@ -459,23 +459,23 @@ export function Home() {
                   02 — Cost predictability
                 </div>
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
-                  Trade variable labour for <span className="text-cyan-400">fixed AMC.</span> CFO-defensible.
+                  Replace rising staff costs with <span className="text-cyan-400">one flat monthly bill.</span>
                 </h3>
                 <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-6">
-                  Your labour line has climbed 35–55% since 2019. Wage inflation, retention bonuses, festival overtime — none of it is coming down. Robotic economics work the opposite way: hardware + AMC + power is a flat number you plug into a 3-year P&amp;L. Most customers pick the operating-lease model, which keeps the spend pure opex. One line. Predictable. Defensible.
+                  Your staff costs have climbed 35–55% since 2019 — and they keep rising every year. Wages, bonuses, holiday overtime, recruitment fees. Robots work the opposite way. <strong className="text-white">One fixed monthly bill</strong> covers the robot, its maintenance, and its electricity. No surprises. Most customers pick monthly rental, so it lands on your books as a simple operating expense your finance team can plan around for years.
                 </p>
                 <ul className="space-y-2.5 mb-7 text-white/80 text-sm sm:text-base">
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
-                    <span>Fixed-cost AMC + spare-parts plans</span>
+                    <span>One fixed monthly bill covers the robot, maintenance (AMC), and spare parts</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
-                    <span>Operating-lease (OpEx-only) model available</span>
+                    <span>Monthly rental option available — no big upfront purchase needed</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
-                    <span>Typical payback inside 12–18 months</span>
+                    <span>Most customers recover the cost within 12–18 months</span>
                   </li>
                 </ul>
                 <Link
