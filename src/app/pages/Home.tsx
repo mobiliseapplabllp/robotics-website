@@ -26,6 +26,11 @@ import {
   Users,
   Banknote,
   ClipboardCheck,
+  Moon,
+  TrendingDown,
+  Search,
+  Wrench,
+  Activity,
 } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
@@ -151,6 +156,32 @@ const FACILITY_CHIPS = [
   { id: "aviation", label: "Airport", icon: Plane },
   { id: "corporate", label: "Factory", icon: Factory },
   { id: "corporate", label: "Warehouse", icon: Warehouse },
+];
+
+/**
+ * Engagement stepper — three steps from first call to operational robot.
+ * Drives the compact horizontal-stepper section that sits after the
+ * "How robots fit your FM stack" map and before "Why Mobilise".
+ */
+const ENGAGEMENT_STEPS = [
+  {
+    number: "01",
+    title: "Audit",
+    icon: Search,
+    description: "Free 30-minute facility walkthrough + SLA gap analysis + ROI estimate. You keep the written report — whether you sign or not.",
+  },
+  {
+    number: "02",
+    title: "Deploy",
+    icon: Wrench,
+    description: "On-site engineer for installation, mapping, BMS/lift integration, and operator certification. Your robot is operational within 48 hours of arrival.",
+  },
+  {
+    number: "03",
+    title: "Operate",
+    icon: Activity,
+    description: "24/7 SLA-aligned support, India spare-parts pipeline, per-shift logs into your CMMS, AMC plans for predictable opex.",
+  },
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -336,10 +367,10 @@ export function Home() {
         </div>
       </section>
 
-      {/* ───────── How we work with FM teams (3-step process, alternating layout) ───────── */}
+      {/* ───────── The value robotics add to your FM operations (3 pillars, alternating layout) ───────── */}
       <section
-        className="py-24 lg:py-32 relative"
-        aria-labelledby="how-we-work-heading"
+        className="py-20 sm:py-24 lg:py-32 relative"
+        aria-labelledby="fm-value-heading"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-[#050a14] to-[#030710]" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -348,29 +379,29 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-16 sm:mb-20"
           >
-            <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-sm font-semibold mb-4 uppercase tracking-wider">
-              Our engagement model
+            <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs sm:text-sm font-semibold mb-4 uppercase tracking-wider">
+              What robotics deliver
             </div>
             <h2
-              id="how-we-work-heading"
-              className="text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight"
+              id="fm-value-heading"
+              className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight"
             >
-              How we work with <span className="text-cyan-400">facility management teams</span>
+              The value robotics add to your <span className="text-cyan-400">FM operations</span>
             </h2>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed">
-              From the first conversation to ongoing operations — here's the path most FM directors, admins, and IFM partners take with Mobilise.
+            <p className="text-white/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Cost. Reliability. Compliance. The three things facility management directors lose sleep over — and what autonomous robots do to each of them.
             </p>
           </motion.div>
 
-          {/* Process rows */}
-          <div className="space-y-24 lg:space-y-32">
-            {/* ── Row 1: AUDIT (image left, text right on lg) ─────────────────── */}
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Value pillars */}
+          <div className="space-y-20 sm:space-y-24 lg:space-y-32">
+            {/* ── Pillar 1: RELIABILITY (image left, text right on lg) ── */}
+            <article className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <ParallaxImage
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format&fit=crop&q=80"
-                alt="Modern corporate corridor with glass-walled offices — a typical Class-A facility Mobilise audits before recommending an FM automation plan"
+                src="https://images.unsplash.com/photo-1583416750470-965b2707b355?w=1200&auto=format&fit=crop&q=80"
+                alt="Aircraft at a jet bridge in a quiet airport terminal at dusk — autonomous KEENON robots run 24/7 facility coverage when human FM crews aren't on shift"
                 width={1200}
                 height={900}
               />
@@ -380,40 +411,42 @@ export function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <span className="inline-block text-cyan-400 text-sm font-bold uppercase tracking-[0.3em] mb-3">
-                  Step 01 — Audit
-                </span>
-                <h3 className="text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
-                  We audit your facility first
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                  <Moon className="w-3.5 h-3.5" aria-hidden="true" />
+                  01 — Reliability
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
+                  Hit every SLA — <span className="text-cyan-400">even at 2 AM. Even on Diwali.</span>
                 </h3>
-                <p className="text-white/80 text-lg leading-relaxed mb-6">
-                  Before any pilot, our team walks your facility with you — measures cleaning sq ft, maps internal logistics flow, identifies SLA pain points, audits night-shift coverage. Free, 30-minute call. You get a written recommendation even if you don't end up buying a robot.
+                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-6">
+                  Night-shift crews don't always show. Festival shifts get skipped. Sick days turn into SLA breaches you end up explaining to the client. KEENON robots don't have those problems — they run autonomous 22-hour duty cycles, park themselves to recharge, and start the next round on schedule. Cleaning happens. Mailroom runs happen. Reception covers Tier-2 hours. Your SLA score stops being a calendar lottery.
                 </p>
-                <ul className="space-y-2 mb-7 text-white/70 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>Site walkthrough + service-area mapping</span>
+                <ul className="space-y-2.5 mb-7 text-white/80 text-sm sm:text-base">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>22-hour autonomous duty cycles per robot</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>SLA gap analysis against current operations</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Self-charging — zero operator dependency</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>ROI estimate + recommended robot mix</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Runs through festivals, monsoons, and labour shocks</span>
                   </li>
                 </ul>
                 <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                  to="/products"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-11 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
-                  Book the audit <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  Explore the robot lineup
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </motion.div>
-            </div>
+            </article>
 
-            {/* ── Row 2: DEPLOY (text left, image right on lg) ────────────────── */}
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* ── Pillar 2: COST PREDICTABILITY (text left, image right on lg) ── */}
+            <article className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -421,51 +454,53 @@ export function Home() {
                 transition={{ duration: 0.6 }}
                 className="lg:order-1"
               >
-                <span className="inline-block text-cyan-400 text-sm font-bold uppercase tracking-[0.3em] mb-3">
-                  Step 02 — Deploy
-                </span>
-                <h3 className="text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
-                  We deploy <span className="text-cyan-400">and train your team</span> — on-site
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                  <TrendingDown className="w-3.5 h-3.5" aria-hidden="true" />
+                  02 — Cost predictability
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
+                  Trade variable labour for <span className="text-cyan-400">fixed AMC.</span> CFO-defensible.
                 </h3>
-                <p className="text-white/80 text-lg leading-relaxed mb-6">
-                  Engineers come to your facility for installation, calibration, mapping, and operator certification. Your existing FM staff runs the robot from day one — we don't ship a manual and leave. Most deployments are operational within 48 hours of robot arrival.
+                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-6">
+                  Your labour line has climbed 35–55% since 2019. Wage inflation, retention bonuses, festival overtime — none of it is coming down. Robotic economics work the opposite way: hardware + AMC + power is a flat number you plug into a 3-year P&amp;L. Most customers pick the operating-lease model, which keeps the spend pure opex. One line. Predictable. Defensible.
                 </p>
-                <ul className="space-y-2 mb-7 text-white/70 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>On-site engineer for setup and floor-mapping</span>
+                <ul className="space-y-2.5 mb-7 text-white/80 text-sm sm:text-base">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Fixed-cost AMC + spare-parts plans</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>Half-day operator certification for your FM staff</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Operating-lease (OpEx-only) model available</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>BMS / lift / Wi-Fi integration handled end-to-end</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Typical payback inside 12–18 months</span>
                   </li>
                 </ul>
                 <Link
-                  to="/products"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-11 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
-                  Explore the robot catalog <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  Get a free ROI estimate
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </motion.div>
               <div className="lg:order-2">
                 <ParallaxImage
-                  src="/images/products/c40/hero.webp"
-                  alt="KEENON C40 autonomous cleaning robot deployed at a commercial facility — a flagship 4-in-1 floor cleaner used by FM teams across Indian malls, hospitals, and office campuses"
+                  src="/images/products/c55/hero.webp"
+                  alt="KEENON C55 commercial-grade autonomous floor scrubber on duty — a flagship industrial cleaning robot used by Indian facility management teams to convert variable cleaning-crew labour into predictable AMC opex"
                   width={1200}
                   height={900}
                 />
               </div>
-            </div>
+            </article>
 
-            {/* ── Row 3: SUPPORT (image left, text right on lg) ─────────────── */}
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* ── Pillar 3: AUDIT-READY DATA (image left, text right on lg) ── */}
+            <article className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
               <ParallaxImage
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80"
-                alt="Operations dashboard showing per-shift logs, robot uptime, and SLA metrics — the Mobilise oversight tooling that lets facility management teams audit every cleaning shift, every internal-logistics run, and every visitor interaction"
+                alt="Real-time operations dashboard showing per-shift cleaning logs, robot uptime, and SLA compliance metrics — the audit-grade data Mobilise-deployed robots feed into customer CMMS and BMS systems for IGBC, LEED, NABH, and ISO 41001 reporting"
                 width={1200}
                 height={900}
               />
@@ -475,37 +510,39 @@ export function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <span className="inline-block text-cyan-400 text-sm font-bold uppercase tracking-[0.3em] mb-3">
-                  Step 03 — Operate
-                </span>
-                <h3 className="text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
-                  We stay accountable for <span className="text-cyan-400">every shift</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                  <ClipboardCheck className="w-3.5 h-3.5" aria-hidden="true" />
+                  03 — Audit-ready data
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-5 leading-tight tracking-tight">
+                  Every shift logged. <span className="text-cyan-400">Audit-ready by default.</span>
                 </h3>
-                <p className="text-white/80 text-lg leading-relaxed mb-6">
-                  24/7 SLA-aligned support, spare parts stocked in India, AMC plans for predictable opex. Per-shift logs flow into your CMMS — you can audit every square foot the robot cleaned, every kilo it carried, every visitor it greeted. Real accountability, not a black box.
+                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-6">
+                  NABH, IGBC, LEED, ISO 41001 — every facility audit now expects evidence your supervisor's clipboard can't deliver. Every Mobilise-deployed robot logs every shift: square footage cleaned, route taken, exceptions raised, materials consumed. The data flows into your CMMS or sits on a dashboard your auditor can read. Compliance becomes a query, not a quarterly panic.
                 </p>
-                <ul className="space-y-2 mb-7 text-white/70 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>Pan-India spare-parts warehouse + same-week turnaround</span>
+                <ul className="space-y-2.5 mb-7 text-white/80 text-sm sm:text-base">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Per-shift logs to your CMMS / BMS in real time</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>Per-shift audit logs feed your CMMS / BMS</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>Live fleet dashboard with SLA-breach flags</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-1 shrink-0" aria-hidden="true" />
-                    <span>Dedicated account manager for every customer</span>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" aria-hidden="true" />
+                    <span>ISO 41001 / IGBC / NABH evidence on demand</span>
                   </li>
                 </ul>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-11 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
-                  Talk to our team <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  See the data your auditor sees
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </motion.div>
-            </div>
+            </article>
           </div>
         </div>
       </section>
@@ -618,6 +655,91 @@ export function Home() {
                 </Link>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── Engagement stepper (3 steps from first call to operational robot) ───────── */}
+      <section
+        className="py-20 sm:py-24 lg:py-28 bg-[#030710] relative"
+        aria-labelledby="engagement-stepper-heading"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs sm:text-sm font-semibold mb-4 uppercase tracking-wider">
+              How to engage
+            </div>
+            <h2
+              id="engagement-stepper-heading"
+              className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight"
+            >
+              From first call to <span className="text-cyan-400">operational robot</span> in three steps
+            </h2>
+            <p className="text-white/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Our engagement model is short, paid, and reversible. Most FM teams start with a free audit and a 60-day pilot — and decide to scale within six weeks.
+            </p>
+          </motion.div>
+
+          {/* Stepper — ordered list, semantic.
+              Mobile: stacks vertically (one column).
+              md+: horizontal 3-column with a connecting line behind the circles. */}
+          <ol className="relative grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 md:gap-6 max-w-5xl mx-auto">
+            {/* Decorative connector line — md+ only */}
+            <div
+              className="hidden md:block absolute top-12 left-[calc(16.667%+1rem)] right-[calc(16.667%+1rem)] h-0.5 bg-gradient-to-r from-cyan-500/40 via-cyan-400/60 to-cyan-500/40 z-0"
+              aria-hidden="true"
+            />
+
+            {ENGAGEMENT_STEPS.map(({ number, title, icon: Icon, description }, i) => (
+              <li key={number} className="relative z-10 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  {/* Number + icon circle (gradient ring + inner panel) */}
+                  <div className="relative mx-auto w-24 h-24 mb-6 group">
+                    <div
+                      className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 shadow-2xl shadow-cyan-500/30 transition-transform group-hover:scale-105"
+                      aria-hidden="true"
+                    />
+                    <div className="absolute inset-[3px] rounded-full bg-[#030710] flex flex-col items-center justify-center">
+                      <Icon className="w-6 h-6 text-cyan-400 mb-0.5" aria-hidden="true" />
+                      <span className="text-white text-[10px] sm:text-xs font-black tracking-[0.2em]">
+                        {number}
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white mb-3 tracking-tight">
+                    {title}
+                  </h3>
+                  <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-xs mx-auto">
+                    {description}
+                  </p>
+                </motion.div>
+              </li>
+            ))}
+          </ol>
+
+          {/* Single combined CTA below stepper */}
+          <div className="text-center mt-12 sm:mt-16">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 min-h-11 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-2xl text-white font-bold text-base sm:text-lg transition-all shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#030710]"
+            >
+              Book your facility audit
+              <ArrowRight className="w-5 h-5" aria-hidden="true" />
+            </Link>
+            <p className="text-white/60 text-xs sm:text-sm mt-4">
+              No commitment — just a 30-minute call to see if robotics fit your operations.
+            </p>
           </div>
         </div>
       </section>
