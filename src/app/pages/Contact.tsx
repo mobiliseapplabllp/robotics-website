@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Bot, AlertCircle } from "lucide-react";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-const SALES_EMAIL = "sales@mobilise.co.in";
+const SALES_EMAIL = "ashish.sharma@mobilise.co.in";
 const SALES_PHONE = "+91-9599194330";
 
 const OFFICES = [

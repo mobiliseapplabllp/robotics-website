@@ -44,14 +44,14 @@ export function Privacy() {
             <h2 className="text-xl font-bold text-white mt-8">Your rights</h2>
             <p>
               You may request access to the personal data we hold about you, ask us to correct it, or request deletion. Contact{" "}
-              <a href="mailto:sales@mobilise.co.in" className="text-cyan-400 hover:underline">sales@mobilise.co.in</a> with any request.
+              <a href="mailto:ashish.sharma@mobilise.co.in" className="text-cyan-400 hover:underline">ashish.sharma@mobilise.co.in</a> with any request.
             </p>
 
             <h2 className="text-xl font-bold text-white mt-8">Contact</h2>
             <p>
               Mobilise App Lab Limited<br />
               Plot No. 62/B, HSIIDC, Sector 31, Faridabad, Haryana - 121006<br />
-              Email: <a href="mailto:sales@mobilise.co.in" className="text-cyan-400 hover:underline">sales@mobilise.co.in</a><br />
+              Email: <a href="mailto:ashish.sharma@mobilise.co.in" className="text-cyan-400 hover:underline">ashish.sharma@mobilise.co.in</a><br />
               Phone: <a href="tel:+919599194330" className="text-cyan-400 hover:underline">+91-9599194330</a>
             </p>
 

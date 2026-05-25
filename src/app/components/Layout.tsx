@@ -372,7 +372,7 @@ export function Layout() {
                 </li>
                 <li className="flex items-center gap-2 text-white/60 text-sm">
                   <Mail className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-                  <a href="mailto:sales@mobilise.co.in" className="hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">sales@mobilise.co.in</a>
+                  <a href="mailto:ashish.sharma@mobilise.co.in" className="hover:text-cyan-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">ashish.sharma@mobilise.co.in</a>
                 </li>
               </ul>
             </div>

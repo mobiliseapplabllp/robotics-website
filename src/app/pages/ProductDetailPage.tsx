@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, Link, Navigate } from "react-router";
-import { motion, useScroll, useTransform, useInView } from "motion/react";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -44,8 +44,10 @@ import {
   Layers,
   PlayCircle,
   ChevronDown,
-  FileText,
+  ChevronLeft,
+  ChevronRight,
   CalendarClock,
+  Mail,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PRODUCTS } from "../data/products";
@@ -126,6 +128,31 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
 function absoluteImageUrls(product: Product): string[] {
   const list = product.images && product.images.length > 0 ? product.images : [product.image];
   return list.map((src) => (src.startsWith("http") ? src : `${SITE.url}${src}`));
+}
+
+/**
+ * Spec sheet mailto link. KEENON does not expose direct-download PDFs on
+ * keenon.com (spec sheets are gated behind their own contact form), so the
+ * CTA opens a pre-filled email to Mobilise sales for personal delivery.
+ * Once Mobilise has KEENON-approved PDFs available locally, replace this
+ * with a direct href to /spec-sheets/{slug}.pdf.
+ */
+function buildSpecSheetMailto(productName: string): string {
+  const subject = `Spec sheet request — KEENON ${productName}`;
+  const body = [
+    `Hi Mobilise team,`,
+    ``,
+    `Please send me the detailed product spec sheet for the KEENON ${productName}.`,
+    ``,
+    `My details:`,
+    `- Name:`,
+    `- Company / property:`,
+    `- City:`,
+    `- Phone:`,
+    ``,
+    `Thanks.`,
+  ].join("\n");
+  return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -236,13 +263,13 @@ function Hero({ product, detail, accent }: { product: Product; detail: ProductDe
                 Book a pilot at your property
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
-              <Link
-                to="/contact"
+              <a
+                href={buildSpecSheetMailto(product.name)}
                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 min-h-11 rounded-xl border border-white/20 text-white font-bold hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
               >
                 Request spec sheet
-                <FileText className="w-4 h-4" aria-hidden="true" />
-              </Link>
+                <Mail className="w-4 h-4" aria-hidden="true" />
+              </a>
             </div>
 
             {/* Quick facts strip */}
@@ -322,19 +349,34 @@ function AtAGlance({ detail, accent, productName }: { detail: ProductDetail; acc
 }
 
 /**
- * "In context" — full-bleed parallax gallery section. Each image row shows a
- * gallery photo with a caption; the image itself translates Y at a slower
- * rate than the page scroll, creating the parallax depth effect.
+ * "In context" — Showcase Viewer. One large featured image with a row of
+ * caption-pill tabs above it. Click a pill (or use the arrow buttons / left
+ * + right keys) to swap the image with a crossfade. Compact alternative to
+ * the previous stacked-parallax design that didn't read well at scale.
  */
 function InContextGallery({ product, detail, accent }: { product: Product; detail: ProductDetail; accent: AccentTheme }) {
-  // Skip the hero image — use gallery shots only (up to 4).
+  // Skip the hero — use gallery shots only (up to 4). Then truncate the
+  // captions list to match the available image count so the indices line up.
   const galleryImages = (product.images ?? [product.image]).slice(1, 5);
+  const captions = detail.galleryCaptions.slice(0, galleryImages.length);
+  const [activeIdx, setActiveIdx] = useState(0);
+
   if (galleryImages.length === 0) return null;
+
+  const count = galleryImages.length;
+  const goPrev = () => setActiveIdx((i) => (i - 1 + count) % count);
+  const goNext = () => setActiveIdx((i) => (i + 1) % count);
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === "ArrowLeft") { e.preventDefault(); goPrev(); }
+    if (e.key === "ArrowRight") { e.preventDefault(); goNext(); }
+  }
 
   return (
     <section className="py-16 sm:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
-        <div className="text-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Header */}
+        <div className="text-center mb-8">
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border ${accent.border20} ${accent.bg10} mb-4`}>
             <span className={`${accent.text} text-xs font-bold uppercase tracking-wider`}>In context</span>
           </div>
@@ -342,78 +384,129 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
             The <span className={accent.text}>{product.name}</span> in action
           </h2>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-5 sm:space-y-7">
-        {galleryImages.map((src, i) => (
-          <ParallaxImageRow
-            key={src}
-            src={src}
-            caption={detail.galleryCaptions[i] ?? ""}
-            productName={product.name}
-            accent={accent}
-            index={i}
-          />
-        ))}
+        {/* Caption-pill tab strip */}
+        <div
+          role="tablist"
+          aria-label={`KEENON ${product.name} scene selector`}
+          className="flex flex-wrap justify-center gap-2 mb-6"
+        >
+          {captions.map((caption, i) => {
+            const isActive = i === activeIdx;
+            return (
+              <button
+                key={i}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`scene-${product.id}-panel`}
+                onClick={() => setActiveIdx(i)}
+                className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all focus:outline-none focus-visible:ring-2 ${accent.ring} ${
+                  isActive
+                    ? `${accent.bg20} ${accent.text} border ${accent.border40}`
+                    : "bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className={`text-[10px] font-black ${isActive ? accent.text : "text-white/40"} tracking-widest`}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="truncate max-w-[16ch] sm:max-w-[28ch]">{caption}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Featured image */}
+        <div
+          id={`scene-${product.id}-panel`}
+          role="tabpanel"
+          tabIndex={0}
+          onKeyDown={onKeyDown}
+          className={`relative aspect-[16/9] rounded-3xl overflow-hidden border ${accent.border20} shadow-2xl ${accent.glow} bg-[#0a101f] focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIdx}
+              initial={{ opacity: 0, scale: 1.02 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.45 }}
+              className="absolute inset-0"
+            >
+              <ImageWithFallback
+                src={galleryImages[activeIdx]}
+                alt={`KEENON ${product.name} — ${captions[activeIdx] ?? ""}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050a14]/85 via-[#050a14]/10 to-transparent pointer-events-none" aria-hidden="true" />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Counter */}
+          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur px-3 py-1.5 rounded-full text-white text-xs font-bold tabular-nums">
+            {activeIdx + 1} / {count}
+          </div>
+
+          {/* Caption overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 pr-16 sm:pr-24">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={activeIdx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35 }}
+                className="text-xl sm:text-2xl lg:text-3xl font-black text-white max-w-3xl leading-tight"
+              >
+                {captions[activeIdx]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* Prev / next arrows */}
+          {count > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={goPrev}
+                aria-label="Previous scene"
+                className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+              >
+                <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                aria-label="Next scene"
+                className={`absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+              >
+                <ChevronRight className="w-5 h-5" aria-hidden="true" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Thumbnail strip (desktop only — pills already do this job on mobile) */}
+        <div className="hidden md:grid grid-cols-4 gap-3 mt-4">
+          {galleryImages.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => setActiveIdx(i)}
+              aria-label={`Show scene ${i + 1}`}
+              className={`relative aspect-[16/10] rounded-xl overflow-hidden border transition-all focus:outline-none focus-visible:ring-2 ${accent.ring} ${
+                i === activeIdx
+                  ? `${accent.border40} opacity-100`
+                  : "border-white/10 opacity-50 hover:opacity-100"
+              }`}
+            >
+              <ImageWithFallback src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+            </button>
+          ))}
+        </div>
       </div>
     </section>
-  );
-}
-
-function ParallaxImageRow({
-  src,
-  caption,
-  productName,
-  accent,
-  index,
-}: {
-  src: string;
-  caption: string;
-  productName: string;
-  accent: AccentTheme;
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // Image translates within an over-tall container — slower than the scroll
-  // movement, producing the parallax effect.
-  const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.6 }}
-      className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 group"
-    >
-      <motion.div
-        style={{ y }}
-        className="absolute -top-[12%] -bottom-[12%] left-0 right-0 will-change-transform"
-      >
-        <ImageWithFallback
-          src={src}
-          alt={`KEENON ${productName} — ${caption}`}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/40 to-transparent pointer-events-none" aria-hidden="true" />
-      {caption && (
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-          <div className={`inline-flex items-center gap-2 px-2 py-0.5 rounded ${accent.bg20} ${accent.text} text-[10px] font-black uppercase tracking-widest mb-3`}>
-            Scene {String(index + 1).padStart(2, "0")}
-          </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-black text-white max-w-2xl leading-tight">
-            {caption}
-          </p>
-        </div>
-      )}
-    </motion.div>
   );
 }
 
@@ -487,13 +580,13 @@ function Specs({
               Grouped by what you'd compare. The full PDF spec sheet is available on request.
             </p>
           </div>
-          <Link
-            to="/contact"
+          <a
+            href={buildSpecSheetMailto(product.name)}
             className={`inline-flex items-center gap-2 px-5 py-2.5 min-h-11 rounded-xl border border-white/20 text-white font-bold text-sm hover:bg-white/10 transition-colors self-start focus:outline-none focus-visible:ring-2 ${accent.ring}`}
           >
-            Download spec sheet (PDF)
-            <FileText className="w-4 h-4" aria-hidden="true" />
-          </Link>
+            Request spec sheet
+            <Mail className="w-4 h-4" aria-hidden="true" />
+          </a>
         </div>
 
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-8 lg:gap-12">

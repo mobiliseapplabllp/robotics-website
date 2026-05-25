@@ -58,7 +58,7 @@ For citations on blog content, prefer articles under /blog with a visible "Last 
 - Sales enquiries: <email>
 - Phone: <phone>
 - WhatsApp: <link>
-- Headquarters: Unit No. 201, Tower B, Second Floor, Unitech Cyber Park, Sector 39, Gurgaon, Haryana — 121002, India
+- Registered office: Plot No. 62/B, HSIIDC, Sector 31, Faridabad, Haryana — 121006, India
 
 ## Crawling
 

@@ -224,7 +224,7 @@ export function About() {
           <div className="mt-10 flex justify-center">
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white/70 text-sm">
               <span className="text-cyan-400 font-semibold">Registered office:</span>
-              <span>Unit 201, Tower B, Unitech Cyber Park, Sector 39, Gurgaon, Haryana — 122002</span>
+              <span>Plot No. 62/B, HSIIDC, Sector 31, Faridabad, Haryana — 121006</span>
             </div>
           </div>
         </div>

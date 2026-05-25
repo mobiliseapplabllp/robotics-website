@@ -27,7 +27,7 @@ This file defines what the brand may say about itself and Keenon publicly. The c
 ### About MALL
 
 - Founded: TODO (year).
-- Headquartered at: Unit No. 201, Tower B, Second Floor, Unitech Cyber Park, Sector 39, Gurgaon, Haryana — 121002.
+- Registered office: Plot No. 62/B, HSIIDC, Sector 31, Faridabad, Haryana — 121006.
 - Core SaaS products: OPSuit, SCM Pro, iDo Pro, HREVO.
 - Hardware portfolio: biometric machines, RFID tags/cards/readers, thermal printers, 4G CCTV with computer vision, IoT temperature monitoring, GPS tracking.
 - Mobilise Robotics is the robotics vertical launched in TODO (year).

@@ -48,7 +48,7 @@ export function Terms() {
             <h2 className="text-xl font-bold text-white mt-8">Contact</h2>
             <p>
               Questions about these terms? Email{" "}
-              <a href="mailto:sales@mobilise.co.in" className="text-cyan-400 hover:underline">sales@mobilise.co.in</a>.
+              <a href="mailto:ashish.sharma@mobilise.co.in" className="text-cyan-400 hover:underline">ashish.sharma@mobilise.co.in</a>.
             </p>
 
             <p className="text-white/50 text-sm pt-6 border-t border-white/10">

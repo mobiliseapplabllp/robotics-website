@@ -13,7 +13,7 @@ export const SITE = {
     "Mobilise Robotics is India's authorized KEENON Robotics partner. Autonomous delivery, cleaning, and service robots for hospitality, healthcare, retail, and enterprise.",
   url: "https://fmrobots.in",
   ogImage: "/og-image.jpg", // TODO: add a 1200x630 PNG/JPG at public/og-image.jpg
-  email: "sales@mobilise.co.in",
+  email: "ashish.sharma@mobilise.co.in",
   phone: "+91-9599194330",
   address: {
     street: "Plot No. 62/B, HSIIDC, Sector 31",
