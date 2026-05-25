@@ -48,6 +48,8 @@ import {
   ChevronRight,
   CalendarClock,
   Mail,
+  Pause,
+  Play,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PRODUCTS } from "../data/products";
@@ -77,6 +79,8 @@ type AccentTheme = {
   textBright: string;
   bg10: string;
   bg20: string;
+  /** Solid fill class for the slideshow progress bar — matches family accent. */
+  barFill: string;
   border20: string;
   border40: string;
   ring: string;
@@ -91,6 +95,7 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
     textBright: "text-cyan-300",
     bg10: "bg-cyan-500/10",
     bg20: "bg-cyan-500/20",
+    barFill: "bg-cyan-400",
     border20: "border-cyan-500/20",
     border40: "border-cyan-500/40",
     ring: "focus-visible:ring-cyan-400",
@@ -103,6 +108,7 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
     textBright: "text-emerald-300",
     bg10: "bg-emerald-500/10",
     bg20: "bg-emerald-500/20",
+    barFill: "bg-emerald-400",
     border20: "border-emerald-500/20",
     border40: "border-emerald-500/40",
     ring: "focus-visible:ring-emerald-400",
@@ -115,6 +121,7 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
     textBright: "text-violet-300",
     bg10: "bg-violet-500/10",
     bg20: "bg-violet-500/20",
+    barFill: "bg-violet-400",
     border20: "border-violet-500/20",
     border40: "border-violet-500/40",
     ring: "focus-visible:ring-violet-400",
@@ -123,6 +130,9 @@ const ACCENT_THEMES: Record<Product["category"], AccentTheme> = {
     glow: "shadow-violet-500/30",
   },
 };
+
+/** Auto-advance interval for the In-context slideshow (ms). */
+const SLIDE_DURATION_MS = 5000;
 
 /** Returns absolute URLs for product images — for JSON-LD / OG tags. */
 function absoluteImageUrls(product: Product): string[] {
@@ -349,21 +359,54 @@ function AtAGlance({ detail, accent, productName }: { detail: ProductDetail; acc
 }
 
 /**
- * "In context" — Showcase Viewer. One large featured image with a row of
- * caption-pill tabs above it. Click a pill (or use the arrow buttons / left
- * + right keys) to swap the image with a crossfade. Compact alternative to
- * the previous stacked-parallax design that didn't read well at scale.
+ * "In context" — Showcase Viewer with auto-rotating slideshow.
+ *
+ * One featured image at a time with the captions exposed as pill tabs above.
+ * Auto-advances every SLIDE_DURATION_MS with a progress bar at the top edge
+ * showing time-until-next-slide.
+ *
+ * Interaction:
+ * - Hover or focus pauses auto-advance (WCAG 2.2.2 compliance for moving content).
+ * - Explicit play/pause button next to the counter.
+ * - Prev / next chevrons + Left/Right arrow keys for manual navigation.
+ * - Pills + desktop thumbnail strip for direct slide jumps.
+ * - `prefers-reduced-motion: reduce` disables auto-rotation entirely.
  */
 function InContextGallery({ product, detail, accent }: { product: Product; detail: ProductDetail; accent: AccentTheme }) {
-  // Skip the hero — use gallery shots only (up to 4). Then truncate the
-  // captions list to match the available image count so the indices line up.
+  // Skip the hero — use gallery shots only (up to 4). Truncate captions to match.
   const galleryImages = (product.images ?? [product.image]).slice(1, 5);
   const captions = detail.galleryCaptions.slice(0, galleryImages.length);
+  const count = galleryImages.length;
+
   const [activeIdx, setActiveIdx] = useState(0);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
+  const [isUserPaused, setIsUserPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  // Detect prefers-reduced-motion once on mount and on change.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const autoAdvanceEnabled = !isHoverPaused && !isUserPaused && !prefersReducedMotion && count > 1;
+
+  // Auto-advance timer. Re-runs whenever activeIdx changes (next-slide cycle)
+  // or pause state flips — cleanly cancels and restarts the timeout.
+  useEffect(() => {
+    if (!autoAdvanceEnabled) return;
+    const t = window.setTimeout(() => {
+      setActiveIdx((i) => (i + 1) % count);
+    }, SLIDE_DURATION_MS);
+    return () => clearTimeout(t);
+  }, [autoAdvanceEnabled, activeIdx, count]);
 
   if (galleryImages.length === 0) return null;
 
-  const count = galleryImages.length;
   const goPrev = () => setActiveIdx((i) => (i - 1 + count) % count);
   const goNext = () => setActiveIdx((i) => (i + 1) % count);
 
@@ -416,14 +459,37 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
           })}
         </div>
 
-        {/* Featured image */}
+        {/* Featured image + slideshow viewer */}
         <div
           id={`scene-${product.id}-panel`}
           role="tabpanel"
           tabIndex={0}
           onKeyDown={onKeyDown}
+          onMouseEnter={() => setIsHoverPaused(true)}
+          onMouseLeave={() => setIsHoverPaused(false)}
+          onFocus={() => setIsHoverPaused(true)}
+          onBlur={() => setIsHoverPaused(false)}
+          aria-roledescription="carousel"
+          aria-live={autoAdvanceEnabled ? "off" : "polite"}
           className={`relative aspect-[16/9] rounded-3xl overflow-hidden border ${accent.border20} shadow-2xl ${accent.glow} bg-[#0a101f] focus:outline-none focus-visible:ring-2 ${accent.ring}`}
         >
+          {/* Progress bar — restarts on each slide change. Pauses on hover via
+              animation-play-state so the visual freeze matches the timer freeze. */}
+          {count > 1 && (
+            <div className="absolute top-0 inset-x-0 h-1 bg-black/40 z-20 overflow-hidden" aria-hidden="true">
+              <motion.div
+                key={`progress-${activeIdx}-${isHoverPaused}-${isUserPaused}-${prefersReducedMotion}`}
+                initial={{ width: "0%" }}
+                animate={autoAdvanceEnabled ? { width: "100%" } : { width: prefersReducedMotion || isUserPaused ? "0%" : "0%" }}
+                transition={{
+                  duration: autoAdvanceEnabled ? SLIDE_DURATION_MS / 1000 : 0,
+                  ease: "linear",
+                }}
+                className={`h-full ${accent.barFill}`}
+              />
+            </div>
+          )}
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIdx}
@@ -443,13 +509,26 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
             </motion.div>
           </AnimatePresence>
 
-          {/* Counter */}
-          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur px-3 py-1.5 rounded-full text-white text-xs font-bold tabular-nums">
-            {activeIdx + 1} / {count}
+          {/* Top-right control cluster: counter + pause/play */}
+          <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+            <div className="bg-black/50 backdrop-blur px-3 py-1.5 rounded-full text-white text-xs font-bold tabular-nums">
+              {activeIdx + 1} / {count}
+            </div>
+            {count > 1 && !prefersReducedMotion && (
+              <button
+                type="button"
+                onClick={() => setIsUserPaused((p) => !p)}
+                aria-label={isUserPaused ? "Resume slideshow" : "Pause slideshow"}
+                aria-pressed={isUserPaused}
+                className={`w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+              >
+                {isUserPaused ? <Play className="w-3.5 h-3.5" aria-hidden="true" /> : <Pause className="w-3.5 h-3.5" aria-hidden="true" />}
+              </button>
+            )}
           </div>
 
           {/* Caption overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 pr-16 sm:pr-24">
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 pr-16 sm:pr-24 z-10">
             <AnimatePresence mode="wait">
               <motion.p
                 key={activeIdx}
@@ -471,7 +550,7 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
                 type="button"
                 onClick={goPrev}
                 aria-label="Previous scene"
-                className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+                className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring} z-10`}
               >
                 <ChevronLeft className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -479,7 +558,7 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
                 type="button"
                 onClick={goNext}
                 aria-label="Next scene"
-                className={`absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring}`}
+                className={`absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors focus:outline-none focus-visible:ring-2 ${accent.ring} z-10`}
               >
                 <ChevronRight className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -487,7 +566,7 @@ function InContextGallery({ product, detail, accent }: { product: Product; detai
           )}
         </div>
 
-        {/* Thumbnail strip (desktop only — pills already do this job on mobile) */}
+        {/* Thumbnail strip (desktop only) */}
         <div className="hidden md:grid grid-cols-4 gap-3 mt-4">
           {galleryImages.map((src, i) => (
             <button
