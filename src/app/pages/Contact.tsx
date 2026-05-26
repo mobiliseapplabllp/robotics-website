@@ -1,10 +1,19 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Bot, AlertCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Bot, AlertCircle, Loader2 } from "lucide-react";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const SALES_EMAIL = "ashish.sharma@mobilise.co.in";
 const SALES_PHONE = "+91-9599194330";
+
+/**
+ * Marketing-platform lead-capture endpoint. POSTed from the contact form
+ * below; the platform persists the submission as a Lead record and emails
+ * the operator allowlist. If this endpoint is unreachable (CORS, network,
+ * deploy in progress), the form falls back to opening the user's mail
+ * client so we never lose a lead.
+ */
+const LEADS_API = "https://admin.fmrobots.in/api/public/leads";
 
 const OFFICES = [
   {
@@ -98,32 +107,70 @@ export function Contact() {
   const [formData, setFormData] = useState<FormData>(INITIAL);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitRef, setSubmitRef] = useState<string | null>(null);
+  const [submitMode, setSubmitMode] = useState<"api" | "mailto-fallback">("api");
 
   const update = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const nextErrors = validate(formData);
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      // Move focus to first invalid field
       const firstKey = Object.keys(nextErrors)[0];
       const firstEl = document.getElementById(firstKey);
       firstEl?.focus();
       return;
     }
-    // Open user's email client with pre-filled message
-    window.location.href = buildMailtoHref(formData);
-    setSubmitted(true);
+
+    setSubmitting(true);
+
+    // First-line: POST to the platform's lead-capture endpoint
+    try {
+      const res = await fetch(LEADS_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "contact-form",
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          company: formData.company.trim(),
+          city: formData.city.trim() || undefined,
+          inquiryType: formData.inquiry || undefined,
+          productSlug: formData.product
+            ? formData.product.toLowerCase().replace(/\s+/g, "-")
+            : undefined,
+          message: formData.message.trim() || undefined,
+          submittedFromUrl: window.location.href,
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const body = await res.json();
+      setSubmitRef(body?.ref ?? null);
+      setSubmitMode("api");
+      setSubmitted(true);
+    } catch {
+      // Fallback: keep the lead by opening the user's email client.
+      // Same UX they had before — never lose a submission to a platform outage.
+      window.location.href = buildMailtoHref(formData);
+      setSubmitMode("mailto-fallback");
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const resetForm = () => {
     setFormData(INITIAL);
     setErrors({});
     setSubmitted(false);
+    setSubmitRef(null);
+    setSubmitMode("api");
   };
 
   const fieldClass = (hasError: boolean) =>
@@ -226,15 +273,36 @@ export function Contact() {
                   <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
                     <CheckCircle className="w-10 h-10 text-green-400" aria-hidden="true" />
                   </div>
-                  <h2 className="text-2xl font-black text-white mb-3">Almost there — finish in your email app</h2>
-                  <p className="text-white/70 max-w-md mx-auto mb-4">
-                    We've opened your email client with your inquiry pre-filled. Click <strong className="text-white">Send</strong> in your email app to deliver the message to our team.
-                  </p>
-                  <p className="text-white/60 text-sm max-w-md mx-auto">
-                    If nothing opened, email us directly at{" "}
-                    <a href={`mailto:${SALES_EMAIL}`} className="text-cyan-400 font-semibold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">{SALES_EMAIL}</a>
-                    {" "}or call {SALES_PHONE}.
-                  </p>
+                  {submitMode === "api" ? (
+                    <>
+                      <h2 className="text-2xl font-black text-white mb-3">Thanks — we've got your message</h2>
+                      <p className="text-white/70 max-w-md mx-auto mb-3">
+                        Our India team will respond within 2 business hours. Expect a call or email from a Mobilise number.
+                      </p>
+                      {submitRef && (
+                        <p className="text-white/50 text-sm max-w-md mx-auto mb-4">
+                          Reference: <span className="font-mono text-white">#{submitRef}</span>
+                        </p>
+                      )}
+                      <p className="text-white/60 text-sm max-w-md mx-auto">
+                        Need to reach us urgently? Email{" "}
+                        <a href={`mailto:${SALES_EMAIL}`} className="text-cyan-400 font-semibold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">{SALES_EMAIL}</a>
+                        {" "}or call {SALES_PHONE}.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-2xl font-black text-white mb-3">Almost there — finish in your email app</h2>
+                      <p className="text-white/70 max-w-md mx-auto mb-4">
+                        We've opened your email client with your inquiry pre-filled. Click <strong className="text-white">Send</strong> in your email app to deliver the message to our team.
+                      </p>
+                      <p className="text-white/60 text-sm max-w-md mx-auto">
+                        If nothing opened, email us directly at{" "}
+                        <a href={`mailto:${SALES_EMAIL}`} className="text-cyan-400 font-semibold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded">{SALES_EMAIL}</a>
+                        {" "}or call {SALES_PHONE}.
+                      </p>
+                    </>
+                  )}
                   <button
                     type="button"
                     onClick={resetForm}
@@ -247,7 +315,7 @@ export function Contact() {
                 <>
                   <h2 className="text-2xl font-black text-white mb-2">Send us a message</h2>
                   <p className="text-white/70 text-sm mb-8">
-                    Fields marked <span aria-hidden="true" className="text-red-400">*</span> are required. Submitting opens your email app with the message pre-filled.
+                    Fields marked <span aria-hidden="true" className="text-red-400">*</span> are required. Submitting sends your inquiry to our team — we&apos;ll respond within 2 business hours.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -420,9 +488,14 @@ export function Contact() {
 
                     <button
                       type="submit"
-                      className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-xl text-white font-black text-lg transition-all shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]"
+                      disabled={submitting}
+                      className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-xl text-white font-black text-lg transition-all shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a14]"
                     >
-                      <Send className="w-5 h-5" aria-hidden="true" /> Send via Email
+                      {submitting ? (
+                        <><Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" /> Sending…</>
+                      ) : (
+                        <><Send className="w-5 h-5" aria-hidden="true" /> Send Message</>
+                      )}
                     </button>
 
                     <p className="text-white/60 text-xs text-center">
